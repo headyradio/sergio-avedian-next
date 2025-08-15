@@ -73,7 +73,8 @@ export default {
 			},
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
-				serif: ['Crimson Text', 'Georgia', 'serif']
+				serif: ['Crimson Pro', 'Georgia', 'serif'],
+				mono: ['SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'monospace']
 			},
 			boxShadow: {
 				subtle: 'var(--shadow-subtle)',
@@ -88,6 +89,21 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			lineHeight: {
+				'tight': '1.1',
+				'snug': '1.2',
+				'normal': '1.5',
+				'relaxed': '1.6',
+				'loose': '1.8'
+			},
+			letterSpacing: {
+				'tighter': '-0.05em',
+				'tight': '-0.025em',
+				'normal': '0',
+				'wide': '0.025em',
+				'wider': '0.05em',
+				'widest': '0.1em'
 			},
 			keyframes: {
 				'accordion-down': {

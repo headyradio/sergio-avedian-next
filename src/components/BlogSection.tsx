@@ -64,16 +64,16 @@ const BlogSection = () => {
     <section className="py-16 lg:py-24 bg-background">
       <div className="editorial-container">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-16">
           <div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">
+            <h2 className="heading-feature font-serif mb-4">
               Editorial Insights
             </h2>
-            <p className="text-lg text-text-secondary">
+            <p className="body-large text-text-secondary">
               In-depth analysis and commentary on gig economy trends
             </p>
           </div>
-          <Button variant="editorial" size="lg">
+          <Button className="interactive-accent font-medium">
             All Articles
           </Button>
         </div>
