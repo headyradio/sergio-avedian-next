@@ -138,6 +138,29 @@ serve(async (req) => {
       }
     };
 
+    // Determine video type based on duration and other characteristics
+    const getVideoType = (video: YouTubeVideo) => {
+      const durationMatch = video.contentDetails.duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+      const hours = parseInt((durationMatch?.[1] || '').replace('H', '')) || 0;
+      const minutes = parseInt((durationMatch?.[2] || '').replace('M', '')) || 0;
+      const seconds = parseInt((durationMatch?.[3] || '').replace('S', '')) || 0;
+      
+      const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+      
+      // Check if it's a live stream (live thumbnails contain "live" in URL)
+      const isLive = video.snippet.thumbnails.default?.url.includes('_live') || 
+                     video.snippet.thumbnails.high?.url.includes('_live') ||
+                     video.snippet.title.toLowerCase().includes('live') ||
+                     video.snippet.title.toLowerCase().includes('power hour');
+      
+      // Check if it's a short (under 60 seconds)
+      const isShort = totalSeconds <= 60;
+      
+      if (isLive) return 'live';
+      if (isShort) return 'short';
+      return 'regular';
+    };
+
     // Store videos
     const videoPromises = detailsData.items.map(async (video: YouTubeVideo) => {
       const { error } = await supabase
@@ -159,6 +182,7 @@ serve(async (req) => {
           comment_count: parseInt(video.statistics.commentCount || '0'),
           category_name: categorizeVideo(video.snippet.title, video.snippet.description),
           tags: video.snippet.tags || [],
+          video_type: getVideoType(video),
         }, {
           onConflict: 'video_id'
         });
