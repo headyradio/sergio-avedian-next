@@ -126,7 +126,7 @@ const VideoSection = () => {
           {videos.slice(0, 6).map((video) => (
             <article
               key={video.id}
-              className="card-minimal group cursor-pointer"
+              className="group bg-card border border-card-border rounded-2xl overflow-hidden shadow-subtle hover:shadow-large transition-all duration-300 cursor-pointer"
               onClick={() => window.open(`https://youtube.com/watch?v=${video.video_id}`, '_blank')}
             >
               {/* Thumbnail */}
