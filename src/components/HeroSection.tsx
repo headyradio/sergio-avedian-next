@@ -1,8 +1,53 @@
 import { Button } from "@/components/ui/button";
 import { Play, Mail } from "lucide-react";
 import sergioHero from "@/assets/sergio-hero.jpg";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
+interface LatestVideo {
+  video_id: string;
+  title: string;
+  description: string;
+  thumbnail_high: string;
+  view_count: number;
+}
 
 const HeroSection = () => {
+  const [latestVideo, setLatestVideo] = useState<LatestVideo | null>(null);
+
+  useEffect(() => {
+    const fetchLatestVideo = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('youtube_videos')
+          .select('video_id, title, description, thumbnail_high, view_count')
+          .order('published_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (error) {
+          console.error('Error fetching latest video:', error);
+          return;
+        }
+
+        setLatestVideo(data);
+      } catch (error) {
+        console.error('Error fetching latest video:', error);
+      }
+    };
+
+    fetchLatestVideo();
+  }, []);
+
+  const formatViews = (views: number) => {
+    if (views >= 1000000) {
+      return `${(views / 1000000).toFixed(1)}M`;
+    } else if (views >= 1000) {
+      return `${(views / 1000).toFixed(1)}K`;
+    }
+    return views.toString();
+  };
+
   return (
     <section className="relative bg-gradient-to-br from-surface via-background to-surface-secondary overflow-hidden">
       <div className="editorial-container py-16 lg:py-24">
@@ -14,17 +59,21 @@ const HeroSection = () => {
                 <span className="text-sm font-medium">Latest Episode</span>
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold tracking-tight text-text-primary leading-tight">
-                Navigating the Gig Economy Revolution
+                {latestVideo?.title || "Navigating the Gig Economy Revolution"}
               </h1>
               <p className="text-xl text-text-secondary leading-relaxed max-w-2xl">
-                Expert insights on rideshare, delivery, regulation, and financial strategies 
-                for gig workers. Join thousands who trust Sergio's analysis.
+                {latestVideo?.description?.substring(0, 200) || "Expert insights on rideshare, delivery, regulation, and financial strategies for gig workers. Join thousands who trust Sergio's analysis."}...
               </p>
             </div>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="xl" className="group">
+              <Button 
+                variant="hero" 
+                size="xl" 
+                className="group"
+                onClick={() => latestVideo && window.open(`https://youtube.com/watch?v=${latestVideo.video_id}`, '_blank')}
+              >
                 <Play className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 Watch Latest Video
               </Button>
@@ -71,9 +120,11 @@ const HeroSection = () => {
             
             {/* Floating stats */}
             <div className="absolute -bottom-6 -left-6 bg-card border border-card-border rounded-2xl p-6 shadow-large backdrop-blur-sm">
-              <div className="text-sm text-text-secondary">This Week</div>
-              <div className="text-2xl font-bold text-text-primary">125K</div>
-              <div className="text-sm text-text-secondary">Video Views</div>
+              <div className="text-sm text-text-secondary">Latest Video</div>
+              <div className="text-2xl font-bold text-text-primary">
+                {latestVideo ? formatViews(latestVideo.view_count) : '125K'}
+              </div>
+              <div className="text-sm text-text-secondary">Views</div>
             </div>
           </div>
         </div>

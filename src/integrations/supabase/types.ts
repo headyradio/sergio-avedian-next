@@ -588,6 +588,120 @@ export type Database = {
           },
         ]
       }
+      youtube_channels: {
+        Row: {
+          channel_description: string | null
+          channel_id: string
+          channel_title: string
+          created_at: string
+          custom_url: string | null
+          id: string
+          published_at: string | null
+          subscriber_count: number | null
+          thumbnail_url: string | null
+          updated_at: string
+          video_count: number | null
+          view_count: number | null
+        }
+        Insert: {
+          channel_description?: string | null
+          channel_id: string
+          channel_title: string
+          created_at?: string
+          custom_url?: string | null
+          id?: string
+          published_at?: string | null
+          subscriber_count?: number | null
+          thumbnail_url?: string | null
+          updated_at?: string
+          video_count?: number | null
+          view_count?: number | null
+        }
+        Update: {
+          channel_description?: string | null
+          channel_id?: string
+          channel_title?: string
+          created_at?: string
+          custom_url?: string | null
+          id?: string
+          published_at?: string | null
+          subscriber_count?: number | null
+          thumbnail_url?: string | null
+          updated_at?: string
+          video_count?: number | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
+      youtube_videos: {
+        Row: {
+          category_name: string | null
+          channel_id: string
+          comment_count: number | null
+          created_at: string
+          description: string | null
+          duration: string | null
+          id: string
+          is_featured: boolean | null
+          like_count: number | null
+          published_at: string
+          tags: string[] | null
+          thumbnail_default: string | null
+          thumbnail_high: string | null
+          thumbnail_maxres: string | null
+          thumbnail_medium: string | null
+          thumbnail_standard: string | null
+          title: string
+          updated_at: string
+          video_id: string
+          view_count: number | null
+        }
+        Insert: {
+          category_name?: string | null
+          channel_id: string
+          comment_count?: number | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          is_featured?: boolean | null
+          like_count?: number | null
+          published_at: string
+          tags?: string[] | null
+          thumbnail_default?: string | null
+          thumbnail_high?: string | null
+          thumbnail_maxres?: string | null
+          thumbnail_medium?: string | null
+          thumbnail_standard?: string | null
+          title: string
+          updated_at?: string
+          video_id: string
+          view_count?: number | null
+        }
+        Update: {
+          category_name?: string | null
+          channel_id?: string
+          comment_count?: number | null
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          is_featured?: boolean | null
+          like_count?: number | null
+          published_at?: string
+          tags?: string[] | null
+          thumbnail_default?: string | null
+          thumbnail_high?: string | null
+          thumbnail_maxres?: string | null
+          thumbnail_medium?: string | null
+          thumbnail_standard?: string | null
+          title?: string
+          updated_at?: string
+          video_id?: string
+          view_count?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       url_performance_summary: {

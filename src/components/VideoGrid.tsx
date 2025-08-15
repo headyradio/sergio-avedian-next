@@ -1,69 +1,83 @@
 import { Button } from "@/components/ui/button";
 import { Play, Clock, Eye } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+
+interface Video {
+  id: string;
+  video_id: string;
+  title: string;
+  description: string;
+  thumbnail_high: string;
+  thumbnail_medium: string;
+  published_at: string;
+  duration: string;
+  view_count: number;
+  category_name: string;
+}
 
 const VideoGrid = () => {
-  const videos = [
-    {
-      id: 1,
-      title: "Uber's New Pay Structure: What Drivers Need to Know",
-      excerpt: "Breaking down the latest changes to Uber's payment system and how it affects your earnings potential.",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      duration: "12:45",
-      views: "45K",
-      category: "Rideshare",
-      publishedAt: "2 days ago"
-    },
-    {
-      id: 2,
-      title: "DoorDash vs UberEats: Earnings Comparison 2024",
-      excerpt: "Comprehensive analysis of which platform offers better earning opportunities for delivery drivers.",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      duration: "18:30",
-      views: "67K",
-      category: "Delivery",
-      publishedAt: "5 days ago"
-    },
-    {
-      id: 3,
-      title: "California AB5 Update: Impact on Gig Workers",
-      excerpt: "Latest developments in California's gig worker classification law and what it means for drivers.",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      duration: "15:20",
-      views: "89K",
-      category: "Regulation",
-      publishedAt: "1 week ago"
-    },
-    {
-      id: 4,
-      title: "Tax Tips for Gig Workers: Maximize Your Deductions",
-      excerpt: "Essential tax strategies every gig worker should know to maximize deductions and minimize liability.",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      duration: "22:15",
-      views: "134K",
-      category: "Finance",
-      publishedAt: "2 weeks ago"
-    },
-    {
-      id: 5,
-      title: "The Future of Autonomous Vehicles and Gig Work",
-      excerpt: "How self-driving cars will impact the gig economy and what drivers should prepare for.",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      duration: "25:45",
-      views: "78K",
-      category: "Markets",
-      publishedAt: "3 weeks ago"
-    },
-    {
-      id: 6,
-      title: "Building Multiple Income Streams as a Gig Worker",
-      excerpt: "Strategies for diversifying your gig work portfolio and creating sustainable income.",
-      thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
-      duration: "19:30",
-      views: "156K",
-      category: "Finance",
-      publishedAt: "1 month ago"
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const formatDuration = (isoDuration: string) => {
+    if (!isoDuration) return '0:00';
+    const match = isoDuration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+    const hours = (match?.[1] || '').replace('H', '');
+    const minutes = (match?.[2] || '').replace('M', '');
+    const seconds = (match?.[3] || '').replace('S', '');
+    
+    if (hours) {
+      return `${hours}:${minutes.padStart(2, '0')}:${seconds.padStart(2, '0')}`;
     }
-  ];
+    return `${minutes || '0'}:${seconds.padStart(2, '0')}`;
+  };
+
+  const formatViews = (views: number) => {
+    if (views >= 1000000) {
+      return `${(views / 1000000).toFixed(1)}M`;
+    } else if (views >= 1000) {
+      return `${(views / 1000).toFixed(1)}K`;
+    }
+    return views.toString();
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return '1 day ago';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks ago`;
+    return `${Math.ceil(diffDays / 30)} months ago`;
+  };
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('youtube_videos')
+          .select('*')
+          .order('published_at', { ascending: false })
+          .limit(12);
+
+        if (error) {
+          console.error('Error fetching videos:', error);
+          return;
+        }
+
+        setVideos(data || []);
+      } catch (error) {
+        console.error('Error fetching videos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVideos();
+  }, []);
 
   const categoryColors = {
     Rideshare: "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300",
@@ -92,64 +106,120 @@ const VideoGrid = () => {
         </div>
 
         {/* Video Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {videos.map((video) => (
-            <article
-              key={video.id}
-              className="group bg-card border border-card-border rounded-2xl overflow-hidden shadow-subtle hover:shadow-large transition-all duration-300 cursor-pointer"
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-card border border-card-border rounded-2xl overflow-hidden animate-pulse">
+                <div className="aspect-video bg-surface"></div>
+                <div className="p-6 space-y-4">
+                  <div className="flex justify-between">
+                    <div className="h-6 bg-surface rounded w-20"></div>
+                    <div className="h-4 bg-surface rounded w-12"></div>
+                  </div>
+                  <div className="h-6 bg-surface rounded"></div>
+                  <div className="h-4 bg-surface rounded"></div>
+                  <div className="flex justify-between">
+                    <div className="h-4 bg-surface rounded w-16"></div>
+                    <div className="h-8 bg-surface rounded w-20"></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : videos.length === 0 ? (
+          <div className="text-center py-12 space-y-4">
+            <p className="text-text-secondary text-lg">No videos found. Sync YouTube data first.</p>
+            <Button 
+              onClick={async () => {
+                setLoading(true);
+                try {
+                  const { data: result, error } = await supabase.functions.invoke('youtube-sync');
+                  if (error) throw error;
+                  
+                  // Refresh videos after sync
+                  const { data } = await supabase
+                    .from('youtube_videos')
+                    .select('*')
+                    .order('published_at', { ascending: false })
+                    .limit(12);
+                  setVideos(data || []);
+                } catch (error) {
+                  console.error('Sync error:', error);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              variant="cta"
+              size="lg"
             >
-              {/* Thumbnail */}
-              <div className="relative aspect-video bg-surface overflow-hidden">
-                <img
-                  src={video.thumbnail}
-                  alt={video.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="bg-primary text-primary-foreground w-16 h-16 rounded-full flex items-center justify-center">
-                    <Play className="h-6 w-6 ml-1" />
+              Sync YouTube Videos
+            </Button>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {videos.map((video) => (
+              <article
+                key={video.id}
+                className="group bg-card border border-card-border rounded-2xl overflow-hidden shadow-subtle hover:shadow-large transition-all duration-300 cursor-pointer"
+                onClick={() => window.open(`https://youtube.com/watch?v=${video.video_id}`, '_blank')}
+              >
+                {/* Thumbnail */}
+                <div className="relative aspect-video bg-surface overflow-hidden">
+                  <img
+                    src={video.thumbnail_high || video.thumbnail_medium || '/placeholder.svg'}
+                    alt={video.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="bg-primary text-primary-foreground w-16 h-16 rounded-full flex items-center justify-center">
+                      <Play className="h-6 w-6 ml-1" />
+                    </div>
                   </div>
-                </div>
-                <div className="absolute bottom-3 right-3 bg-black/75 text-white px-2 py-1 rounded text-sm font-medium flex items-center">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {video.duration}
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      categoryColors[video.category as keyof typeof categoryColors]
-                    }`}
-                  >
-                    {video.category}
-                  </span>
-                  <div className="flex items-center text-text-secondary text-sm">
-                    <Eye className="h-3 w-3 mr-1" />
-                    {video.views}
+                  <div className="absolute bottom-3 right-3 bg-black/75 text-white px-2 py-1 rounded text-sm font-medium flex items-center">
+                    <Clock className="h-3 w-3 mr-1" />
+                    {formatDuration(video.duration)}
                   </div>
                 </div>
 
-                <h3 className="text-lg font-semibold text-text-primary mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                  {video.title}
-                </h3>
+                {/* Content */}
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        video.category_name === 'Rideshare' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300' :
+                        video.category_name === 'Delivery' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300' :
+                        video.category_name === 'Regulation' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300' :
+                        video.category_name === 'Finance' ? 'bg-cta/10 text-cta' :
+                        'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300'
+                      }`}
+                    >
+                      {video.category_name}
+                    </span>
+                    <div className="flex items-center text-text-secondary text-sm">
+                      <Eye className="h-3 w-3 mr-1" />
+                      {formatViews(video.view_count)}
+                    </div>
+                  </div>
 
-                <p className="text-text-secondary mb-4 line-clamp-2 leading-relaxed">
-                  {video.excerpt}
-                </p>
+                  <h3 className="text-lg font-semibold text-text-primary mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                    {video.title}
+                  </h3>
 
-                <div className="flex items-center justify-between text-sm text-text-muted">
-                  <span>{video.publishedAt}</span>
-                  <Button variant="ghost" size="sm" className="text-primary hover:text-primary-hover">
-                    Watch now
-                  </Button>
+                  <p className="text-text-secondary mb-4 line-clamp-2 leading-relaxed">
+                    {video.description?.substring(0, 150)}...
+                  </p>
+
+                  <div className="flex items-center justify-between text-sm text-text-muted">
+                    <span>{formatDate(video.published_at)}</span>
+                    <Button variant="ghost" size="sm" className="text-primary hover:text-primary-hover">
+                      Watch now
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
+        )}
 
         {/* Newsletter CTA */}
         <div className="mt-16 bg-gradient-to-r from-cta/10 to-primary/10 border border-cta/20 rounded-2xl p-8 lg:p-12 text-center">
