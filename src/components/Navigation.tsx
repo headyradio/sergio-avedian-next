@@ -15,12 +15,12 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-nav-background border-b border-nav-border backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 nav-floating">
       <div className="editorial-container">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-text-primary tracking-tight">
+            <h1 className="text-2xl font-bold text-gradient tracking-tight">
               Sergio Avedian
             </h1>
           </div>
@@ -31,7 +31,7 @@ const Navigation = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-text-secondary hover:text-text-primary transition-colors duration-200 font-medium"
+                className="text-text-secondary hover:text-text-primary transition-colors duration-300 font-medium link-animated"
               >
                 {item.label}
               </a>
@@ -39,11 +39,11 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <Search className="h-4 w-4" />
+          <div className="hidden md:flex items-center space-x-6">
+            <Button variant="ghost" size="icon" className="hover:glow-primary">
+              <Search className="h-5 w-5" />
             </Button>
-            <Button variant="cta" size="sm">
+            <Button variant="cta" size="sm" className="cta-electric">
               Subscribe
             </Button>
           </div>

@@ -126,7 +126,7 @@ const VideoSection = () => {
           {videos.slice(0, 6).map((video) => (
             <article
               key={video.id}
-              className="group bg-card border border-card-border rounded-2xl overflow-hidden shadow-subtle hover:shadow-large transition-all duration-300 cursor-pointer"
+              className="group card-modern rounded-3xl overflow-hidden cursor-pointer"
               onClick={() => window.open(`https://youtube.com/watch?v=${video.video_id}`, '_blank')}
             >
               {/* Thumbnail */}
@@ -204,43 +204,44 @@ const VideoSection = () => {
   );
 
   return (
-    <section className="py-16 lg:py-24 bg-surface">
+    <section className="py-20 lg:py-32 relative">
       <div className="editorial-container">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-16">
           <div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">
+            <h2 className="text-4xl lg:text-5xl font-black text-gradient mb-6">
               Latest Videos
             </h2>
-            <p className="text-lg text-text-secondary">
+            <p className="text-xl text-text-secondary prose-modern">
               Stay informed with expert analysis on the gig economy
             </p>
           </div>
           <Button 
-            variant="editorial" 
+            variant="secondary" 
             size="lg"
             onClick={syncVideos}
             disabled={syncing}
+            className="glass-card"
           >
             {syncing ? 'Syncing...' : 'Sync Videos'}
           </Button>
         </div>
 
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-card border border-card-border rounded-2xl overflow-hidden animate-pulse">
-                <div className="aspect-video bg-surface"></div>
-                <div className="p-4 space-y-3">
+              <div key={i} className="glass-card rounded-3xl overflow-hidden">
+                <div className="aspect-video loading-shimmer"></div>
+                <div className="p-6 space-y-4">
                   <div className="flex justify-between">
-                    <div className="h-5 bg-surface rounded w-20"></div>
-                    <div className="h-4 bg-surface rounded w-12"></div>
+                    <div className="h-5 loading-shimmer rounded w-20"></div>
+                    <div className="h-4 loading-shimmer rounded w-12"></div>
                   </div>
-                  <div className="h-5 bg-surface rounded"></div>
-                  <div className="h-4 bg-surface rounded"></div>
+                  <div className="h-6 loading-shimmer rounded"></div>
+                  <div className="h-4 loading-shimmer rounded"></div>
                   <div className="flex justify-between">
-                    <div className="h-4 bg-surface rounded w-16"></div>
-                    <div className="h-8 bg-surface rounded w-20"></div>
+                    <div className="h-4 loading-shimmer rounded w-16"></div>
+                    <div className="h-10 loading-shimmer rounded w-24"></div>
                   </div>
                 </div>
               </div>

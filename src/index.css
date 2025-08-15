@@ -1,133 +1,106 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Editorial Design System - Sergio Avedian News Platform */
+/* Modern Dark Design System - Sleek & Contemporary */
 
 @layer base {
   :root {
-    /* Core Brand Colors */
-    --brand-primary: 210 100% 50%;
-    --brand-secondary: 220 15% 15%;
-    --brand-accent: 35 85% 55%;
+    /* Modern Dark-First Color Palette */
+    --background: 220 25% 4%;
+    --foreground: 0 0% 97%;
+    --surface: 220 20% 6%;
+    --surface-secondary: 220 15% 8%;
+    --surface-tertiary: 220 12% 10%;
     
-    /* Editorial Colors */
-    --background: 0 0% 100%;
-    --foreground: 220 15% 15%;
-    --surface: 210 11% 97%;
-    --surface-secondary: 210 9% 93%;
-    
-    /* Typography */
-    --text-primary: 220 15% 15%;
-    --text-secondary: 220 10% 45%;
-    --text-muted: 220 8% 60%;
-    --text-inverse: 0 0% 98%;
-    
-    /* Interactive */
-    --primary: 210 100% 50%;
-    --primary-hover: 210 100% 45%;
-    --primary-foreground: 0 0% 98%;
-    
-    --secondary: 220 15% 96%;
-    --secondary-hover: 220 15% 92%;
-    --secondary-foreground: 220 15% 15%;
-    
-    /* Email CTA Specific */
-    --cta-primary: 35 85% 55%;
-    --cta-primary-hover: 35 85% 50%;
-    --cta-foreground: 0 0% 100%;
-    
-    /* Content Areas */
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 15%;
-    --card-border: 220 13% 91%;
-    
-    /* Navigation */
-    --nav-background: 0 0% 100%;
-    --nav-border: 220 13% 91%;
-    --nav-hover: 210 11% 97%;
-    
-    /* Semantic */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --success: 120 60% 45%;
-    --warning: 45 85% 55%;
-    
-    /* System */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 210 100% 50%;
-    --radius: 0.5rem;
-    
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--brand-primary)) 0%, hsl(var(--brand-secondary)) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(var(--surface)) 0%, hsl(var(--surface-secondary)) 100%);
-    
-    /* Shadows */
-    --shadow-subtle: 0 1px 3px 0 hsl(220 15% 15% / 0.1), 0 1px 2px 0 hsl(220 15% 15% / 0.06);
-    --shadow-medium: 0 4px 6px -1px hsl(220 15% 15% / 0.1), 0 2px 4px -1px hsl(220 15% 15% / 0.06);
-    --shadow-large: 0 20px 25px -5px hsl(220 15% 15% / 0.1), 0 10px 10px -5px hsl(220 15% 15% / 0.04);
-    
-    /* Animations */
-    --transition-base: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    /* Dark Mode Editorial Colors */
-    --background: 220 15% 8%;
-    --foreground: 0 0% 95%;
-    --surface: 220 13% 11%;
-    --surface-secondary: 220 11% 14%;
-    
-    --text-primary: 0 0% 95%;
-    --text-secondary: 220 8% 70%;
+    /* Enhanced Typography Colors */
+    --text-primary: 0 0% 97%;
+    --text-secondary: 220 8% 75%;
     --text-muted: 220 8% 55%;
-    --text-inverse: 220 15% 15%;
+    --text-inverse: 220 25% 4%;
     
-    --primary: 210 100% 60%;
-    --primary-hover: 210 100% 55%;
-    --primary-foreground: 220 15% 8%;
+    /* Modern Brand Colors */
+    --brand-primary: 195 100% 60%;
+    --brand-secondary: 280 100% 70%;
+    --brand-accent: 25 95% 65%;
     
-    --secondary: 220 13% 18%;
-    --secondary-hover: 220 13% 22%;
-    --secondary-foreground: 0 0% 95%;
+    /* Interactive Elements */
+    --primary: 195 100% 60%;
+    --primary-hover: 195 100% 65%;
+    --primary-foreground: 220 25% 4%;
     
-    --cta-primary: 35 85% 60%;
-    --cta-primary-hover: 35 85% 55%;
-    --cta-foreground: 220 15% 8%;
+    --secondary: 220 15% 12%;
+    --secondary-hover: 220 15% 15%;
+    --secondary-foreground: 0 0% 97%;
     
-    --card: 220 13% 11%;
-    --card-foreground: 0 0% 95%;
-    --card-border: 220 13% 18%;
+    /* Electric Blue CTA */
+    --cta-primary: 195 100% 60%;
+    --cta-primary-hover: 195 100% 65%;
+    --cta-foreground: 220 25% 4%;
     
-    --nav-background: 220 15% 8%;
-    --nav-border: 220 13% 18%;
-    --nav-hover: 220 13% 14%;
+    /* Glass Morphism Cards */
+    --card: 220 20% 6%;
+    --card-foreground: 0 0% 97%;
+    --card-border: 220 15% 15%;
+    --card-border-hover: 195 50% 25%;
     
-    --border: 220 13% 18%;
-    --input: 220 13% 18%;
-    --ring: 210 100% 60%;
+    /* Floating Navigation */
+    --nav-background: 220 25% 4% / 0.8;
+    --nav-border: 220 15% 15%;
+    --nav-hover: 220 15% 10%;
+    
+    /* Enhanced Semantic Colors */
+    --destructive: 0 85% 65%;
+    --destructive-foreground: 0 0% 97%;
+    --success: 140 70% 60%;
+    --warning: 45 95% 65%;
+    
+    /* System Elements */
+    --border: 220 15% 15%;
+    --input: 220 15% 12%;
+    --ring: 195 100% 60%;
+    --radius: 12px;
+    
+    /* Modern Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 25% 4%) 0%, hsl(220 20% 6%) 50%, hsl(220 15% 8%) 100%);
+    --gradient-mesh: radial-gradient(circle at 25% 25%, hsl(195 100% 60% / 0.1), transparent 50%), 
+                     radial-gradient(circle at 75% 75%, hsl(280 100% 70% / 0.1), transparent 50%);
+    --gradient-card: linear-gradient(145deg, hsl(220 20% 6%), hsl(220 15% 8%));
+    --gradient-glass: linear-gradient(145deg, hsl(220 20% 8% / 0.8), hsl(220 15% 10% / 0.6));
+    
+    /* Enhanced Shadows with Color */
+    --shadow-subtle: 0 1px 3px hsl(220 25% 4% / 0.3), 0 1px 2px hsl(195 100% 60% / 0.05);
+    --shadow-medium: 0 4px 12px hsl(220 25% 4% / 0.4), 0 2px 6px hsl(195 100% 60% / 0.1);
+    --shadow-large: 0 16px 32px hsl(220 25% 4% / 0.5), 0 4px 12px hsl(195 100% 60% / 0.15);
+    --shadow-glow: 0 0 24px hsl(195 100% 60% / 0.3);
+    --shadow-glow-warm: 0 0 24px hsl(25 95% 65% / 0.3);
+    
+    /* Smooth Animations */
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Spacing System */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+    
+    /* Sidebar Variables */
+    --sidebar-background: 220 20% 6%;
+    --sidebar-foreground: 0 0% 97%;
+    --sidebar-primary: 195 100% 60%;
+    --sidebar-primary-foreground: 220 25% 4%;
+    --sidebar-accent: 220 15% 12%;
+    --sidebar-accent-foreground: 0 0% 97%;
+    --sidebar-border: 220 15% 15%;
+    --sidebar-ring: 195 100% 60%;
   }
 }
 
@@ -135,69 +108,200 @@
   * {
     @apply border-border;
   }
-
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
   
-  /* Editorial Typography */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.025em;
-  }
-  
-  .font-serif {
-    font-family: 'Crimson Text', Georgia, serif;
-  }
-  
-  /* Smooth scrolling */
   html {
     scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-variant-ligatures: common-ligatures;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: var(--gradient-mesh);
+    background-attachment: fixed;
   }
   
-  /* Focus styles */
+  /* Modern Typography System */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: hsl(var(--text-primary));
+  }
+  
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+  }
+  
+  h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+  
+  h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Consolas', monospace;
+    font-feature-settings: "liga" 0;
+  }
+  
+  /* Enhanced Focus Styles */
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2);
+  }
+  
+  /* Selection Styles */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--text-primary));
+  }
+  
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--surface));
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
   }
 }
 
 @layer components {
-  /* Editorial Component Styles */
+  /* Modern Container System */
   .editorial-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
   }
   
-  .editorial-prose {
-    @apply text-foreground leading-relaxed;
+  /* Glass Morphism Cards */
+  .glass-card {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--card-border));
+    transition: var(--transition-smooth);
   }
   
-  .editorial-prose h1 {
-    @apply text-4xl lg:text-5xl font-bold tracking-tight mb-6;
+  .glass-card:hover {
+    border-color: hsl(var(--card-border-hover));
+    box-shadow: var(--shadow-medium), var(--shadow-glow);
+    transform: translateY(-2px);
   }
   
-  .editorial-prose h2 {
-    @apply text-2xl lg:text-3xl font-semibold tracking-tight mt-8 mb-4;
+  /* Modern Card Hover Effects */
+  .card-modern {
+    @apply transition-all duration-300 ease-out;
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--card-border));
   }
   
-  .editorial-prose h3 {
-    @apply text-xl lg:text-2xl font-semibold tracking-tight mt-6 mb-3;
+  .card-modern:hover {
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: var(--shadow-large);
+    transform: translateY(-4px) scale(1.02);
   }
   
-  .editorial-prose p {
-    @apply mb-4 leading-7;
+  /* Enhanced CTA Styles */
+  .cta-electric {
+    background: linear-gradient(135deg, hsl(var(--cta-primary)), hsl(var(--primary)));
+    box-shadow: var(--shadow-glow);
+    transition: var(--transition-base);
   }
   
-  /* Card hover effects */
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:scale-[1.02];
+  .cta-electric:hover {
+    box-shadow: var(--shadow-glow), var(--shadow-large);
+    transform: translateY(-2px);
   }
   
-  /* CTA styles */
-  .cta-gradient {
-    background: linear-gradient(135deg, hsl(var(--cta-primary)), hsl(var(--cta-primary-hover)));
+  /* Floating Navigation */
+  .nav-floating {
+    background: hsl(var(--nav-background));
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--nav-border));
+  }
+  
+  /* Text Gradient Effects */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--brand-secondary)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Animated Underlines */
+  .link-animated {
+    position: relative;
+    transition: var(--transition-base);
+  }
+  
+  .link-animated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--brand-secondary)));
+    transition: width var(--transition-base);
+  }
+  
+  .link-animated:hover::after {
+    width: 100%;
+  }
+  
+  /* Modern Prose Styling */
+  .prose-modern {
+    line-height: 1.7;
+    color: hsl(var(--text-secondary));
+  }
+  
+  .prose-modern h1, .prose-modern h2, .prose-modern h3 {
+    color: hsl(var(--text-primary));
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .prose-modern p {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Loading States */
+  .loading-shimmer {
+    background: linear-gradient(90deg, 
+      hsl(var(--surface)) 0%, 
+      hsl(var(--surface-secondary)) 50%, 
+      hsl(var(--surface)) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  /* Glow Effects */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--brand-accent) / 0.3);
   }
 }

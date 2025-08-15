@@ -61,26 +61,26 @@ const BlogSection = () => {
   const regularPosts = blogPosts.filter(post => !post.featured);
 
   return (
-    <section className="py-16 lg:py-24 bg-background">
+    <section className="py-20 lg:py-32 relative">
       <div className="editorial-container">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-16">
           <div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">
+            <h2 className="text-4xl lg:text-5xl font-black text-gradient mb-6">
               Editorial Insights
             </h2>
-            <p className="text-lg text-text-secondary">
+            <p className="text-xl text-text-secondary prose-modern">
               In-depth analysis and commentary on gig economy trends
             </p>
           </div>
-          <Button variant="editorial" size="lg">
+          <Button variant="secondary" size="lg" className="glass-card">
             All Articles
           </Button>
         </div>
 
         {/* Featured Article */}
         {featuredPost && (
-          <article className="bg-card border border-card-border rounded-2xl overflow-hidden shadow-medium hover:shadow-large transition-all duration-300 mb-12 group cursor-pointer">
+          <article className="card-modern rounded-3xl overflow-hidden mb-16 group cursor-pointer">
             <div className="grid lg:grid-cols-2 gap-0">
               <div className="aspect-video lg:aspect-auto relative overflow-hidden">
                 <img
@@ -137,7 +137,7 @@ const BlogSection = () => {
           {regularPosts.map((post) => (
             <article
               key={post.id}
-              className="bg-card border border-card-border rounded-2xl overflow-hidden shadow-subtle hover:shadow-large transition-all duration-300 group cursor-pointer"
+              className="card-modern rounded-3xl overflow-hidden group cursor-pointer"
             >
               <div className="aspect-video relative overflow-hidden">
                 <img
