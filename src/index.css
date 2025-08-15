@@ -251,7 +251,13 @@
   
   /* CTA - Bold Accent */
   .cta-primary {
-    @apply bg-cta-primary hover:bg-cta-primary-hover text-cta-foreground transition-colors duration-150;
+    background-color: hsl(var(--cta-primary));
+    color: hsl(var(--cta-foreground));
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .cta-primary:hover {
+    background-color: hsl(var(--cta-primary-hover));
   }
   
   /* Reading Experience */
