@@ -80,11 +80,11 @@ export const useBlogPosts = (first = 10, skip = 0) => {
   return useQuery({
     queryKey: ['blogPosts', first, skip],
     queryFn: async () => {
-      const data = await hygraphClient.request<{ blogPosts: BlogPost[] }>(
+      const data = await hygraphClient.request(
         GET_BLOG_POSTS,
         { first, skip }
       );
-      return data.blogPosts;
+      return data.blogPosts as BlogPost[];
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -115,10 +115,10 @@ export const useFeaturedBlogPosts = () => {
   return useQuery({
     queryKey: ['featuredBlogPosts'],
     queryFn: async () => {
-      const data = await hygraphClient.request<{ blogPosts: BlogPost[] }>(
+      const data = await hygraphClient.request(
         FEATURED_POSTS_QUERY
       );
-      return data.blogPosts;
+      return data.blogPosts as BlogPost[];
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -128,10 +128,10 @@ export const useHomepageContent = () => {
   return useQuery({
     queryKey: ['homepageContent'],
     queryFn: async () => {
-      const data = await hygraphClient.request<{ homepageContent: HomePageContent }>(
+      const data = await hygraphClient.request(
         GET_HOMEPAGE_CONTENT
       );
-      return data.homepageContent;
+      return data.homepageContent as HomePageContent;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes - homepage content changes less frequently
   });
@@ -141,10 +141,10 @@ export const useFooterContent = () => {
   return useQuery({
     queryKey: ['footerContent'],
     queryFn: async () => {
-      const data = await hygraphClient.request<{ footerContent: FooterContent }>(
+      const data = await hygraphClient.request(
         GET_FOOTER_CONTENT
       );
-      return data.footerContent;
+      return data.footerContent as FooterContent;
     },
     staleTime: 10 * 60 * 1000,
   });
@@ -154,11 +154,34 @@ export const useNavigationItems = () => {
   return useQuery({
     queryKey: ['navigationItems'],
     queryFn: async () => {
-      const data = await hygraphClient.request<{ navigationItems: NavigationItem[] }>(
+      const data = await hygraphClient.request(
         GET_NAVIGATION_ITEMS
       );
-      return data.navigationItems;
+      return data.navigationItems as NavigationItem[];
     },
     staleTime: 10 * 60 * 1000,
+  });
+};
+
+// Test hook to verify connection with your specific blog post
+export const useTestBlogPost = () => {
+  const TEST_QUERY = gql`
+    query TestBlogPost {
+      blogPost(where: { id: "cmeejj2fg0v6u08pstr5nzgv5" }) {
+        id
+        title
+        content
+        publishedAt
+      }
+    }
+  `;
+
+  return useQuery({
+    queryKey: ['testBlogPost'],
+    queryFn: async () => {
+      const data = await hygraphClient.request(TEST_QUERY);
+      return data;
+    },
+    staleTime: 1 * 60 * 1000, // 1 minute for testing
   });
 };

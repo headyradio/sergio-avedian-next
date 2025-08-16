@@ -1,15 +1,32 @@
-import { GraphQLClient } from 'graphql-request';
+import { supabase } from '@/integrations/supabase/client';
 
-// Your Hygraph Content API endpoint
-const HYGRAPH_ENDPOINT = 'https://ap-south-1.cdn.hygraph.com/content/cmebfl0oe02kv07utjwx0hlht/master';
+// Hygraph proxy through Supabase edge function
+const hygraphProxy = async (query: string, variables?: any) => {
+  try {
+    const { data, error } = await supabase.functions.invoke('hygraph-proxy', {
+      body: { query, variables }
+    });
 
-// For frontend applications, create client without auth headers initially
-// You can add a public content API token here if needed
-export const hygraphClient = new GraphQLClient(HYGRAPH_ENDPOINT, {
-  headers: {
-    // Add your public content API token here if you have one
-    // Authorization: `Bearer YOUR_PUBLIC_CONTENT_API_TOKEN`,
-  },
-});
+    if (error) {
+      console.error('Supabase function error:', error);
+      throw new Error(`Hygraph proxy error: ${error.message}`);
+    }
+
+    if (data?.errors) {
+      console.error('GraphQL errors:', data.errors);
+      throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error calling hygraph proxy:', error);
+    throw error;
+  }
+};
+
+// Export a client-like interface that matches GraphQLClient's request method
+export const hygraphClient = {
+  request: hygraphProxy
+};
 
 export default hygraphClient;
