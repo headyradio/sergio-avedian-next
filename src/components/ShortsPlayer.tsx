@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { X, ChevronUp, ChevronDown } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { X, ChevronUp, ChevronDown, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 
@@ -90,7 +91,8 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
   const video = videos[currentIndex];
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <TooltipProvider>
+      <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md p-0 bg-black border-none overflow-hidden">
         <DialogHeader className="absolute top-4 left-4 right-4 z-10">
           <div className="flex items-center justify-between">
@@ -98,6 +100,20 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
               {video.title}
             </DialogTitle>
             <div className="flex items-center gap-2 shrink-0">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-white hover:bg-white/20"
+                  >
+                    <Info className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="max-w-xs">
+                  <p className="text-sm">Use ↑↓ arrow keys or swipe up/down to navigate between shorts</p>
+                </TooltipContent>
+              </Tooltip>
               <span className="text-white/60 text-xs">
                 {currentIndex + 1} / {videos.length}
               </span>
@@ -153,6 +169,7 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
         </div>
       </DialogContent>
     </Dialog>
+    </TooltipProvider>
   );
 };
 
