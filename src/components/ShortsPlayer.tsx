@@ -29,6 +29,7 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
   const [currentIndex, setCurrentIndex] = useState(0);
   const [startY, setStartY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (currentVideo && videos.length > 0) {
@@ -86,6 +87,34 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
     }
   }, [isOpen, currentIndex, videos.length]);
 
+  // Auto-play next video functionality
+  useEffect(() => {
+    if (!isOpen || !iframeRef.current) return;
+
+    const handleMessage = (event: MessageEvent) => {
+      // Listen for YouTube player state changes
+      if (event.origin !== 'https://www.youtube.com') return;
+      
+      try {
+        const data = JSON.parse(event.data);
+        // State 0 means the video has ended
+        if (data.event === 'video-data-change' || (data.info && data.info.playerState === 0)) {
+          // Auto-advance to next video if available
+          if (currentIndex < videos.length - 1) {
+            setTimeout(() => {
+              goToNext();
+            }, 500); // Small delay before auto-advancing
+          }
+        }
+      } catch (e) {
+        // Ignore parsing errors for other messages
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [isOpen, currentIndex, videos.length]);
+
   if (!videos[currentIndex]) return null;
 
   const video = videos[currentIndex];
@@ -136,8 +165,9 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
           onTouchEnd={handleTouchEnd}
         >
           <iframe
+            ref={iframeRef}
             key={video.video_id}
-            src={`https://www.youtube.com/embed/${video.video_id}?autoplay=1&modestbranding=1&rel=0`}
+            src={`https://www.youtube.com/embed/${video.video_id}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1`}
             title={video.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
