@@ -99,20 +99,52 @@ const VideoSection = () => {
   };
 
   const getShortsVideos = () => {
-    return videos.filter(video => video.video_type === 'short').slice(0, 15);
+    return videos.filter(video => {
+      if (video.video_type === 'short') return true;
+      
+      // Additional check for videos under 2 minutes that might be shorts
+      if (video.duration) {
+        const match = video.duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+        const hours = parseInt((match?.[1] || '').replace('H', '')) || 0;
+        const minutes = parseInt((match?.[2] || '').replace('M', '')) || 0;
+        const seconds = parseInt((match?.[3] || '').replace('S', '')) || 0;
+        const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+        
+        if (totalSeconds <= 120) return true;
+      }
+      
+      return false;
+    }).slice(0, 15);
   };
 
   const getRegularVideos = () => {
-    return videos.filter(video => 
-      video.video_type === 'regular' || 
-      (video.video_type === 'live' && 
-        !video.title.toLowerCase().includes('power hour') && 
-        !video.title.toLowerCase().includes('trading with sergio'))
-    ).slice(0, 12);
+    return videos.filter(video => {
+      // Exclude shorts (including those under 2 minutes)
+      if (video.video_type === 'short') return false;
+      
+      // Check duration to exclude short videos
+      if (video.duration) {
+        const match = video.duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+        const hours = parseInt((match?.[1] || '').replace('H', '')) || 0;
+        const minutes = parseInt((match?.[2] || '').replace('M', '')) || 0;
+        const seconds = parseInt((match?.[3] || '').replace('S', '')) || 0;
+        const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+        
+        if (totalSeconds <= 120) return false;
+      }
+      
+      return video.video_type === 'regular' || 
+        (video.video_type === 'live' && 
+          !video.title.toLowerCase().includes('power hour') && 
+          !video.title.toLowerCase().includes('trading with sergio'));
+    }).slice(0, 12);
   };
 
   const handleVideoClick = (video: Video) => {
-    if (video.video_type === 'short') {
+    const shortsVideos = getShortsVideos();
+    const isShort = shortsVideos.some(short => short.id === video.id);
+    
+    if (isShort) {
       setSelectedShort(video);
     } else {
       window.open(`https://youtube.com/watch?v=${video.video_id}`, '_blank');
@@ -217,6 +249,14 @@ const VideoSection = () => {
           </div>
         ) : (
           <div className="space-y-12">
+            {/* LATEST SHORTS Section */}
+            <VideoCarousel
+              videos={getShortsVideos()}
+              title="LATEST SHORTS"
+              variant="vertical"
+              onVideoClick={handleVideoClick}
+            />
+
             {/* POWER HOUR Section */}
             <VideoCarousel
               videos={getPowerHourVideos()}
@@ -230,14 +270,6 @@ const VideoSection = () => {
               videos={getTradingWithSergioVideos()}
               title="TRADING WITH SERGIO"
               variant="horizontal"
-              onVideoClick={handleVideoClick}
-            />
-
-            {/* LATEST SHORTS Section */}
-            <VideoCarousel
-              videos={getShortsVideos()}
-              title="LATEST SHORTS"
-              variant="vertical"
               onVideoClick={handleVideoClick}
             />
 
@@ -255,8 +287,8 @@ const VideoSection = () => {
         <ShortsPlayer
           isOpen={!!selectedShort}
           onClose={() => setSelectedShort(null)}
-          videoId={selectedShort?.video_id || ''}
-          title={selectedShort?.title || ''}
+          videos={getShortsVideos()}
+          currentVideo={selectedShort}
         />
 
         {/* Newsletter CTA */}

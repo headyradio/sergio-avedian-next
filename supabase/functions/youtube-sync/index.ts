@@ -168,8 +168,8 @@ serve(async (req) => {
                      description.includes('live stream') ||
                      (title.includes('live') && totalSeconds > 900); // Live videos tend to be longer than 15 minutes
       
-      // Check if it's a short - Enhanced detection (must be under 60 seconds)
-      const isShort = totalSeconds <= 60 || 
+      // Check if it's a short - Enhanced detection (must be under 2 minutes)
+      const isShort = totalSeconds <= 120 || 
                       title.includes('#shorts') || 
                       title.includes('#short') ||
                       description.includes('#shorts') ||
