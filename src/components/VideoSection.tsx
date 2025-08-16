@@ -123,7 +123,7 @@ const VideoSection = () => {
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.slice(0, 6).map((video) => (
+          {videos.map((video) => (
             <article
               key={video.id}
               className="group card-modern rounded-3xl overflow-hidden cursor-pointer"

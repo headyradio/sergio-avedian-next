@@ -107,13 +107,16 @@ const HeroSection = () => {
           <div className="relative lg:order-last">
             <div className="relative">
               <img
-                src={sergioHero}
-                alt="Sergio Avedian - Gig Economy Expert"
+                src={latestVideo?.thumbnail_high || sergioHero}
+                alt={latestVideo ? latestVideo.title : "Sergio Avedian - Gig Economy Expert"}
                 className="w-full h-auto rounded-3xl shadow-large"
               />
               {/* Play overlay */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="cta-electric w-24 h-24 rounded-full flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all duration-300 group glow-primary">
+                <div 
+                  className="cta-electric w-24 h-24 rounded-full flex items-center justify-center cursor-pointer transform hover:scale-110 transition-all duration-300 group glow-primary"
+                  onClick={() => latestVideo && window.open(`https://youtube.com/watch?v=${latestVideo.video_id}`, '_blank')}
+                >
                   <Play className="h-10 w-10 ml-1 group-hover:scale-110 transition-transform" />
                 </div>
               </div>

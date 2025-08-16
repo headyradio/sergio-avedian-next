@@ -147,14 +147,23 @@ serve(async (req) => {
       
       const totalSeconds = hours * 3600 + minutes * 60 + seconds;
       
-      // Check if it's a live stream (live thumbnails contain "live" in URL)
-      const isLive = video.snippet.thumbnails.default?.url.includes('_live') || 
-                     video.snippet.thumbnails.high?.url.includes('_live') ||
-                     video.snippet.title.toLowerCase().includes('live') ||
-                     video.snippet.title.toLowerCase().includes('power hour');
+      // Check if it's a live stream - improved detection
+      const title = video.snippet.title.toLowerCase();
+      const description = video.snippet.description?.toLowerCase() || '';
       
-      // Check if it's a short (under 60 seconds)
-      const isShort = totalSeconds <= 60;
+      const isLive = title.includes('live') || 
+                     title.includes('power hour') ||
+                     title.includes('streaming') ||
+                     description.includes('live stream') ||
+                     video.snippet.thumbnails.default?.url.includes('live') ||
+                     video.snippet.thumbnails.high?.url.includes('live');
+      
+      // Check if it's a short - YouTube Shorts are typically under 60 seconds
+      // Also check for #shorts hashtag or "short" in title
+      const isShort = totalSeconds <= 60 || 
+                      title.includes('#shorts') || 
+                      title.includes('#short') ||
+                      description.includes('#shorts');
       
       if (isLive) return 'live';
       if (isShort) return 'short';
