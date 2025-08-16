@@ -248,25 +248,24 @@ const VideoSection = () => {
             ))}
           </div>
         ) : (
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-8">
-              <TabsTrigger value="all">All Videos ({videos.length})</TabsTrigger>
-              <TabsTrigger value="regular">Regular ({filterVideosByType('regular').length})</TabsTrigger>
-              <TabsTrigger value="live">Live Streams ({filterVideosByType('live').length})</TabsTrigger>
-              <TabsTrigger value="short">Shorts ({filterVideosByType('short').length})</TabsTrigger>
+          <Tabs defaultValue="videos" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-8">
+              <TabsTrigger value="videos">Videos ({filterVideosByType('regular').length})</TabsTrigger>
+              <TabsTrigger value="shorts">Shorts ({filterVideosByType('short').length})</TabsTrigger>
+              <TabsTrigger value="live">Live ({filterVideosByType('live').length})</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="all">
+            <TabsContent value="videos">
               <VideoGrid 
-                videos={videos} 
-                emptyMessage="No videos available. Click 'Sync Videos' to fetch the latest content." 
+                videos={filterVideosByType('regular')} 
+                emptyMessage="No videos found. Click 'Sync Videos' to fetch the latest content." 
               />
             </TabsContent>
             
-            <TabsContent value="regular">
+            <TabsContent value="shorts">
               <VideoGrid 
-                videos={filterVideosByType('regular')} 
-                emptyMessage="No regular videos found." 
+                videos={filterVideosByType('short')} 
+                emptyMessage="No shorts found." 
               />
             </TabsContent>
             
@@ -274,13 +273,6 @@ const VideoSection = () => {
               <VideoGrid 
                 videos={filterVideosByType('live')} 
                 emptyMessage="No live streams found." 
-              />
-            </TabsContent>
-            
-            <TabsContent value="short">
-              <VideoGrid 
-                videos={filterVideosByType('short')} 
-                emptyMessage="No short videos found." 
               />
             </TabsContent>
           </Tabs>
