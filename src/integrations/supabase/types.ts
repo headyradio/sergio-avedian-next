@@ -185,6 +185,257 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_blog_posts: {
+        Row: {
+          author: string
+          category_id: string | null
+          content: string | null
+          cover_image_alt: string | null
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string | null
+          featured: boolean | null
+          id: string
+          published: boolean | null
+          published_at: string | null
+          read_time: string | null
+          seo_description: string | null
+          seo_keywords: string[] | null
+          seo_title: string | null
+          slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author: string
+          category_id?: string | null
+          content?: string | null
+          cover_image_alt?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string
+          published?: boolean | null
+          published_at?: string | null
+          read_time?: string | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          slug: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          category_id?: string | null
+          content?: string | null
+          cover_image_alt?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          featured?: boolean | null
+          id?: string
+          published?: boolean | null
+          published_at?: string | null
+          read_time?: string | null
+          seo_description?: string | null
+          seo_keywords?: string[] | null
+          seo_title?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_blog_posts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "cms_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cms_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_footer_content: {
+        Row: {
+          copyright_text: string
+          created_at: string
+          description: string
+          email: string | null
+          id: string
+          linkedin_url: string | null
+          newsletter_description: string
+          newsletter_title: string
+          twitter_url: string | null
+          updated_at: string
+          youtube_url: string | null
+        }
+        Insert: {
+          copyright_text: string
+          created_at?: string
+          description: string
+          email?: string | null
+          id?: string
+          linkedin_url?: string | null
+          newsletter_description: string
+          newsletter_title: string
+          twitter_url?: string | null
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Update: {
+          copyright_text?: string
+          created_at?: string
+          description?: string
+          email?: string | null
+          id?: string
+          linkedin_url?: string | null
+          newsletter_description?: string
+          newsletter_title?: string
+          twitter_url?: string | null
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
+      cms_global_settings: {
+        Row: {
+          created_at: string
+          favicon_url: string | null
+          id: string
+          logo_url: string | null
+          primary_color: string | null
+          secondary_color: string | null
+          site_description: string
+          site_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          favicon_url?: string | null
+          id?: string
+          logo_url?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          site_description: string
+          site_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          favicon_url?: string | null
+          id?: string
+          logo_url?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          site_description?: string
+          site_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_homepage_content: {
+        Row: {
+          created_at: string
+          hero_cta_primary: string
+          hero_cta_secondary: string
+          hero_description: string
+          hero_image_alt: string | null
+          hero_image_url: string | null
+          hero_title: string
+          id: string
+          stats_newsletter: string | null
+          stats_subscribers: string | null
+          stats_videos: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          hero_cta_primary: string
+          hero_cta_secondary: string
+          hero_description: string
+          hero_image_alt?: string | null
+          hero_image_url?: string | null
+          hero_title: string
+          id?: string
+          stats_newsletter?: string | null
+          stats_subscribers?: string | null
+          stats_videos?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          hero_cta_primary?: string
+          hero_cta_secondary?: string
+          hero_description?: string
+          hero_image_alt?: string | null
+          hero_image_url?: string | null
+          hero_title?: string
+          id?: string
+          stats_newsletter?: string | null
+          stats_subscribers?: string | null
+          stats_videos?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_navigation_items: {
+        Row: {
+          created_at: string
+          href: string
+          id: string
+          label: string
+          order_index: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          href: string
+          id?: string
+          label: string
+          order_index?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          href?: string
+          id?: string
+          label?: string
+          order_index?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gsc_sync_log: {
         Row: {
           created_at: string
