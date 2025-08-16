@@ -166,22 +166,22 @@ export const useNavigationItems = () => {
 // Test hook to verify connection with your specific blog post
 export const useTestBlogPost = () => {
   const TEST_QUERY = gql`
-    query TestBlogPost {
-      blogPost(where: { id: "cmeejj2fg0v6u08pstr5nzgv5" }) {
-        id
-        title
-        content
-        publishedAt
+    query TestConnection {
+      __type(name: "Query") {
+        name
       }
     }
   `;
 
   return useQuery({
-    queryKey: ['testBlogPost'],
+    queryKey: ['testConnection'],
     queryFn: async () => {
+      console.log('Testing basic Hygraph connection...');
       const data = await hygraphClient.request(TEST_QUERY);
+      console.log('Test connection successful:', data);
       return data;
     },
     staleTime: 1 * 60 * 1000, // 1 minute for testing
+    retry: 1, // Only retry once to avoid spam
   });
 };
