@@ -1,44 +1,16 @@
-import { supabase } from '@/integrations/supabase/client';
+import { GraphQLClient } from 'graphql-request';
 
-// Hygraph proxy through Supabase edge function
-const hygraphProxy = async (query: string, variables?: any) => {
-  try {
-    console.log('Calling hygraph-proxy with query:', query);
-    console.log('Variables:', variables);
-    
-    const { data, error } = await supabase.functions.invoke('hygraph-proxy', {
-      body: { query, variables }
-    });
+// Your Hygraph Content API endpoint
+const HYGRAPH_ENDPOINT = 'https://ap-south-1.cdn.hygraph.com/content/cmebfl0oe02kv07utjwx0hlht/master';
 
-    console.log('Supabase function response:', { data, error });
+// Public content API token - safe to use in frontend for read-only access
+const HYGRAPH_API_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3NTUzNjc5NzQsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtZWJmbDBvZTAya3YwN3V0and4MGhsaHQvbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI0NGIzNGFhMS00ZTVhLTRhZjYtOGFhZi00MDhkYzRlNGM1NzIiLCJqdGkiOiJjbWVqZHdxOWYwbmp1MDhtZzE4NGhkNjd6In0.RLqp9ChwCVVZMdKIGkgOKkbwMU1aTnNdJ7uOl2KAGFLq5VyMh6YF7VNg-s3-wlGzwjFNleMGD5YCdZKqM_VNfOUPHvdKNpMeHjb2SeBJoXM6NdOyN6Qy-7KbJGH5tOb-5jH-pv2HGnrXTH--k3F3Zy7F8YZYq1dLk2OQb7TpWQBzNAU-JgO-Q1HzjvM9lnJt5YkH-qW4ykJLOz5JbLzMzPz1YZKk8OL9pHGt9YqE1KO8qM6P8dN1rNvF2Y-4tz5JbJ-2E4FGq9B2S8N7E3M2nKZ9QqJ1O3H8pG5YbM0zL7Jf6E4Q1pN8kZ2hJ-XO6nM9wJ5kV3T-HdPuKbLgOKqXmA';
 
-    if (error) {
-      console.error('Supabase function error:', error);
-      throw new Error(`Hygraph proxy error: ${error.message}`);
-    }
-
-    if (data?.error) {
-      console.error('Hygraph API error:', data.error);
-      console.error('Hygraph debug info:', data.debug);
-      throw new Error(`Hygraph API error: ${data.error}`);
-    }
-
-    if (data?.errors) {
-      console.error('GraphQL errors:', data.errors);
-      throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
-    }
-
-    console.log('Successfully received data from Hygraph:', data);
-    return data;
-  } catch (error) {
-    console.error('Error calling hygraph proxy:', error);
-    throw error;
-  }
-};
-
-// Export a client-like interface that matches GraphQLClient's request method
-export const hygraphClient = {
-  request: hygraphProxy
-};
+// Create GraphQL client with the API token
+export const hygraphClient = new GraphQLClient(HYGRAPH_ENDPOINT, {
+  headers: {
+    Authorization: `Bearer ${HYGRAPH_API_TOKEN}`,
+  },
+});
 
 export default hygraphClient;

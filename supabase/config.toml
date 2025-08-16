@@ -49,6 +49,3 @@ security_update_password_require_reauthentication = true
 
 [functions.youtube-sync]
 verify_jwt = false
-
-[functions.hygraph-proxy]
-verify_jwt = false
