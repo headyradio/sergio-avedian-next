@@ -24,6 +24,7 @@ interface YouTubeVideo {
     channelTitle: string;
     tags?: string[];
     categoryId: string;
+    liveBroadcastContent?: string; // Added for live detection
   };
   statistics: {
     viewCount: string;
@@ -116,7 +117,7 @@ serve(async (req) => {
     // Get detailed video information
     const videoIds = videosData.items.map((item: any) => item.id.videoId).join(',');
     const detailsResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=${videoIds}&key=${youtubeApiKey}`
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails,liveStreamingDetails&id=${videoIds}&key=${youtubeApiKey}`
     );
 
     const detailsData = await detailsResponse.json();
@@ -147,27 +148,36 @@ serve(async (req) => {
       
       const totalSeconds = hours * 3600 + minutes * 60 + seconds;
       
-      // Check if it's a live stream - improved detection
       const title = video.snippet.title.toLowerCase();
       const description = video.snippet.description?.toLowerCase() || '';
       
-      const isLive = title.includes('live') || 
-                     title.includes('power hour') ||
-                     title.includes('streaming') ||
-                     description.includes('live stream') ||
-                     video.snippet.thumbnails.default?.url.includes('live') ||
-                     video.snippet.thumbnails.high?.url.includes('live');
+      // Primary detection: Use YouTube's liveBroadcastContent field
+      const liveBroadcastContent = video.snippet.liveBroadcastContent;
       
-      // Check if it's a short - YouTube Shorts are typically under 60 seconds
-      // Also check for #shorts hashtag or "short" in title
+      // Check if it's a live stream using multiple indicators
+      const isLive = liveBroadcastContent === 'live' || 
+                     liveBroadcastContent === 'upcoming' ||
+                     title.includes('power hour') ||
+                     title.includes('live q&a') ||
+                     title.includes('trading with sergio') ||
+                     title.includes('live stream') ||
+                     description.includes('live stream') ||
+                     (title.includes('live') && totalSeconds > 1800); // Live videos tend to be longer
+      
+      // Check if it's a short - Enhanced detection
       const isShort = totalSeconds <= 60 || 
                       title.includes('#shorts') || 
                       title.includes('#short') ||
-                      description.includes('#shorts');
+                      description.includes('#shorts') ||
+                      description.includes('#short') ||
+                      (totalSeconds <= 90 && (title.includes('tip') || title.includes('quick')));
       
-      if (isLive) return 'live';
-      if (isShort) return 'short';
-      return 'regular';
+      const videoType = isLive ? 'live' : (isShort ? 'short' : 'regular');
+      
+      // Debug logging
+      console.log(`Video: "${video.snippet.title}" | Duration: ${totalSeconds}s | liveBroadcastContent: ${liveBroadcastContent} | Type: ${videoType}`);
+      
+      return videoType;
     };
 
     // Store videos
