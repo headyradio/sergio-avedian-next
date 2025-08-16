@@ -30,6 +30,14 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
   const [startY, setStartY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const currentIndexRef = useRef(currentIndex);
+  const videosRef = useRef(videos);
+
+  // Keep refs in sync with state
+  useEffect(() => {
+    currentIndexRef.current = currentIndex;
+    videosRef.current = videos;
+  }, [currentIndex, videos]);
 
   useEffect(() => {
     if (currentVideo && videos.length > 0) {
@@ -39,14 +47,16 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
   }, [currentVideo, videos]);
 
   const goToPrevious = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+    const newIndex = currentIndexRef.current - 1;
+    if (newIndex >= 0) {
+      setCurrentIndex(newIndex);
     }
   };
 
   const goToNext = () => {
-    if (currentIndex < videos.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+    const newIndex = currentIndexRef.current + 1;
+    if (newIndex < videosRef.current.length) {
+      setCurrentIndex(newIndex);
     }
   };
 
@@ -59,11 +69,11 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
     const diff = startY - endY;
     
     // Swipe up (next video) - threshold of 50px
-    if (diff > 50 && currentIndex < videos.length - 1) {
+    if (diff > 50) {
       goToNext();
     }
     // Swipe down (previous video) - threshold of 50px
-    else if (diff < -50 && currentIndex > 0) {
+    else if (diff < -50) {
       goToPrevious();
     }
   };
@@ -71,10 +81,10 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!isOpen) return;
     
-    if (e.key === 'ArrowUp' && currentIndex > 0) {
+    if (e.key === 'ArrowUp') {
       e.preventDefault();
       goToPrevious();
-    } else if (e.key === 'ArrowDown' && currentIndex < videos.length - 1) {
+    } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       goToNext();
     }
@@ -85,50 +95,81 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
       document.addEventListener('keydown', handleKeyDown);
       return () => document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen, currentIndex, videos.length]);
+  }, [isOpen]);
 
-  // Auto-play next video functionality with improved YouTube detection
+  // Auto-play next video functionality with multiple detection methods
   useEffect(() => {
     if (!isOpen) return;
 
+    let videoEndTimeout: NodeJS.Timeout;
+    
     const handleMessage = (event: MessageEvent) => {
       // Only listen to YouTube messages
       if (event.origin !== 'https://www.youtube.com') return;
       
       console.log('YouTube message received:', event.data);
       
-      // YouTube iframe API sends various event types
+      // Handle different YouTube message formats
       if (typeof event.data === 'string') {
+        let shouldAdvance = false;
+        
         try {
           const data = JSON.parse(event.data);
           console.log('Parsed YouTube data:', data);
           
-          // Check for video end state (playerState 0 = ended)
-          if (data.event === 'video-data-change' && data.info?.playerState === 0) {
-            console.log('Video ended, advancing to next...');
-            if (currentIndex < videos.length - 1) {
-              setTimeout(() => {
-                goToNext();
-              }, 800);
-            }
+          // Multiple ways to detect video end
+          if (
+            (data.event === 'video-data-change' && data.info?.playerState === 0) ||
+            (data.event === 'onStateChange' && data.info === 0) ||
+            (data.info && data.info.playerState === 0) ||
+            (data.playerState === 0)
+          ) {
+            shouldAdvance = true;
+            console.log('Video ended detected via JSON data');
           }
         } catch (e) {
-          // Handle non-JSON messages from YouTube
-          if (event.data.includes('ended') || event.data.includes('playerState=0')) {
+          // Handle non-JSON string messages
+          if (
+            event.data.includes('"playerState":0') ||
+            event.data.includes('playerState=0') ||
+            event.data.includes('"event":"video-data-change"') ||
+            event.data.includes('ended')
+          ) {
+            shouldAdvance = true;
             console.log('Video ended detected from string message');
-            if (currentIndex < videos.length - 1) {
-              setTimeout(() => {
-                goToNext();
-              }, 800);
-            }
           }
+        }
+        
+        if (shouldAdvance && currentIndexRef.current < videosRef.current.length - 1) {
+          console.log('Advancing to next video...');
+          clearTimeout(videoEndTimeout);
+          videoEndTimeout = setTimeout(() => {
+            goToNext();
+          }, 500);
         }
       }
     };
 
+    // Fallback timer for video duration (for shorts, usually 60 seconds max)
+    const currentVideo = videosRef.current[currentIndexRef.current];
+    if (currentVideo) {
+      clearTimeout(videoEndTimeout);
+      // Set a generous timeout as fallback (90 seconds for shorts)
+      videoEndTimeout = setTimeout(() => {
+        console.log('Fallback timeout triggered, checking if should advance...');
+        if (currentIndexRef.current < videosRef.current.length - 1) {
+          goToNext();
+        }
+      }, 90000);
+    }
+
     window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [isOpen, currentIndex, videos.length]);
+    
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      clearTimeout(videoEndTimeout);
+    };
+  }, [isOpen]);
 
   if (!videos[currentIndex]) return null;
 
