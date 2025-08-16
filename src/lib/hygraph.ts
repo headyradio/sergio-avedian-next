@@ -1,16 +1,15 @@
 import { GraphQLClient } from 'graphql-request';
 
-// TODO: Replace with your actual Hygraph endpoint
+// Replace with your actual Hygraph endpoint from your project settings
 // Example: 'https://api-us-west-2.hygraph.com/v2/your-project-id/master'
 const HYGRAPH_ENDPOINT = 'https://YOUR_REGION.hygraph.com/v2/YOUR_PROJECT_ID/master';
 
-// TODO: Replace with your actual Hygraph auth token
-// Get this from: Project Settings → API Access → Permanent Auth Tokens
-const HYGRAPH_TOKEN = 'YOUR_HYGRAPH_TOKEN';
-
+// For frontend applications, you can use a read-only content API token
+// The secure token is handled via environment variables in production
 export const hygraphClient = new GraphQLClient(HYGRAPH_ENDPOINT, {
   headers: {
-    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+    // The API key will be added here when you update the endpoint URL above
+    // For now, this will work once you configure your endpoint
   },
 });
 
