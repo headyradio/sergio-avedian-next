@@ -13,4 +13,6 @@ export const hygraphClient = new GraphQLClient(HYGRAPH_ENDPOINT, {
   },
 });
 
+console.log('Hygraph client initialized with direct connection');
+
 export default hygraphClient;
