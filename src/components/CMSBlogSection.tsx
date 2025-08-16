@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
-import { useBlogPosts, useFeaturedBlogPosts } from "@/hooks/useCMS";
-import { BlogPost } from "@/types/cms";
+import { useBlogPosts, useFeaturedBlogPosts, CMSBlogPost } from "@/hooks/useSupabaseCMS";
 
 // Loading skeleton component
 const BlogCardSkeleton = () => (
@@ -17,12 +16,12 @@ const BlogCardSkeleton = () => (
   </Card>
 );
 
-const FeaturedBlogCard = ({ post }: { post: BlogPost }) => (
+const FeaturedBlogCard = ({ post }: { post: CMSBlogPost }) => (
   <Card className="overflow-hidden card-modern group cursor-pointer">
     <div className="relative">
       <img
-        src={post.coverImage?.url || "/placeholder.svg"}
-        alt={post.coverImage?.alt || post.title}
+        src={post.cover_image_url || "/placeholder.svg"}
+        alt={post.cover_image_alt || post.title}
         className="w-full h-64 lg:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
       />
       <div className="absolute top-4 left-4">
@@ -36,12 +35,12 @@ const FeaturedBlogCard = ({ post }: { post: BlogPost }) => (
     <div className="p-8 space-y-6">
       <div className="space-y-4">
         <div className="flex items-center gap-4 text-sm text-text-muted">
-          <span className="px-3 py-1 bg-surface rounded-full font-medium text-brand-primary">
-            {post.category}
+        <span className="px-3 py-1 bg-surface rounded-full font-medium text-brand-primary">
+            {post.category?.name || 'Uncategorized'}
           </span>
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
-            {post.readTime}
+            {post.read_time || '5 min read'}
           </div>
         </div>
         
@@ -61,7 +60,7 @@ const FeaturedBlogCard = ({ post }: { post: BlogPost }) => (
           <span className="text-text-muted">•</span>
           <div className="flex items-center gap-1 text-sm text-text-muted">
             <Calendar className="h-4 w-4" />
-            {new Date(post.publishedAt).toLocaleDateString('en-US', {
+            {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
               month: 'short',
               day: 'numeric',
               year: 'numeric'
@@ -78,12 +77,12 @@ const FeaturedBlogCard = ({ post }: { post: BlogPost }) => (
   </Card>
 );
 
-const BlogCard = ({ post }: { post: BlogPost }) => (
+const BlogCard = ({ post }: { post: CMSBlogPost }) => (
   <Card className="overflow-hidden card-modern group cursor-pointer">
     <div className="relative">
       <img
-        src={post.coverImage?.url || "/placeholder.svg"}
-        alt={post.coverImage?.alt || post.title}
+        src={post.cover_image_url || "/placeholder.svg"}
+        alt={post.cover_image_alt || post.title}
         className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
       />
     </div>
@@ -91,11 +90,11 @@ const BlogCard = ({ post }: { post: BlogPost }) => (
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between">
         <span className="px-3 py-1 bg-surface rounded-full text-sm font-medium text-brand-primary">
-          {post.category}
+          {post.category?.name || 'Uncategorized'}
         </span>
         <div className="flex items-center gap-1 text-sm text-text-muted">
           <Clock className="h-4 w-4" />
-          {post.readTime}
+          {post.read_time || '5 min read'}
         </div>
       </div>
       
@@ -110,7 +109,7 @@ const BlogCard = ({ post }: { post: BlogPost }) => (
       <div className="flex items-center justify-between pt-4 border-t border-border">
         <div className="flex items-center gap-1 text-sm text-text-muted">
           <Calendar className="h-4 w-4" />
-          {new Date(post.publishedAt).toLocaleDateString('en-US', {
+          {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
             month: 'short',
             day: 'numeric'
           })}

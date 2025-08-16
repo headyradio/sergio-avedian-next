@@ -3,7 +3,7 @@ import { Play, Mail } from "lucide-react";
 import sergioHero from "@/assets/sergio-hero.jpg";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useHomepageContent } from "@/hooks/useCMS";
+import { useHomepageContent } from "@/hooks/useSupabaseCMS";
 
 interface LatestVideo {
   video_id: string;
@@ -51,13 +51,13 @@ const CMSHeroSection = () => {
   };
 
   // Use CMS content with fallbacks
-  const heroTitle = homepageContent?.heroTitle || latestVideo?.title || "Navigating the Gig Economy Revolution";
-  const heroDescription = homepageContent?.heroDescription || latestVideo?.description?.substring(0, 200) || "Expert insights on rideshare, delivery, regulation, and financial strategies for gig workers. Join thousands who trust Sergio's analysis.";
-  const ctaPrimary = homepageContent?.heroCtaPrimary || "Watch Latest Video";
-  const ctaSecondary = homepageContent?.heroCTaSecondary || "Get Weekly Insights";
-  const statsSubscribers = homepageContent?.statsSubscribers || "50K+";
-  const statsNewsletter = homepageContent?.statsNewsletter || "10K+";
-  const statsVideos = homepageContent?.statsVideos || "500+";
+  const heroTitle = homepageContent?.hero_title || latestVideo?.title || "Navigating the Gig Economy Revolution";
+  const heroDescription = homepageContent?.hero_description || latestVideo?.description?.substring(0, 200) || "Expert insights on rideshare, delivery, regulation, and financial strategies for gig workers. Join thousands who trust Sergio's analysis.";
+  const ctaPrimary = homepageContent?.hero_cta_primary || "Watch Latest Video";
+  const ctaSecondary = homepageContent?.hero_cta_secondary || "Get Weekly Insights";
+  const statsSubscribers = homepageContent?.stats_subscribers || "50K+";
+  const statsNewsletter = homepageContent?.stats_newsletter || "10K+";
+  const statsVideos = homepageContent?.stats_videos || "500+";
 
   // Show loading state for critical content
   if (contentLoading) {
@@ -143,8 +143,8 @@ const CMSHeroSection = () => {
           <div className="relative lg:order-last">
             <div className="relative">
               <img
-                src={homepageContent?.heroImage?.url || latestVideo?.thumbnail_high || sergioHero}
-                alt={homepageContent?.heroImage?.alt || (latestVideo ? latestVideo.title : "Sergio Avedian - Gig Economy Expert")}
+                src={homepageContent?.hero_image_url || latestVideo?.thumbnail_high || sergioHero}
+                alt={homepageContent?.hero_image_alt || (latestVideo ? latestVideo.title : "Sergio Avedian - Gig Economy Expert")}
                 className="w-full h-auto rounded-3xl shadow-large"
               />
               {/* Play overlay */}
