@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { X, ChevronUp, ChevronDown, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -87,27 +87,42 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
     }
   }, [isOpen, currentIndex, videos.length]);
 
-  // Auto-play next video functionality
+  // Auto-play next video functionality with improved YouTube detection
   useEffect(() => {
-    if (!isOpen || !iframeRef.current) return;
+    if (!isOpen) return;
 
     const handleMessage = (event: MessageEvent) => {
-      // Listen for YouTube player state changes
+      // Only listen to YouTube messages
       if (event.origin !== 'https://www.youtube.com') return;
       
-      try {
-        const data = JSON.parse(event.data);
-        // State 0 means the video has ended
-        if (data.event === 'video-data-change' || (data.info && data.info.playerState === 0)) {
-          // Auto-advance to next video if available
-          if (currentIndex < videos.length - 1) {
-            setTimeout(() => {
-              goToNext();
-            }, 500); // Small delay before auto-advancing
+      console.log('YouTube message received:', event.data);
+      
+      // YouTube iframe API sends various event types
+      if (typeof event.data === 'string') {
+        try {
+          const data = JSON.parse(event.data);
+          console.log('Parsed YouTube data:', data);
+          
+          // Check for video end state (playerState 0 = ended)
+          if (data.event === 'video-data-change' && data.info?.playerState === 0) {
+            console.log('Video ended, advancing to next...');
+            if (currentIndex < videos.length - 1) {
+              setTimeout(() => {
+                goToNext();
+              }, 800);
+            }
+          }
+        } catch (e) {
+          // Handle non-JSON messages from YouTube
+          if (event.data.includes('ended') || event.data.includes('playerState=0')) {
+            console.log('Video ended detected from string message');
+            if (currentIndex < videos.length - 1) {
+              setTimeout(() => {
+                goToNext();
+              }, 800);
+            }
           }
         }
-      } catch (e) {
-        // Ignore parsing errors for other messages
       }
     };
 
@@ -123,6 +138,9 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
     <TooltipProvider>
       <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md p-0 bg-black border-none overflow-hidden">
+        <DialogDescription className="sr-only">
+          YouTube Shorts player with navigation controls
+        </DialogDescription>
         <DialogHeader className="absolute top-4 left-4 right-4 z-10">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-white text-sm font-medium truncate pr-4">
@@ -167,7 +185,7 @@ const ShortsPlayer = ({ isOpen, onClose, videos, currentVideo }: ShortsPlayerPro
           <iframe
             ref={iframeRef}
             key={video.video_id}
-            src={`https://www.youtube.com/embed/${video.video_id}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1`}
+            src={`https://www.youtube.com/embed/${video.video_id}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1&origin=${window.location.origin}`}
             title={video.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
