@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Play, Clock, Eye, Radio, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import VideoCarousel from "./VideoCarousel";
+import ShortsPlayer from "./ShortsPlayer";
+import { Card, CardContent } from "@/components/ui/card";
+import { Play, Clock, Eye } from "lucide-react";
 
 interface Video {
   id: string;
@@ -22,6 +24,7 @@ const VideoSection = () => {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
+  const [selectedShort, setSelectedShort] = useState<Video | null>(null);
 
   const formatDuration = (isoDuration: string) => {
     if (!isoDuration) return '0:00';
@@ -96,14 +99,18 @@ const VideoSection = () => {
   useEffect(() => {
     fetchVideos();
     
-    // Auto-sync if no videos exist
+    // Auto-sync logic: sync if no videos exist or if last sync was over 6 hours ago
     const autoSync = async () => {
-      const { data } = await supabase
+      const { data: videoData } = await supabase
         .from('youtube_videos')
-        .select('id')
+        .select('id, created_at')
+        .order('created_at', { ascending: false })
         .limit(1);
       
-      if (!data || data.length === 0) {
+      const shouldSync = !videoData || videoData.length === 0 || 
+        (videoData[0] && new Date().getTime() - new Date(videoData[0].created_at).getTime() > 6 * 60 * 60 * 1000);
+      
+      if (shouldSync) {
         syncVideos();
       }
     };
@@ -111,95 +118,88 @@ const VideoSection = () => {
     autoSync();
   }, []);
 
-  const filterVideosByType = (type: string) => {
-    return videos.filter(video => video.video_type === type);
+  const getPowerHourVideos = () => {
+    return videos.filter(video => 
+      video.title.toLowerCase().includes('power hour') && video.video_type === 'live'
+    ).slice(0, 10);
   };
 
-  const VideoGrid = ({ videos, emptyMessage }: { videos: Video[], emptyMessage: string }) => (
-    <div className="space-y-6">
-      {videos.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-text-secondary">{emptyMessage}</p>
-        </div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {videos.map((video) => (
-            <article
-              key={video.id}
-              className="group card-modern rounded-3xl overflow-hidden cursor-pointer"
-              onClick={() => window.open(`https://youtube.com/watch?v=${video.video_id}`, '_blank')}
-            >
-              {/* Thumbnail */}
-              <div className="relative aspect-video bg-surface overflow-hidden">
-                <img
-                  src={video.thumbnail_high || video.thumbnail_medium || '/placeholder.svg'}
-                  alt={video.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <div className="bg-primary text-primary-foreground w-16 h-16 rounded-full flex items-center justify-center">
-                    <Play className="h-6 w-6 ml-1" />
-                  </div>
-                </div>
-                <div className="absolute bottom-3 right-3 bg-black/75 text-white px-2 py-1 rounded text-sm font-medium flex items-center">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {formatDuration(video.duration)}
-                </div>
-                
-                {/* Video type indicator */}
-                {video.video_type === 'live' && (
-                  <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
-                    <Radio className="h-3 w-3 mr-1" />
-                    LIVE
-                  </div>
-                )}
-                {video.video_type === 'short' && (
-                  <div className="absolute top-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
-                    <Zap className="h-3 w-3 mr-1" />
-                    SHORT
-                  </div>
-                )}
-              </div>
+  const getTradingWithSergioVideos = () => {
+    return videos.filter(video => 
+      video.title.toLowerCase().includes('trading with sergio') && video.video_type === 'live'
+    ).slice(0, 10);
+  };
 
-              {/* Content */}
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      video.category_name === 'Rideshare' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300' :
-                      video.category_name === 'Delivery' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300' :
-                      video.category_name === 'Regulation' ? 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300' :
-                      video.category_name === 'Finance' ? 'bg-cta/10 text-cta' :
-                      'bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300'
-                    }`}
-                  >
-                    {video.category_name}
-                  </span>
-                  <div className="flex items-center text-text-secondary text-sm">
-                    <Eye className="h-3 w-3 mr-1" />
-                    {formatViews(video.view_count)}
-                  </div>
-                </div>
+  const getShortsVideos = () => {
+    return videos.filter(video => video.video_type === 'short').slice(0, 15);
+  };
 
-                <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                  {video.title}
-                </h3>
+  const getRegularVideos = () => {
+    return videos.filter(video => 
+      video.video_type === 'regular' || 
+      (video.video_type === 'live' && 
+        !video.title.toLowerCase().includes('power hour') && 
+        !video.title.toLowerCase().includes('trading with sergio'))
+    ).slice(0, 12);
+  };
 
-                <p className="text-text-secondary mb-3 line-clamp-2 text-sm leading-relaxed">
-                  {video.description?.substring(0, 100)}...
-                </p>
+  const handleVideoClick = (video: Video) => {
+    if (video.video_type === 'short') {
+      setSelectedShort(video);
+    } else {
+      window.open(`https://youtube.com/watch?v=${video.video_id}`, '_blank');
+    }
+  };
 
-                <div className="flex items-center justify-between text-sm text-text-muted">
-                  <span>{formatDate(video.published_at)}</span>
-                  <Button variant="ghost" size="sm" className="text-primary hover:text-primary-hover">
-                    Watch now
-                  </Button>
+
+  const RegularVideosGrid = ({ videos }: { videos: Video[] }) => (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {videos.map((video) => (
+        <Card
+          key={video.id}
+          className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all duration-300"
+          onClick={() => handleVideoClick(video)}
+        >
+          <CardContent className="p-0">
+            <div className="relative aspect-video bg-surface overflow-hidden">
+              <img
+                src={video.thumbnail_high || video.thumbnail_medium || '/placeholder.svg'}
+                alt={video.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="bg-primary text-primary-foreground w-16 h-16 rounded-full flex items-center justify-center">
+                  <Play className="h-6 w-6 ml-1" />
                 </div>
               </div>
-            </article>
-          ))}
-        </div>
-      )}
+              <div className="absolute bottom-3 right-3 bg-black/75 text-white px-2 py-1 rounded text-sm font-medium flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                {formatDuration(video.duration)}
+              </div>
+            </div>
+
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cta/10 text-cta">
+                  {video.category_name}
+                </span>
+                <div className="flex items-center text-text-secondary text-sm">
+                  <Eye className="h-3 w-3 mr-1" />
+                  {formatViews(video.view_count)}
+                </div>
+              </div>
+
+              <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                {video.title}
+              </h3>
+
+              <div className="flex items-center justify-between text-sm text-text-muted">
+                <span>{formatDate(video.published_at)}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 
@@ -228,55 +228,68 @@ const VideoSection = () => {
         </div>
 
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="glass-card rounded-3xl overflow-hidden">
-                <div className="aspect-video loading-shimmer"></div>
-                <div className="p-6 space-y-4">
-                  <div className="flex justify-between">
-                    <div className="h-5 loading-shimmer rounded w-20"></div>
-                    <div className="h-4 loading-shimmer rounded w-12"></div>
-                  </div>
-                  <div className="h-6 loading-shimmer rounded"></div>
-                  <div className="h-4 loading-shimmer rounded"></div>
-                  <div className="flex justify-between">
-                    <div className="h-4 loading-shimmer rounded w-16"></div>
-                    <div className="h-10 loading-shimmer rounded w-24"></div>
-                  </div>
+          <div className="space-y-12">
+            {/* Loading state for carousels */}
+            {[...Array(4)].map((_, sectionIndex) => (
+              <div key={sectionIndex} className="space-y-6">
+                <div className="h-8 loading-shimmer rounded w-48"></div>
+                <div className="flex gap-4 overflow-hidden">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="shrink-0 w-80">
+                      <div className="aspect-video loading-shimmer rounded-lg"></div>
+                      <div className="p-3 space-y-2">
+                        <div className="h-4 loading-shimmer rounded"></div>
+                        <div className="h-3 loading-shimmer rounded w-1/2"></div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <Tabs defaultValue="videos" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="videos">Videos ({filterVideosByType('regular').length})</TabsTrigger>
-              <TabsTrigger value="shorts">Shorts ({filterVideosByType('short').length})</TabsTrigger>
-              <TabsTrigger value="live">Live ({filterVideosByType('live').length})</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="videos">
-              <VideoGrid 
-                videos={filterVideosByType('regular')} 
-                emptyMessage="No videos found. Click 'Sync Videos' to fetch the latest content." 
-              />
-            </TabsContent>
-            
-            <TabsContent value="shorts">
-              <VideoGrid 
-                videos={filterVideosByType('short')} 
-                emptyMessage="No shorts found." 
-              />
-            </TabsContent>
-            
-            <TabsContent value="live">
-              <VideoGrid 
-                videos={filterVideosByType('live')} 
-                emptyMessage="No live streams found." 
-              />
-            </TabsContent>
-          </Tabs>
+          <div className="space-y-12">
+            {/* POWER HOUR Section */}
+            <VideoCarousel
+              videos={getPowerHourVideos()}
+              title="POWER HOUR"
+              variant="horizontal"
+              onVideoClick={handleVideoClick}
+            />
+
+            {/* TRADING WITH SERGIO Section */}
+            <VideoCarousel
+              videos={getTradingWithSergioVideos()}
+              title="TRADING WITH SERGIO"
+              variant="horizontal"
+              onVideoClick={handleVideoClick}
+            />
+
+            {/* LATEST SHORTS Section */}
+            <VideoCarousel
+              videos={getShortsVideos()}
+              title="LATEST SHORTS"
+              variant="vertical"
+              onVideoClick={handleVideoClick}
+            />
+
+            {/* OTHER VIDEOS Section */}
+            {getRegularVideos().length > 0 && (
+              <div>
+                <h3 className="text-2xl font-bold text-text-primary mb-6">OTHER VIDEOS</h3>
+                <RegularVideosGrid videos={getRegularVideos()} />
+              </div>
+            )}
+          </div>
         )}
+
+        {/* Shorts Player Modal */}
+        <ShortsPlayer
+          isOpen={!!selectedShort}
+          onClose={() => setSelectedShort(null)}
+          videoId={selectedShort?.video_id || ''}
+          title={selectedShort?.title || ''}
+        />
 
         {/* Newsletter CTA */}
         <div className="mt-16 bg-gradient-to-r from-cta/10 to-primary/10 border border-cta/20 rounded-2xl p-8 lg:p-12 text-center">

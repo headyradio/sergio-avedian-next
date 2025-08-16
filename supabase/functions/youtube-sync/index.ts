@@ -154,23 +154,26 @@ serve(async (req) => {
       // Primary detection: Use YouTube's liveBroadcastContent field
       const liveBroadcastContent = video.snippet.liveBroadcastContent;
       
+      // Exact title matching for specific live stream types
+      const isPowerHour = title.includes('power hour');
+      const isTradingWithSergio = title.includes('trading with sergio');
+      
       // Check if it's a live stream using multiple indicators
       const isLive = liveBroadcastContent === 'live' || 
                      liveBroadcastContent === 'upcoming' ||
-                     title.includes('power hour') ||
+                     isPowerHour ||
+                     isTradingWithSergio ||
                      title.includes('live q&a') ||
-                     title.includes('trading with sergio') ||
                      title.includes('live stream') ||
                      description.includes('live stream') ||
-                     (title.includes('live') && totalSeconds > 1800); // Live videos tend to be longer
+                     (title.includes('live') && totalSeconds > 900); // Live videos tend to be longer than 15 minutes
       
-      // Check if it's a short - Enhanced detection
+      // Check if it's a short - Enhanced detection (must be under 60 seconds)
       const isShort = totalSeconds <= 60 || 
                       title.includes('#shorts') || 
                       title.includes('#short') ||
                       description.includes('#shorts') ||
-                      description.includes('#short') ||
-                      (totalSeconds <= 90 && (title.includes('tip') || title.includes('quick')));
+                      description.includes('#short');
       
       const videoType = isLive ? 'live' : (isShort ? 'short' : 'regular');
       
