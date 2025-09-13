@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import SubscribeDropdown from "./SubscribeDropdown";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,9 +44,7 @@ const Navigation = () => {
             <Button variant="ghost" size="icon" className="hover:glow-primary">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="cta" size="sm" className="cta-electric">
-              Subscribe
-            </Button>
+            <SubscribeDropdown variant="cta" size="sm" className="cta-electric" />
           </div>
 
           {/* Mobile Menu Button */}
@@ -88,9 +87,7 @@ const Navigation = () => {
               <Button variant="ghost" size="icon">
                 <Search className="h-4 w-4" />
               </Button>
-              <Button variant="cta" size="sm" className="flex-1">
-                Subscribe to Newsletter
-              </Button>
+              <SubscribeDropdown variant="cta" size="sm" className="flex-1" />
             </div>
           </div>
         </div>
