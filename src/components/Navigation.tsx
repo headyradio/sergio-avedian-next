@@ -25,7 +25,7 @@ const Navigation = () => {
             <img 
               src={logoImage} 
               alt="Sergio Avedian" 
-              className="h-12 w-auto transition-opacity duration-200 hover:opacity-80"
+              className="h-16 w-auto transition-opacity duration-200 hover:opacity-80"
             />
           </div>
 
