@@ -3,6 +3,7 @@ import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import SubscribeDropdown from "./SubscribeDropdown";
+import logoImage from "@/assets/sergio-avedian-logo.png";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,9 +22,11 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-gradient tracking-tight">
-              Sergio Avedian
-            </h1>
+            <img 
+              src={logoImage} 
+              alt="Sergio Avedian" 
+              className="h-12 w-auto transition-opacity duration-200 hover:opacity-80"
+            />
           </div>
 
           {/* Desktop Navigation */}
