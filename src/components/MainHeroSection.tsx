@@ -53,13 +53,13 @@ const MainHeroSection = () => {
                 </span>
               </div>
               
-              <h1 className="text-5xl lg:text-7xl xl:text-8xl font-black tracking-tight text-text-primary leading-none animate-fade-in" style={{ animationDelay: '200ms' }}>
+              <h1 className="text-5xl lg:text-7xl xl:text-8xl font-black tracking-tight text-foreground leading-none animate-fade-in" style={{ animationDelay: '200ms' }}>
                 <span className="block hover:text-gradient transition-all duration-500">{content?.main_hero_title || "30+ Years of"}</span>
                 <span className="block text-gradient">{content?.main_hero_subtitle || "Trading Experience"}</span>
                 <span className="block hover:text-gradient transition-all duration-500">on One Channel</span>
               </h1>
               
-              <p className="text-xl lg:text-2xl text-text-secondary leading-relaxed max-w-2xl prose-modern animate-fade-in" style={{ animationDelay: '400ms' }}>
+              <p className="text-xl lg:text-2xl text-secondary leading-relaxed max-w-2xl prose-modern animate-fade-in" style={{ animationDelay: '400ms' }}>
                 {content?.main_hero_description || "With over 30 years on Wall Street, I've braved market turbulence, adapting my strategies through crises like the dot-com bubble, housing crash, COVID and today's volatility. Discipline and patience are paramount. Continuous learning is essential in an ever-changing market."}
               </p>
             </div>
@@ -83,17 +83,17 @@ const MainHeroSection = () => {
             <div className="flex items-center space-x-8 pt-8 animate-fade-in" style={{ animationDelay: '800ms' }}>
               <div className="text-center group cursor-default">
                 <div className="text-3xl font-black text-gradient group-hover:scale-110 transition-transform duration-300">{content?.main_hero_years_experience || "30+"}</div>
-                <div className="text-sm text-text-muted font-mono uppercase tracking-wider">Years Experience</div>
+                <div className="text-sm text-muted font-mono uppercase tracking-wider">Years Experience</div>
               </div>
               <div className="w-px h-12 bg-gradient-to-b from-transparent via-border to-transparent"></div>
               <div className="text-center group cursor-default">
                 <div className="text-3xl font-black text-gradient group-hover:scale-110 transition-transform duration-300">{content?.main_hero_market_crises || "5"}</div>
-                <div className="text-sm text-text-muted font-mono uppercase tracking-wider">Market Crises</div>
+                <div className="text-sm text-muted font-mono uppercase tracking-wider">Market Crises</div>
               </div>
               <div className="w-px h-12 bg-gradient-to-b from-transparent via-border to-transparent"></div>
               <div className="text-center group cursor-default">
                 <div className="text-3xl font-black text-gradient group-hover:scale-110 transition-transform duration-300">{content?.main_hero_lives_impacted || "1M+"}</div>
-                <div className="text-sm text-text-muted font-mono uppercase tracking-wider">Lives Impacted</div>
+                <div className="text-sm text-muted font-mono uppercase tracking-wider">Lives Impacted</div>
               </div>
             </div>
           </div>
@@ -122,8 +122,8 @@ const MainHeroSection = () => {
                     <TrendingUp className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-text-primary">Wall Street Veteran</div>
-                    <div className="text-xs text-text-muted font-mono uppercase tracking-wider">Since 1990s</div>
+                    <div className="text-sm font-semibold text-foreground">Wall Street Veteran</div>
+                    <div className="text-xs text-muted font-mono uppercase tracking-wider">Since 1990s</div>
                   </div>
                 </div>
               </div>
