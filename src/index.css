@@ -63,21 +63,23 @@
     --ring: 195 100% 60%;
     --radius: 12px;
     
-    /* Modern Gradients */
+    /* Enhanced Gradients & Effects */
     --gradient-hero: linear-gradient(135deg, hsl(220 25% 4%) 0%, hsl(220 20% 6%) 50%, hsl(220 15% 8%) 100%);
     --gradient-mesh: radial-gradient(circle at 25% 25%, hsl(195 100% 60% / 0.1), transparent 50%), 
                      radial-gradient(circle at 75% 75%, hsl(280 100% 70% / 0.1), transparent 50%);
     --gradient-card: linear-gradient(145deg, hsl(220 20% 6%), hsl(220 15% 8%));
     --gradient-glass: linear-gradient(145deg, hsl(220 20% 8% / 0.8), hsl(220 15% 10% / 0.6));
+    --gradient-radial: radial-gradient(circle, var(--color), transparent);
     
-    /* Enhanced Shadows with Color */
+    /* Enhanced Shadow System */
     --shadow-subtle: 0 1px 3px hsl(220 25% 4% / 0.3), 0 1px 2px hsl(195 100% 60% / 0.05);
     --shadow-medium: 0 4px 12px hsl(220 25% 4% / 0.4), 0 2px 6px hsl(195 100% 60% / 0.1);
     --shadow-large: 0 16px 32px hsl(220 25% 4% / 0.5), 0 4px 12px hsl(195 100% 60% / 0.15);
     --shadow-glow: 0 0 24px hsl(195 100% 60% / 0.3);
     --shadow-glow-warm: 0 0 24px hsl(25 95% 65% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(195 100% 60% / 0.2);
     
-    /* Smooth Animations */
+    /* Micro-interactions */
     --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -215,6 +217,48 @@
     border-color: hsl(var(--primary) / 0.3);
     box-shadow: var(--shadow-large);
     transform: translateY(-4px) scale(1.02);
+  }
+  
+  /* Premium Card Effects */
+  .card-premium {
+    @apply transition-all duration-300 ease-out;
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--primary) / 0.2);
+    box-shadow: var(--shadow-elegant);
+  }
+  
+  .card-premium:hover {
+    border-color: hsl(var(--primary) / 0.4);
+    box-shadow: var(--shadow-large), var(--shadow-glow);
+    transform: translateY(-6px);
+  }
+  
+  /* Interactive Section Animations */
+  .section-animate {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+  }
+  
+  .section-animate.in-view {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  /* Floating Elements */
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  /* Parallax Background Effects */
+  .parallax-bg {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   
   /* Enhanced CTA Styles */

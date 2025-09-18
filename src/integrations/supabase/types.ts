@@ -374,6 +374,15 @@ export type Database = {
           hero_image_url: string | null
           hero_title: string
           id: string
+          main_hero_cta_primary: string | null
+          main_hero_cta_secondary: string | null
+          main_hero_description: string | null
+          main_hero_lives_impacted: string | null
+          main_hero_market_crises: string | null
+          main_hero_motto: string | null
+          main_hero_subtitle: string | null
+          main_hero_title: string | null
+          main_hero_years_experience: string | null
           stats_newsletter: string | null
           stats_subscribers: string | null
           stats_videos: string | null
@@ -388,6 +397,15 @@ export type Database = {
           hero_image_url?: string | null
           hero_title: string
           id?: string
+          main_hero_cta_primary?: string | null
+          main_hero_cta_secondary?: string | null
+          main_hero_description?: string | null
+          main_hero_lives_impacted?: string | null
+          main_hero_market_crises?: string | null
+          main_hero_motto?: string | null
+          main_hero_subtitle?: string | null
+          main_hero_title?: string | null
+          main_hero_years_experience?: string | null
           stats_newsletter?: string | null
           stats_subscribers?: string | null
           stats_videos?: string | null
@@ -402,6 +420,15 @@ export type Database = {
           hero_image_url?: string | null
           hero_title?: string
           id?: string
+          main_hero_cta_primary?: string | null
+          main_hero_cta_secondary?: string | null
+          main_hero_description?: string | null
+          main_hero_lives_impacted?: string | null
+          main_hero_market_crises?: string | null
+          main_hero_motto?: string | null
+          main_hero_subtitle?: string | null
+          main_hero_title?: string | null
+          main_hero_years_experience?: string | null
           stats_newsletter?: string | null
           stats_subscribers?: string | null
           stats_videos?: string | null

@@ -11,7 +11,7 @@ const Navigation = () => {
   const navItems = [
     { label: "Videos", href: "#videos" },
     { label: "Blog", href: "#blog" },
-    { label: "Categories", href: "#categories" },
+    { label: "Coaching", href: "#coaching" },
     { label: "Newsletter", href: "#newsletter" },
     { label: "About", href: "#about" },
   ];

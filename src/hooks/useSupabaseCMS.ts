@@ -46,6 +46,16 @@ export interface CMSHomepageContent {
   stats_videos?: string;
   hero_image_url?: string;
   hero_image_alt?: string;
+  // Main hero section fields
+  main_hero_title?: string;
+  main_hero_subtitle?: string;
+  main_hero_description?: string;
+  main_hero_motto?: string;
+  main_hero_cta_primary?: string;
+  main_hero_cta_secondary?: string;
+  main_hero_years_experience?: string;
+  main_hero_market_crises?: string;
+  main_hero_lives_impacted?: string;
   created_at: string;
   updated_at: string;
 }
