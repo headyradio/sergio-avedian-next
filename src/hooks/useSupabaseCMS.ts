@@ -162,10 +162,10 @@ export const useHomepageContent = () => {
         .select('*')
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
-      return data as CMSHomepageContent;
+      return data as CMSHomepageContent | null;
     },
     staleTime: 1000 * 60 * 5,
   });
@@ -306,7 +306,7 @@ export const useUpdateHomepageContent = () => {
         .update(content)
         .eq('id', id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
