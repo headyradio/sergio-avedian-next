@@ -301,21 +301,34 @@ export const useUpdateHomepageContent = () => {
 
   return useMutation({
     mutationFn: async ({ id, ...content }: Partial<CMSHomepageContent> & { id: string }) => {
-      const { data, error } = await supabase
+      console.log('🚀 Starting homepage update mutation');
+      console.log('🔑 Update ID:', id);
+      console.log('📝 Content to update:', content);
+      
+      const { data, error, count } = await supabase
         .from('cms_homepage_content')
         .update(content)
         .eq('id', id)
         .select()
         .maybeSingle();
 
-      if (error) throw error;
+      console.log('📊 Supabase response:', { data, error, count });
+      
+      if (error) {
+        console.error('❌ Supabase error:', error);
+        throw error;
+      }
+      
+      console.log('✅ Update successful:', data);
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('🎉 Mutation success callback triggered:', data);
       queryClient.invalidateQueries({ queryKey: ['cms-homepage-content'] });
-      toast.success('Homepage content updated successfully');
+      toast.success('Homepage content updated successfully!');
     },
     onError: (error) => {
+      console.error('💥 Mutation error callback triggered:', error);
       toast.error('Failed to update homepage content: ' + error.message);
     },
   });

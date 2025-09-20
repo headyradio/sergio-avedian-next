@@ -194,7 +194,6 @@ const HomepageManager = () => {
                     id="main-hero-title"
                     value={formData.main_hero_title}
                     onChange={(e) => handleInputChange('main_hero_title', e.target.value)}
-                    placeholder="30+ Years of"
                   />
                 </div>
                 <div className="space-y-2">
@@ -203,7 +202,6 @@ const HomepageManager = () => {
                     id="main-hero-subtitle"
                     value={formData.main_hero_subtitle}
                     onChange={(e) => handleInputChange('main_hero_subtitle', e.target.value)}
-                    placeholder="Trading Experience"
                   />
                 </div>
               </div>
@@ -215,7 +213,6 @@ const HomepageManager = () => {
                   value={formData.main_hero_description}
                   onChange={(e) => handleInputChange('main_hero_description', e.target.value)}
                   rows={4}
-                  placeholder="With over 30 years on Wall Street..."
                 />
               </div>
 
@@ -225,7 +222,6 @@ const HomepageManager = () => {
                   id="main-hero-motto"
                   value={formData.main_hero_motto}
                   onChange={(e) => handleInputChange('main_hero_motto', e.target.value)}
-                  placeholder="Patience. Position. Planning."
                 />
               </div>
 
@@ -236,7 +232,6 @@ const HomepageManager = () => {
                     id="main-hero-cta-primary"
                     value={formData.main_hero_cta_primary}
                     onChange={(e) => handleInputChange('main_hero_cta_primary', e.target.value)}
-                    placeholder="Start Learning Today"
                   />
                 </div>
                 <div className="space-y-2">
@@ -245,7 +240,6 @@ const HomepageManager = () => {
                     id="main-hero-cta-secondary"
                     value={formData.main_hero_cta_secondary}
                     onChange={(e) => handleInputChange('main_hero_cta_secondary', e.target.value)}
-                    placeholder="View Track Record"
                   />
                 </div>
               </div>
@@ -259,7 +253,6 @@ const HomepageManager = () => {
                       id="main-hero-years"
                       value={formData.main_hero_years_experience}
                       onChange={(e) => handleInputChange('main_hero_years_experience', e.target.value)}
-                      placeholder="30+"
                     />
                   </div>
                   <div className="space-y-2">
@@ -268,7 +261,6 @@ const HomepageManager = () => {
                       id="main-hero-crises"
                       value={formData.main_hero_market_crises}
                       onChange={(e) => handleInputChange('main_hero_market_crises', e.target.value)}
-                      placeholder="5"
                     />
                   </div>
                   <div className="space-y-2">
@@ -277,7 +269,6 @@ const HomepageManager = () => {
                       id="main-hero-lives"
                       value={formData.main_hero_lives_impacted}
                       onChange={(e) => handleInputChange('main_hero_lives_impacted', e.target.value)}
-                      placeholder="1M+"
                     />
                   </div>
                 </div>
@@ -300,7 +291,6 @@ const HomepageManager = () => {
                   id="hero-title"
                   value={formData.hero_title}
                   onChange={(e) => handleInputChange('hero_title', e.target.value)}
-                  placeholder="Welcome to Our Platform"
                 />
               </div>
 
@@ -311,7 +301,6 @@ const HomepageManager = () => {
                   value={formData.hero_description}
                   onChange={(e) => handleInputChange('hero_description', e.target.value)}
                   rows={3}
-                  placeholder="Discover amazing content..."
                 />
               </div>
 
@@ -322,7 +311,6 @@ const HomepageManager = () => {
                     id="cta-primary"
                     value={formData.hero_cta_primary}
                     onChange={(e) => handleInputChange('hero_cta_primary', e.target.value)}
-                    placeholder="Get Started"
                   />
                 </div>
                 <div className="space-y-2">
@@ -331,7 +319,6 @@ const HomepageManager = () => {
                     id="cta-secondary"
                     value={formData.hero_cta_secondary}
                     onChange={(e) => handleInputChange('hero_cta_secondary', e.target.value)}
-                    placeholder="Learn More"
                   />
                 </div>
               </div>
@@ -345,7 +332,6 @@ const HomepageManager = () => {
                       id="stats-subscribers"
                       value={formData.stats_subscribers}
                       onChange={(e) => handleInputChange('stats_subscribers', e.target.value)}
-                      placeholder="10K+"
                     />
                   </div>
                   <div className="space-y-2">
@@ -354,7 +340,6 @@ const HomepageManager = () => {
                       id="stats-newsletter"
                       value={formData.stats_newsletter}
                       onChange={(e) => handleInputChange('stats_newsletter', e.target.value)}
-                      placeholder="5K+"
                     />
                   </div>
                   <div className="space-y-2">
@@ -363,7 +348,6 @@ const HomepageManager = () => {
                       id="stats-videos"
                       value={formData.stats_videos}
                       onChange={(e) => handleInputChange('stats_videos', e.target.value)}
-                      placeholder="100+"
                     />
                   </div>
                 </div>
@@ -378,7 +362,6 @@ const HomepageManager = () => {
                       id="hero-image-url"
                       value={formData.hero_image_url}
                       onChange={(e) => handleInputChange('hero_image_url', e.target.value)}
-                      placeholder="https://example.com/image.jpg"
                     />
                   </div>
                   <div className="space-y-2">
@@ -387,7 +370,6 @@ const HomepageManager = () => {
                       id="hero-image-alt"
                       value={formData.hero_image_alt}
                       onChange={(e) => handleInputChange('hero_image_alt', e.target.value)}
-                      placeholder="Descriptive alt text"
                     />
                   </div>
                 </div>
