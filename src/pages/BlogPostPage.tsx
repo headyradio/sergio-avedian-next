@@ -210,7 +210,7 @@ const BlogPostPage = () => {
           </div>
 
           {/* Article Content */}
-          <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-text-primary prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-text-primary prose-code:bg-card prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-primary">
+          <div className="prose-sm prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-text-primary prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-text-primary prose-code:bg-card prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-primary">
             <div dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />').replace(/#{1,6} /g, (match) => {
               const level = match.trim().length;
               return `<h${level} class="font-bold text-text-primary mt-8 mb-4">`;
