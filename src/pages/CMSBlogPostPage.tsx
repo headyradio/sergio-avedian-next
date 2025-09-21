@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
+import ScrollProgressIndicator from "@/components/ScrollProgressIndicator";
 import { useBlogPost } from "@/hooks/useSupabaseCMS";
 import { convertMarkdownToHTML } from "@/utils/markdownHelpers";
 import { OptimizedImage } from "@/components/OptimizedImage";
@@ -45,6 +46,7 @@ const CMSBlogPostPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ScrollProgressIndicator />
       <Navigation />
       
       {/* Back Navigation */}
