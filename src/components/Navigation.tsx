@@ -12,7 +12,7 @@ const Navigation = () => {
   const navItems = [
     { label: "Videos", href: "#videos", isExternal: false },
     { label: "Blog", href: "/blog", isExternal: true },
-    { label: "Coaching", href: "#coaching", isExternal: false },
+    { label: "Coaching", href: "/coaching", isExternal: true },
     { label: "Newsletter", href: "#newsletter", isExternal: false },
     { label: "About", href: "#about", isExternal: false },
   ];

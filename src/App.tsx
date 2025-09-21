@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Index from "./pages/Index";
+import CoachingPage from "./pages/CoachingPage";
 import NotFound from "./pages/NotFound";
 import CMSDemo from "./pages/CMSDemo";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -34,6 +35,7 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/coaching" element={<CoachingPage />} />
               <Route path="/blog" element={<CMSBlogListPage />} />
               <Route path="/blog/:slug" element={<CMSBlogPostPage />} />
               <Route path="/cms-demo" element={<CMSDemo />} />
