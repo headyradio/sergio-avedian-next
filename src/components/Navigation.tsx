@@ -4,16 +4,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import SubscribeDropdown from "./SubscribeDropdown";
+import EmailSubscriptionModal from "./EmailSubscriptionModal";
 import logoImage from "@/assets/sergio-avedian-logo.png";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
 
   const navItems = [
     { label: "Videos", href: "#videos", isExternal: false },
     { label: "Blog", href: "/blog", isExternal: true },
     { label: "Coaching", href: "/coaching", isExternal: true },
-    { label: "Newsletter", href: "#newsletter", isExternal: false },
+    { label: "Newsletter", href: "#newsletter", isExternal: false, isModal: true },
     { label: "About", href: "#about", isExternal: false },
   ];
 
@@ -41,6 +43,14 @@ const Navigation = () => {
                 >
                   {item.label}
                 </Link>
+              ) : item.isModal ? (
+                <button
+                  key={item.label}
+                  onClick={() => setIsNewsletterModalOpen(true)}
+                  className="text-text-secondary hover:text-text-primary transition-colors duration-300 font-medium link-animated"
+                >
+                  {item.label}
+                </button>
               ) : (
                 <a
                   key={item.label}
@@ -97,6 +107,17 @@ const Navigation = () => {
                 >
                   {item.label}
                 </Link>
+              ) : item.isModal ? (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsNewsletterModalOpen(true);
+                  }}
+                  className="block text-text-secondary hover:text-text-primary transition-colors duration-200 font-medium py-2 text-left w-full"
+                >
+                  {item.label}
+                </button>
               ) : (
                 <a
                   key={item.label}
@@ -117,6 +138,12 @@ const Navigation = () => {
           </div>
         </div>
       </div>
+
+      {/* Newsletter Modal */}
+      <EmailSubscriptionModal
+        open={isNewsletterModalOpen}
+        onOpenChange={setIsNewsletterModalOpen}
+      />
     </nav>
   );
 };

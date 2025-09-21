@@ -206,7 +206,7 @@ const VideoSection = () => {
   );
 
   return (
-    <section className="pt-8 pb-20 lg:pt-12 lg:pb-32 relative -mt-16 z-10">
+    <section id="videos" className="pt-8 pb-20 lg:pt-12 lg:pb-32 relative -mt-16 z-10">
       <div className="editorial-container">
 
         {/* Header */}
