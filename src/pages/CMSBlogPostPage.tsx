@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import { useBlogPost } from "@/hooks/useSupabaseCMS";
 import { convertMarkdownToHTML } from "@/utils/markdownHelpers";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 const CMSBlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -61,10 +62,11 @@ const CMSBlogPostPage = () => {
         {/* Background Image */}
         {post.cover_image_url && (
           <div className="absolute inset-0 z-0">
-            <img
+            <OptimizedImage
               src={post.cover_image_url}
               alt={post.cover_image_alt || post.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full"
+              priority={true}
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/70"></div>
           </div>
