@@ -132,39 +132,67 @@ const MainHeroSection = () => {
           
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 items-center justify-items-center max-w-4xl mx-auto">
             {/* The New York Times */}
-            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <img
-                src={nytLogo}
-                alt="The New York Times"
-                className="h-8 w-auto object-contain filter grayscale"
-              />
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300">
+              <a
+                href="https://www.nytimes.com/2025/05/14/technology/lax-uber-driver-wages.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <img
+                  src={nytLogo}
+                  alt="The New York Times"
+                  className="h-8 w-auto object-contain filter grayscale"
+                />
+              </a>
             </div>
             
             {/* Business Insider */}
-            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <img
-                src={businessInsiderLogo}
-                alt="Business Insider"
-                className="h-8 w-auto object-contain filter grayscale"
-              />
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300">
+              <a
+                href="https://www.businessinsider.com/uber-cracks-down-on-driver-gps-locations-deactivating-accounts-2025-9?utm_source=flipboard&utm_content=topic%2Fubereats"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <img
+                  src={businessInsiderLogo}
+                  alt="Business Insider"
+                  className="h-8 w-auto object-contain filter grayscale"
+                />
+              </a>
             </div>
             
             {/* The Wall Street Journal */}
-            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <img
-                src={wsjLogo}
-                alt="The Wall Street Journal"
-                className="h-8 w-auto object-contain filter grayscale"
-              />
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300">
+              <a
+                href="https://www.wsj.com/articles/uber-ceo-started-driving-for-uber-5bef5023?gaa_at=eafs&gaa_n=ASWzDAjnUf2iP5n63TrLVlECCxDVZjkCIj46eKvyiYnQmqDQEsWDZr_DJ8xlar9jbRg%3D&gaa_ts=68d069ec&gaa_sig=zU3Sj32WpHntCD1LjuQkKWw-2HlUu5WOJ6-ZRALRS4mTaypIrCK6OC7Ep23NK0-x6Wq8AESivXUG_zMospqRCg%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <img
+                  src={wsjLogo}
+                  alt="The Wall Street Journal"
+                  className="h-8 w-auto object-contain filter grayscale"
+                />
+              </a>
             </div>
             
             {/* Forbes */}
-            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <img
-                src={forbesLogo}
-                alt="Forbes"
-                className="h-8 w-auto object-contain filter grayscale"
-              />
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300">
+              <a
+                href="https://www.forbes.com/sites/lensherman/2024/01/16/will-2024-be-a-year-of-reckoning-for-ubers-driver-relations/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <img
+                  src={forbesLogo}
+                  alt="Forbes"
+                  className="h-8 w-auto object-contain filter grayscale"
+                />
+              </a>
             </div>
           </div>
         </div>
