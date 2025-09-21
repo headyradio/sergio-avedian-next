@@ -9,6 +9,7 @@ const corsHeaders = {
 interface SubscribeRequest {
   email: string;
   firstName?: string;
+  lastName?: string;
 }
 
 serve(async (req) => {
@@ -35,7 +36,7 @@ serve(async (req) => {
     }
 
     // Parse request body
-    const { email, firstName }: SubscribeRequest = await req.json();
+    const { email, firstName, lastName }: SubscribeRequest = await req.json();
 
     if (!email) {
       return new Response(
@@ -53,7 +54,8 @@ serve(async (req) => {
     const convertKitData = {
       email_address: email.toLowerCase(),
       state: 'active',
-      ...(firstName && { first_name: firstName })
+      ...(firstName && { first_name: firstName }),
+      ...(lastName && { last_name: lastName })
     };
 
     console.log('Creating subscriber in ConvertKit V4...');

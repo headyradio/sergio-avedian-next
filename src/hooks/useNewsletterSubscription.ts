@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 interface SubscribeRequest {
   email: string;
   firstName?: string;
+  lastName?: string;
 }
 
 interface SubscribeResponse {
@@ -29,6 +30,7 @@ export const useNewsletterSubscription = () => {
           body: {
             email: data.email,
             firstName: data.firstName,
+            lastName: data.lastName,
           },
         }
       );
