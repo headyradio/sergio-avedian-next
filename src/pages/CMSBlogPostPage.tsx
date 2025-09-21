@@ -45,67 +45,67 @@ const CMSBlogPostPage = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Article Header */}
-      <article className="py-12 lg:py-20">
+      {/* Back Navigation */}
+      <div className="py-6 bg-background">
         <div className="editorial-container max-w-4xl">
-          <div className="mb-8">
-            <Link to="/blog" className="inline-flex items-center text-primary hover:text-primary-hover transition-colors mb-8">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to All Articles
-            </Link>
-          </div>
+          <Link to="/blog" className="inline-flex items-center text-primary hover:text-primary-hover transition-colors">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to All Articles
+          </Link>
+        </div>
+      </div>
 
-          {/* Cover Image */}
-          {post.cover_image_url && (
-            <div className="aspect-video mb-8 rounded-2xl overflow-hidden">
-              <img
-                src={post.cover_image_url}
-                alt={post.cover_image_alt || post.title}
-                className="w-full h-full object-cover"
-              />
+      {/* Hero Section */}
+      <section className="relative min-h-[60vh] lg:min-h-[70vh] flex items-center justify-center">
+        {/* Background Image */}
+        {post.cover_image_url && (
+          <div className="absolute inset-0 z-0">
+            <img
+              src={post.cover_image_url}
+              alt={post.cover_image_alt || post.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/70"></div>
+          </div>
+        )}
+        
+        {/* Fallback Background for articles without cover image */}
+        {!post.cover_image_url && (
+          <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary/20 via-background to-cta/20"></div>
+        )}
+
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+          {/* Category Badge */}
+          {post.category && (
+            <div className="mb-6">
+              <Badge 
+                className="bg-white/10 backdrop-blur-sm border-2 text-white font-medium text-sm px-4 py-2"
+                style={{ borderColor: post.category.color }}
+              >
+                <Tag className="h-4 w-4 mr-2" />
+                {post.category.name}
+              </Badge>
             </div>
           )}
 
-          {/* Article Meta */}
-          <div className="mb-8">
-            <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted mb-6">
-              {post.category && (
-                <Badge 
-                  className="bg-surface border-2 text-text-primary font-medium"
-                  style={{ borderColor: post.category.color }}
-                >
-                  <Tag className="h-3 w-3 mr-1" />
-                  {post.category.name}
-                </Badge>
-              )}
-              <div className="flex items-center">
-                <Clock className="h-4 w-4 mr-1" />
-                {post.read_time || '5 min read'}
-              </div>
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 mr-1" />
-                {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </div>
-              <div className="flex items-center">
-                <User className="h-4 w-4 mr-1" />
-                {post.author}
-              </div>
-            </div>
+          {/* Article Title */}
+          <h1 className="text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight mb-6 drop-shadow-lg">
+            {post.title}
+          </h1>
+          
+          {/* Excerpt */}
+          {post.excerpt && (
+            <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+              {post.excerpt}
+            </p>
+          )}
+        </div>
+      </section>
 
-            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black text-text-primary leading-tight">
-              {post.title}
-            </h1>
-            
-            {post.excerpt && (
-              <p className="text-xl text-text-secondary mt-6 leading-relaxed">
-                {post.excerpt}
-              </p>
-            )}
-          </div>
+      {/* Article Content */}
+      <article className="py-16 lg:py-20">
+        <div className="editorial-container max-w-4xl">
 
           {/* Article Content */}
           <div 
@@ -126,19 +126,44 @@ const CMSBlogPostPage = () => {
             </div>
           </div>
 
-          {/* Author Bio */}
-          <div className="mt-12 p-6 bg-surface/50 rounded-xl border border-border">
-            <div className="flex items-start space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary to-cta rounded-full flex items-center justify-center text-white font-bold text-xl">
-                SA
+          {/* Author Bio & Article Metadata */}
+          <div className="mt-12 space-y-8">
+            {/* Author Bio */}
+            <div className="p-6 bg-surface/50 rounded-xl border border-border">
+              <div className="flex items-start space-x-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-cta rounded-full flex items-center justify-center text-white font-bold text-xl">
+                  SA
+                </div>
+                <div>
+                  <h4 className="font-bold text-text-primary mb-2">Sergio Avedian</h4>
+                  <p className="text-text-secondary leading-relaxed">
+                    Wall Street veteran with 35+ years of experience in trading and investment management. 
+                    Former senior executive at major financial institutions, now sharing proven strategies and market insights 
+                    with independent traders and investors worldwide.
+                  </p>
+                </div>
               </div>
-              <div>
-                <h4 className="font-bold text-text-primary mb-2">Sergio Avedian</h4>
-                <p className="text-text-secondary leading-relaxed">
-                  Wall Street veteran with 35+ years of experience in trading and investment management. 
-                  Former senior executive at major financial institutions, now sharing proven strategies and market insights 
-                  with independent traders and investors worldwide.
-                </p>
+            </div>
+
+            {/* Article Metadata */}
+            <div className="flex flex-wrap items-center justify-center gap-6 py-6 border-t border-border text-sm text-text-muted">
+              <div className="flex items-center">
+                <User className="h-4 w-4 mr-2" />
+                <span className="font-medium">By {post.author}</span>
+              </div>
+              <div className="flex items-center">
+                <Calendar className="h-4 w-4 mr-2" />
+                <span>
+                  {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <Clock className="h-4 w-4 mr-2" />
+                <span>{post.read_time || '5 min read'}</span>
               </div>
             </div>
           </div>
