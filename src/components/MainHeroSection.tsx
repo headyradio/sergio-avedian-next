@@ -29,14 +29,14 @@ const MainHeroSection = () => {
   }
 
   const heroContent = {
-    main_hero_title: content?.main_hero_title || "Master Your Trading Psychology",
-    main_hero_subtitle: content?.main_hero_subtitle || "From Emotional Trading to Systematic Success",
-    main_hero_description: content?.main_hero_description || "Transform your trading mindset with proven psychological strategies. Learn to control emotions, build discipline, and achieve consistent results in the markets.",
-    main_hero_motto: content?.main_hero_motto || "Patience. Position. Planning.",
-    main_hero_cta_primary: content?.main_hero_cta_primary || "Start Your Journey",
+    main_hero_title: content?.main_hero_title || "Wall Street Veteran with 35+ Years Experience",
+    main_hero_subtitle: content?.main_hero_subtitle || "Teaching Disciplined Trading & Investment Strategies",
+    main_hero_description: content?.main_hero_description || "Learn from a seasoned Wall Street professional who has navigated multiple market cycles. Master the psychology of trading, risk management, and proven strategies for long-term wealth building through disciplined investing.",
+    main_hero_motto: content?.main_hero_motto || "Knowledge. Discipline. Patience.",
+    main_hero_cta_primary: content?.main_hero_cta_primary || "Join My Community",
     main_hero_cta_secondary: content?.main_hero_cta_secondary || "Watch Free Training",
-    main_hero_experience_years: (content as any)?.main_hero_experience_years || "15+",
-    main_hero_experience_label: (content as any)?.main_hero_experience_label || "Years Trading"
+    main_hero_experience_years: (content as any)?.main_hero_experience_years || "35+",
+    main_hero_experience_label: (content as any)?.main_hero_experience_label || "Years on Wall Street"
   };
   
   return (
@@ -57,7 +57,7 @@ const MainHeroSection = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
               <TrendingUp className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">Trading Psychology Expert</span>
+              <span className="text-sm font-medium text-foreground">Wall Street Veteran • 35+ Years Experience</span>
             </div>
             
             {/* Main Headlines */}
@@ -97,7 +97,7 @@ const MainHeroSection = () => {
             <div className="relative z-10">
               <img
                 src={sergioHeroMain}
-                alt="Sergio Avedian - Trading Psychology Expert"
+                alt="Sergio Avedian - Wall Street Veteran & Trading Mentor"
                 className="w-full h-auto rounded-3xl shadow-2xl"
               />
               
@@ -106,8 +106,8 @@ const MainHeroSection = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Live Trading</p>
-                    <p className="text-xs text-muted-foreground">Active Now</p>
+                    <p className="text-sm font-medium text-foreground">Teaching & Mentoring</p>
+                    <p className="text-xs text-muted-foreground">Pay-it-Forward</p>
                   </div>
                 </div>
               </div>
