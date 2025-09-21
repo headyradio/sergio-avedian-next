@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Youtube, Twitter, Linkedin, Mail } from "lucide-react";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
+import sergioAvedianLogo from "@/assets/sergio-avedian-logo-2.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -45,9 +46,13 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-1">
-            <h3 className="text-xl font-bold text-text-primary mb-4">
-              Sergio Avedian
-            </h3>
+            <div className="mb-4">
+              <img 
+                src={sergioAvedianLogo} 
+                alt="Sergio Avedian" 
+                className="h-8 w-auto object-contain"
+              />
+            </div>
             <p className="text-text-secondary mb-6 leading-relaxed">
               Your trusted source for gig economy insights, market analysis, and financial strategies. Helping drivers and gig workers maximize their earnings.
             </p>
