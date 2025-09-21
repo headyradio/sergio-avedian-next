@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import VideoCarousel from "./VideoCarousel";
 import ShortsPlayer from "./ShortsPlayer";
+import GoldSubscriptionSection from "./GoldSubscriptionSection";
+import SubscribeDropdown from "./SubscribeDropdown";
 import { Card, CardContent } from "@/components/ui/card";
 import { Play, Clock, Eye } from "lucide-react";
 import { formatDuration, formatViews, formatDate } from "@/utils/videoHelpers";
@@ -272,6 +274,9 @@ const VideoSection = () => {
               </div>
             )}
 
+            {/* GOLD SUBSCRIPTION Section */}
+            <GoldSubscriptionSection />
+
             {/* POWER HOUR Section */}
             <VideoCarousel
               videos={getPowerHourVideos()}
@@ -298,23 +303,16 @@ const VideoSection = () => {
           currentVideo={selectedShort}
         />
 
-        {/* Newsletter CTA */}
+        {/* Subscribe CTA */}
         <div className="mt-16 bg-gradient-to-r from-cta/10 to-primary/10 border border-cta/20 rounded-2xl p-8 lg:p-12 text-center">
           <h3 className="text-2xl lg:text-3xl font-bold text-text-primary mb-4">
-            Never Miss a Video
+            Stay Connected
           </h3>
           <p className="text-lg text-text-secondary mb-8 max-w-2xl mx-auto">
-            Get notified when new videos drop. Join thousands of gig workers who stay ahead of the curve.
+            Never miss expert trading insights and market analysis. Choose your preferred way to stay updated.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 border border-card-border rounded-lg bg-card text-card-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
-            <Button variant="cta" size="lg">
-              Subscribe
-            </Button>
+          <div className="flex justify-center">
+            <SubscribeDropdown variant="cta" size="lg" />
           </div>
         </div>
       </div>

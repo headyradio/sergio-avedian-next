@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import SubscribeDropdown from "./SubscribeDropdown";
 
 const BlogSection = () => {
   const blogPosts = [
@@ -190,23 +191,16 @@ const BlogSection = () => {
           })}
         </div>
 
-        {/* Newsletter CTA */}
+        {/* Subscribe CTA */}
         <div className="mt-16 bg-gradient-to-r from-primary/5 to-cta/5 border border-primary/20 rounded-2xl p-8 lg:p-12 text-center">
           <h3 className="text-2xl lg:text-3xl font-bold text-text-primary mb-4">
-            Weekly Industry Digest
+            Stay Informed
           </h3>
           <p className="text-lg text-text-secondary mb-8 max-w-2xl mx-auto">
-            Get our weekly roundup of the most important gig economy news, regulations, and market insights delivered to your inbox.
+            Get exclusive trading insights and market analysis delivered directly to you. Choose your preferred platform.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 border border-card-border rounded-lg bg-card text-card-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
-            <Button variant="cta" size="lg">
-              Subscribe
-            </Button>
+          <div className="flex justify-center">
+            <SubscribeDropdown variant="cta" size="lg" />
           </div>
         </div>
       </div>
