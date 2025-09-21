@@ -117,6 +117,45 @@ const MainHeroSection = () => {
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-3xl transform rotate-6 scale-105 -z-10"></div>
           </div>
         </div>
+        
+        {/* Media Placements Section */}
+        <div className="mt-16 pt-12 border-t border-border/50">
+          <div className="text-center mb-8">
+            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+              As Featured In
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 items-center justify-items-center max-w-4xl mx-auto">
+            {/* The New York Times */}
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
+              <div className="text-center">
+                <p className="text-lg font-bold text-foreground font-serif">The New York Times</p>
+              </div>
+            </div>
+            
+            {/* Business Insider */}
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
+              <div className="text-center">
+                <p className="text-lg font-bold text-foreground">Business Insider</p>
+              </div>
+            </div>
+            
+            {/* The Wall Street Journal */}
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
+              <div className="text-center">
+                <p className="text-lg font-bold text-foreground font-serif">The Wall Street Journal</p>
+              </div>
+            </div>
+            
+            {/* Forbes */}
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
+              <div className="text-center">
+                <p className="text-lg font-bold text-foreground">FORBES</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       
       {/* Section Connector */}
