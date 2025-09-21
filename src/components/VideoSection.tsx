@@ -264,6 +264,14 @@ const VideoSection = () => {
               onVideoClick={handleVideoClick}
             />
 
+            {/* LATEST VIDEOS Section */}
+            {getRegularVideos().length > 0 && (
+              <div>
+                <h3 className="text-2xl font-bold text-text-primary mb-6">LATEST VIDEOS</h3>
+                <RegularVideosGrid videos={getRegularVideos()} />
+              </div>
+            )}
+
             {/* POWER HOUR Section */}
             <VideoCarousel
               videos={getPowerHourVideos()}
@@ -279,14 +287,6 @@ const VideoSection = () => {
               variant="horizontal"
               onVideoClick={handleVideoClick}
             />
-
-            {/* OTHER VIDEOS Section */}
-            {getRegularVideos().length > 0 && (
-              <div>
-                <h3 className="text-2xl font-bold text-text-primary mb-6">OTHER VIDEOS</h3>
-                <RegularVideosGrid videos={getRegularVideos()} />
-              </div>
-            )}
           </div>
         )}
 
