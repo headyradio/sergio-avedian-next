@@ -42,10 +42,10 @@ const BlogListPage = () => {
       <section className="py-20 lg:py-32 bg-gradient-to-br from-primary/5 via-background to-cta/5">
         <div className="editorial-container">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl lg:text-6xl font-black text-gradient mb-6">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black text-gradient mb-6">
               Editorial Insights
             </h1>
-            <p className="text-xl lg:text-2xl text-text-secondary mb-8 leading-relaxed">
+            <p className="text-base lg:text-lg text-text-secondary mb-8 leading-relaxed">
               In-depth analysis and commentary on the gig economy, regulations, and market trends that shape the future of independent work.
             </p>
             
@@ -155,7 +155,7 @@ const BlogListPage = () => {
                             {post.readTime}
                           </div>
                         </div>
-                        <h3 className="text-xl font-bold text-text-primary mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                        <h3 className="text-base lg:text-lg font-bold text-text-primary mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
                           {post.title}
                         </h3>
                         <p className="text-text-secondary mb-4 line-clamp-3 leading-relaxed flex-1">
@@ -217,10 +217,10 @@ const BlogListPage = () => {
       <section className="py-16 bg-gradient-to-r from-primary/5 to-cta/5">
         <div className="editorial-container">
           <div className="text-center max-w-2xl mx-auto">
-            <h3 className="text-3xl font-bold text-text-primary mb-4">
+            <h3 className="text-xl lg:text-2xl font-bold text-text-primary mb-4">
               Never Miss an Update
             </h3>
-            <p className="text-lg text-text-secondary mb-8">
+            <p className="text-base text-text-secondary mb-8">
               Get our weekly roundup of the most important gig economy news, regulations, and market insights delivered straight to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">

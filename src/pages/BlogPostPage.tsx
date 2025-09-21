@@ -127,11 +127,11 @@ const BlogPostPage = () => {
               )}
             </div>
 
-            <h1 className="text-4xl lg:text-5xl font-black text-text-primary mb-6 leading-tight">
+            <h1 className="text-2xl lg:text-3xl xl:text-4xl font-black text-text-primary mb-6 leading-tight">
               {post.title}
             </h1>
 
-            <p className="text-xl text-text-secondary mb-8 leading-relaxed">
+            <p className="text-base lg:text-lg text-text-secondary mb-8 leading-relaxed">
               {post.excerpt}
             </p>
 
@@ -210,7 +210,7 @@ const BlogPostPage = () => {
           </div>
 
           {/* Article Content */}
-          <div className="prose prose-lg prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-text-primary prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-text-primary prose-code:bg-card prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-primary">
+          <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-text-primary prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-blockquote:text-text-primary prose-code:bg-card prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-primary">
             <div dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br />').replace(/#{1,6} /g, (match) => {
               const level = match.trim().length;
               return `<h${level} class="font-bold text-text-primary mt-8 mb-4">`;
@@ -224,7 +224,7 @@ const BlogPostPage = () => {
                 {post.author.charAt(0)}
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-text-primary mb-2">
+                <h3 className="text-lg font-bold text-text-primary mb-2">
                   About {post.author}
                 </h3>
                 <p className="text-text-secondary mb-4">
@@ -244,7 +244,7 @@ const BlogPostPage = () => {
 
           {/* Newsletter CTA */}
           <div className="mt-16 text-center p-8 bg-card rounded-2xl border border-card-border">
-            <h3 className="text-2xl font-bold text-text-primary mb-4">
+            <h3 className="text-lg lg:text-xl font-bold text-text-primary mb-4">
               Stay Updated
             </h3>
             <p className="text-text-secondary mb-6">
@@ -268,7 +268,7 @@ const BlogPostPage = () => {
       {relatedPosts.length > 0 && (
         <section className="py-16 bg-surface">
           <div className="editorial-container">
-            <h2 className="text-3xl font-bold text-text-primary mb-8">Related Articles</h2>
+            <h2 className="text-xl lg:text-2xl font-bold text-text-primary mb-8">Related Articles</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedPosts.map((relatedPost) => (
                 <Link
