@@ -6,6 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import { useBlogPost } from "@/hooks/useSupabaseCMS";
+import { convertMarkdownToHTML } from "@/utils/markdownHelpers";
 
 const CMSBlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -103,6 +104,32 @@ const CMSBlogPostPage = () => {
         </div>
       </section>
 
+      {/* Article Byline */}
+      <section className="py-8 border-b border-border/20">
+        <div className="editorial-container max-w-4xl">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-text-muted">
+            <div className="flex items-center">
+              <User className="h-4 w-4 mr-2" />
+              <span className="font-medium">By {post.author}</span>
+            </div>
+            <div className="flex items-center">
+              <Calendar className="h-4 w-4 mr-2" />
+              <span>
+                {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </span>
+            </div>
+            <div className="flex items-center">
+              <Clock className="h-4 w-4 mr-2" />
+              <span>{post.read_time || '5 min read'}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Article Content */}
       <article className="py-16 lg:py-20">
         <div className="editorial-container max-w-4xl">
@@ -110,7 +137,7 @@ const CMSBlogPostPage = () => {
           {/* Article Content */}
           <div 
             className="prose prose-lg prose-gray dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-text-primary prose-ul:text-text-secondary prose-ol:text-text-secondary prose-blockquote:border-l-primary prose-blockquote:bg-surface/50 prose-blockquote:p-4 prose-blockquote:rounded-r-lg prose-code:bg-surface prose-code:text-text-primary prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-surface prose-pre:border prose-pre:border-border"
-            dangerouslySetInnerHTML={{ __html: post.content || '' }}
+            dangerouslySetInnerHTML={{ __html: convertMarkdownToHTML(post.content || '') }}
           />
 
           {/* Subscribe CTA */}
@@ -126,9 +153,8 @@ const CMSBlogPostPage = () => {
             </div>
           </div>
 
-          {/* Author Bio & Article Metadata */}
-          <div className="mt-12 space-y-8">
             {/* Author Bio */}
+          <div className="mt-12">
             <div className="p-6 bg-surface/50 rounded-xl border border-border">
               <div className="flex items-start space-x-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-primary to-cta rounded-full flex items-center justify-center text-white font-bold text-xl">
@@ -142,28 +168,6 @@ const CMSBlogPostPage = () => {
                     with independent traders and investors worldwide.
                   </p>
                 </div>
-              </div>
-            </div>
-
-            {/* Article Metadata */}
-            <div className="flex flex-wrap items-center justify-center gap-6 py-6 border-t border-border text-sm text-text-muted">
-              <div className="flex items-center">
-                <User className="h-4 w-4 mr-2" />
-                <span className="font-medium">By {post.author}</span>
-              </div>
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 mr-2" />
-                <span>
-                  {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </span>
-              </div>
-              <div className="flex items-center">
-                <Clock className="h-4 w-4 mr-2" />
-                <span>{post.read_time || '5 min read'}</span>
               </div>
             </div>
           </div>
