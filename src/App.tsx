@@ -14,6 +14,7 @@ import AdminLogin from "./pages/AdminLogin";
 import CMSBlogListPage from "./pages/CMSBlogListPage";
 import CMSBlogPostPage from "./pages/CMSBlogPostPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   // Create QueryClient inside the component to ensure React context is available
@@ -33,6 +34,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/coaching" element={<CoachingPage />} />
