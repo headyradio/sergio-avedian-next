@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const BlogSection = () => {
   const blogPosts = [
@@ -61,7 +62,7 @@ const BlogSection = () => {
   const regularPosts = blogPosts.filter(post => !post.featured);
 
   return (
-    <section className="py-20 lg:py-32 relative">
+    <section id="blog" className="py-20 lg:py-32 relative">
       <div className="editorial-container">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-16">
@@ -73,14 +74,17 @@ const BlogSection = () => {
               In-depth analysis and commentary on gig economy trends
             </p>
           </div>
-          <Button variant="secondary" size="lg" className="glass-card">
-            All Articles
-          </Button>
+          <Link to="/blog">
+            <Button variant="secondary" size="lg" className="glass-card">
+              All Articles
+            </Button>
+          </Link>
         </div>
 
         {/* Featured Article */}
         {featuredPost && (
-          <article className="card-modern rounded-3xl overflow-hidden mb-16 group cursor-pointer">
+          <Link to={`/blog/uber-pro-rewards-program-guide`} className="block">
+            <article className="card-modern rounded-3xl overflow-hidden mb-16 group cursor-pointer">
             <div className="grid lg:grid-cols-2 gap-0">
               <div className="aspect-video lg:aspect-auto relative overflow-hidden">
                 <img
@@ -130,15 +134,22 @@ const BlogSection = () => {
               </div>
             </div>
           </article>
+          </Link>
         )}
 
         {/* Regular Articles Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {regularPosts.map((post) => (
-            <article
-              key={post.id}
-              className="card-modern rounded-3xl overflow-hidden group cursor-pointer"
-            >
+          {regularPosts.map((post) => {
+            // Map post IDs to slugs
+            const slugMap: { [key: number]: string } = {
+              2: 'doordash-q1-2024-earnings-analysis',
+              3: 'california-prop-22-two-years-later',
+              4: 'gig-worker-tax-deductions-2024'
+            };
+            
+            return (
+              <Link key={post.id} to={`/blog/${slugMap[post.id]}`} className="block">
+                <article className="card-modern rounded-3xl overflow-hidden group cursor-pointer h-full">
               <div className="aspect-video relative overflow-hidden">
                 <img
                   src={post.image}
@@ -174,7 +185,9 @@ const BlogSection = () => {
                 </div>
               </div>
             </article>
-          ))}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Newsletter CTA */}

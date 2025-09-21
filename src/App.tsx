@@ -10,6 +10,8 @@ import NotFound from "./pages/NotFound";
 import CMSDemo from "./pages/CMSDemo";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
+import BlogListPage from "./pages/BlogListPage";
+import BlogPostPage from "./pages/BlogPostPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -32,6 +34,8 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/blog" element={<BlogListPage />} />
+              <Route path="/blog/:slug" element={<BlogPostPage />} />
               <Route path="/cms-demo" element={<CMSDemo />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route 
