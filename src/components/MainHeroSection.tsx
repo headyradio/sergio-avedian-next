@@ -1,6 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { TrendingUp } from "lucide-react";
 import sergioHeroMain from "@/assets/sergio-hero-main.png";
+import forbesLogo from "@/assets/forbes-logo.png";
+import businessInsiderLogo from "@/assets/business-insider-logo.png";
+import nytLogo from "@/assets/nyt-logo.png";
+import wsjLogo from "@/assets/wsj-logo.png";
 import { useHomepageContent } from "@/hooks/useSupabaseCMS";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 
@@ -129,30 +133,38 @@ const MainHeroSection = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 items-center justify-items-center max-w-4xl mx-auto">
             {/* The New York Times */}
             <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <div className="text-center">
-                <p className="text-lg font-bold text-foreground font-serif">The New York Times</p>
-              </div>
+              <img
+                src={nytLogo}
+                alt="The New York Times"
+                className="h-8 w-auto object-contain filter grayscale"
+              />
             </div>
             
             {/* Business Insider */}
             <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <div className="text-center">
-                <p className="text-lg font-bold text-foreground">Business Insider</p>
-              </div>
+              <img
+                src={businessInsiderLogo}
+                alt="Business Insider"
+                className="h-8 w-auto object-contain filter grayscale"
+              />
             </div>
             
             {/* The Wall Street Journal */}
             <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <div className="text-center">
-                <p className="text-lg font-bold text-foreground font-serif">The Wall Street Journal</p>
-              </div>
+              <img
+                src={wsjLogo}
+                alt="The Wall Street Journal"
+                className="h-8 w-auto object-contain filter grayscale"
+              />
             </div>
             
             {/* Forbes */}
             <div className="opacity-60 hover:opacity-80 transition-opacity duration-300 cursor-pointer">
-              <div className="text-center">
-                <p className="text-lg font-bold text-foreground">FORBES</p>
-              </div>
+              <img
+                src={forbesLogo}
+                alt="Forbes"
+                className="h-8 w-auto object-contain filter grayscale"
+              />
             </div>
           </div>
         </div>
