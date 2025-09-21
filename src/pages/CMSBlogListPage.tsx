@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import { useBlogPosts, useCategories } from "@/hooks/useSupabaseCMS";
 import { Search, Calendar, Clock, ArrowRight, Filter } from "lucide-react";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 const CMSBlogListPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -72,8 +73,8 @@ const CMSBlogListPage = () => {
             </p>
             
             {/* Search and Filter */}
-            <div className="flex flex-col lg:flex-row gap-4 max-w-2xl mx-auto">
-              <div className="relative flex-1">
+            <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+              <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-muted h-5 w-5" />
                 <Input
                   type="text"
@@ -83,39 +84,32 @@ const CMSBlogListPage = () => {
                   className="pl-10 h-12 text-lg border-card-border bg-card/50 backdrop-blur-sm"
                 />
               </div>
-              <div className="flex gap-2">
-                <Button
-                  variant={selectedCategory === "" ? "default" : "outline"}
-                  onClick={() => setSelectedCategory("")}
-                  className="h-12"
-                >
-                  All
-                </Button>
-                {categories?.map((category) => (
+              
+              {/* Category Filter - Horizontal Scroll */}
+              <div className="relative">
+                <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4">
                   <Button
-                    key={category.slug}
-                    variant={selectedCategory === category.name ? "default" : "outline"}
-                    onClick={() => setSelectedCategory(category.name)}
-                    className="h-12 hidden sm:flex"
+                    variant={selectedCategory === "" ? "default" : "outline"}
+                    onClick={() => setSelectedCategory("")}
+                    className="h-10 flex-shrink-0"
                   >
-                    {category.name}
+                    All
                   </Button>
-                ))}
+                  {categories?.map((category) => (
+                    <Button
+                      key={category.slug}
+                      variant={selectedCategory === category.name ? "default" : "outline"}
+                      onClick={() => setSelectedCategory(category.name)}
+                      className="h-10 flex-shrink-0"
+                    >
+                      {category.name}
+                    </Button>
+                  ))}
+                </div>
+                {/* Fade gradients for scroll indication */}
+                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent pointer-events-none" />
               </div>
-            </div>
-            
-            {/* Mobile Category Filter */}
-            <div className="flex flex-wrap gap-2 justify-center mt-4 sm:hidden">
-              {categories?.map((category) => (
-                <Button
-                  key={category.slug}
-                  variant={selectedCategory === category.name ? "default" : "outline"}
-                  onClick={() => setSelectedCategory(category.name)}
-                  size="sm"
-                >
-                  {category.name}
-                </Button>
-              ))}
             </div>
           </div>
         </div>
@@ -151,10 +145,12 @@ const CMSBlogListPage = () => {
                   >
                     <article className="card-modern rounded-3xl overflow-hidden h-full hover:shadow-xl transition-all duration-300">
                       <div className="aspect-video relative overflow-hidden">
-                        <img
-                          src={post.cover_image_url || "/placeholder.svg"}
+                        <OptimizedImage
+                          src={post.cover_image_url?.replace('/src/assets/', '/assets/blog/') || "/assets/blog/options-trading.jpg"}
                           alt={post.cover_image_alt || post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          aspectRatio="video"
+                          fallbackSrc="/assets/blog/options-trading.jpg"
                         />
                         {post.featured && (
                           <div className="absolute top-4 left-4">
