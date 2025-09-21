@@ -83,7 +83,7 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
             Free Stock Trading Advice, Straight to Your Inbox
           </DialogTitle>
           <DialogDescription>
-            Unlock free, daily stock trading insights from Sergio Avedian—35+ years of Wall Street experience, trusted by over 2,580 subscribers. Join now to start getting richer, faster.
+            Unlock free, daily stock trading insights from Sergio Avedian—35+ years of Wall Street experience, trusted by over 2,580 subscribers. Join the community now.
           </DialogDescription>
         </DialogHeader>
         
