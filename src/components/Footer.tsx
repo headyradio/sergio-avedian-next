@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Youtube, Twitter, Linkedin, Mail } from "lucide-react";
+import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -97,15 +98,12 @@ const Footer = () => {
             <p className="text-lg text-text-secondary mb-6">
               Join 10,000+ gig workers getting weekly insights, earnings tips, and market updates.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 px-4 py-3 border border-card-border rounded-lg bg-card text-card-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+            <div className="flex justify-center">
+              <SubscribeDropdown 
+                variant="cta" 
+                size="lg" 
+                className="text-lg px-8 py-4"
               />
-              <Button variant="cta" size="lg">
-                Subscribe
-              </Button>
             </div>
             <p className="text-sm text-text-muted mt-3">
               No spam. Unsubscribe anytime. Privacy policy applies.

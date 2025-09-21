@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Play, Clock, Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 interface Video {
   id: string;
@@ -229,15 +230,12 @@ const VideoGrid = () => {
           <p className="text-lg text-text-secondary mb-8 max-w-2xl mx-auto">
             Get notified when new videos drop. Join thousands of gig workers who stay ahead of the curve.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 border border-card-border rounded-lg bg-card text-card-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
+          <div className="flex justify-center">
+            <SubscribeDropdown 
+              variant="cta" 
+              size="lg" 
+              className="text-lg px-8 py-4"
             />
-            <Button variant="cta" size="lg">
-              Subscribe
-            </Button>
           </div>
         </div>
       </div>

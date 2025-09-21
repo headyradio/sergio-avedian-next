@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useBlogPosts, useFeaturedBlogPosts, CMSBlogPost } from "@/hooks/useSupabaseCMS";
+import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 // Loading skeleton component
 const BlogCardSkeleton = () => (
@@ -177,15 +178,12 @@ const CMSBlogSection = () => {
             Get exclusive trading strategies and market analysis delivered directly to your inbox. 
             Join thousands of successful traders and investors.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-3 bg-input border border-border rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary"
+          <div className="flex justify-center">
+            <SubscribeDropdown 
+              variant="cta" 
+              size="lg" 
+              className="text-lg px-8 py-4 font-semibold"
             />
-            <Button className="cta-electric px-8 py-3 font-semibold">
-              Get Insights
-            </Button>
           </div>
         </div>
       </div>

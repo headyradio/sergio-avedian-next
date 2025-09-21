@@ -7,6 +7,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useBlogPosts, useCategories } from "@/hooks/useSupabaseCMS";
 import { Search, Calendar, Clock, ArrowRight, Filter } from "lucide-react";
+import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 const CMSBlogListPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -249,15 +250,12 @@ const CMSBlogListPage = () => {
               Get exclusive trading strategies, market analysis, and investment insights from a Wall Street professional. 
               Join thousands of successful traders and investors.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 h-12"
+            <div className="flex justify-center">
+              <SubscribeDropdown 
+                variant="cta" 
+                size="lg" 
+                className="text-lg px-8 py-4"
               />
-              <Button variant="cta" size="lg" className="h-12">
-                Get Insights
-              </Button>
             </div>
           </div>
         </div>
