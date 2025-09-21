@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useBlogPosts, useFeaturedBlogPosts, CMSBlogPost } from "@/hooks/useSupabaseCMS";
 
 // Loading skeleton component
@@ -17,111 +18,115 @@ const BlogCardSkeleton = () => (
 );
 
 const FeaturedBlogCard = ({ post }: { post: CMSBlogPost }) => (
-  <Card className="overflow-hidden card-modern group cursor-pointer">
-    <div className="relative">
-      <img
-        src={post.cover_image_url || "/placeholder.svg"}
-        alt={post.cover_image_alt || post.title}
-        className="w-full h-64 lg:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
-      />
-      <div className="absolute top-4 left-4">
-        <span className="bg-brand-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
-          Featured
-        </span>
+  <Link to={`/blog/${post.slug}`}>
+    <Card className="overflow-hidden card-modern group cursor-pointer">
+      <div className="relative">
+        <img
+          src={post.cover_image_url || "/placeholder.svg"}
+          alt={post.cover_image_alt || post.title}
+          className="w-full h-64 lg:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute top-4 left-4">
+          <span className="bg-brand-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+            Featured
+          </span>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
-    </div>
-    
-    <div className="p-8 space-y-6">
-      <div className="space-y-4">
-        <div className="flex items-center gap-4 text-sm text-text-muted">
-        <span className="px-3 py-1 bg-surface rounded-full font-medium text-brand-primary">
+      
+      <div className="p-8 space-y-6">
+        <div className="space-y-4">
+          <div className="flex items-center gap-4 text-sm text-text-muted">
+          <span className="px-3 py-1 bg-surface rounded-full font-medium text-brand-primary">
+              {post.category?.name || 'Uncategorized'}
+            </span>
+            <div className="flex items-center gap-1">
+              <Clock className="h-4 w-4" />
+              {post.read_time || '5 min read'}
+            </div>
+          </div>
+          
+          <h3 className="text-2xl font-bold text-text-primary group-hover:text-primary transition-colors">
+            {post.title}
+          </h3>
+          
+          <p className="text-text-secondary leading-relaxed line-clamp-3">
+            {post.excerpt}
+          </p>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <User className="h-4 w-4 text-text-muted" />
+            <span className="text-sm text-text-muted">{post.author}</span>
+            <span className="text-text-muted">•</span>
+            <div className="flex items-center gap-1 text-sm text-text-muted">
+              <Calendar className="h-4 w-4" />
+              {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              })}
+            </div>
+          </div>
+          
+          <Button variant="ghost" size="sm" className="group/btn">
+            Read More
+            <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+          </Button>
+        </div>
+      </div>
+    </Card>
+  </Link>
+);
+
+const BlogCard = ({ post }: { post: CMSBlogPost }) => (
+  <Link to={`/blog/${post.slug}`}>
+    <Card className="overflow-hidden card-modern group cursor-pointer">
+      <div className="relative">
+        <img
+          src={post.cover_image_url || "/placeholder.svg"}
+          alt={post.cover_image_alt || post.title}
+          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+      
+      <div className="p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <span className="px-3 py-1 bg-surface rounded-full text-sm font-medium text-brand-primary">
             {post.category?.name || 'Uncategorized'}
           </span>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 text-sm text-text-muted">
             <Clock className="h-4 w-4" />
             {post.read_time || '5 min read'}
           </div>
         </div>
         
-        <h3 className="text-2xl font-bold text-text-primary group-hover:text-primary transition-colors">
+        <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors line-clamp-2">
           {post.title}
         </h3>
         
-        <p className="text-text-secondary leading-relaxed line-clamp-3">
+        <p className="text-text-secondary text-sm leading-relaxed line-clamp-3">
           {post.excerpt}
         </p>
-      </div>
-      
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <User className="h-4 w-4 text-text-muted" />
-          <span className="text-sm text-text-muted">{post.author}</span>
-          <span className="text-text-muted">•</span>
+        
+        <div className="flex items-center justify-between pt-4 border-t border-border">
           <div className="flex items-center gap-1 text-sm text-text-muted">
             <Calendar className="h-4 w-4" />
             {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
               month: 'short',
-              day: 'numeric',
-              year: 'numeric'
+              day: 'numeric'
             })}
           </div>
-        </div>
-        
-        <Button variant="ghost" size="sm" className="group/btn">
-          Read More
-          <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-        </Button>
-      </div>
-    </div>
-  </Card>
-);
-
-const BlogCard = ({ post }: { post: CMSBlogPost }) => (
-  <Card className="overflow-hidden card-modern group cursor-pointer">
-    <div className="relative">
-      <img
-        src={post.cover_image_url || "/placeholder.svg"}
-        alt={post.cover_image_alt || post.title}
-        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
-      />
-    </div>
-    
-    <div className="p-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <span className="px-3 py-1 bg-surface rounded-full text-sm font-medium text-brand-primary">
-          {post.category?.name || 'Uncategorized'}
-        </span>
-        <div className="flex items-center gap-1 text-sm text-text-muted">
-          <Clock className="h-4 w-4" />
-          {post.read_time || '5 min read'}
+          
+          <Button variant="ghost" size="sm" className="group/btn">
+            Read More
+            <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+          </Button>
         </div>
       </div>
-      
-      <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors line-clamp-2">
-        {post.title}
-      </h3>
-      
-      <p className="text-text-secondary text-sm leading-relaxed line-clamp-3">
-        {post.excerpt}
-      </p>
-      
-      <div className="flex items-center justify-between pt-4 border-t border-border">
-        <div className="flex items-center gap-1 text-sm text-text-muted">
-          <Calendar className="h-4 w-4" />
-          {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric'
-          })}
-        </div>
-        
-        <Button variant="ghost" size="sm" className="group/btn">
-          Read More
-          <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-        </Button>
-      </div>
-    </div>
-  </Card>
+    </Card>
+  </Link>
 );
 
 const CMSBlogSection = () => {
@@ -136,11 +141,11 @@ const CMSBlogSection = () => {
       <div className="editorial-container">
         <div className="text-center space-y-6 mb-16">
           <h2 className="text-4xl lg:text-5xl font-black tracking-tight text-text-primary">
-            Latest Insights
+            Trading & Investment Insights
           </h2>
           <p className="text-xl text-text-secondary max-w-3xl mx-auto prose-modern">
-            Stay informed with the latest trends, strategies, and insights from the gig economy.
-            Expert analysis you can trust.
+            Professional analysis and strategies from a Wall Street veteran with 35+ years of experience.
+            Master options trading, investment psychology, and wealth-building techniques.
           </p>
         </div>
 
@@ -166,11 +171,11 @@ const CMSBlogSection = () => {
         {/* Newsletter CTA */}
         <div className="mt-20 text-center glass-card p-12 rounded-3xl">
           <h3 className="text-3xl font-black text-text-primary mb-4">
-            Never Miss an Update
+            Master the Markets
           </h3>
           <p className="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-            Get the latest gig economy insights delivered directly to your inbox. 
-            Join thousands of drivers and entrepreneurs.
+            Get exclusive trading strategies and market analysis delivered directly to your inbox. 
+            Join thousands of successful traders and investors.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
@@ -179,7 +184,7 @@ const CMSBlogSection = () => {
               className="flex-1 px-6 py-3 bg-input border border-border rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <Button className="cta-electric px-8 py-3 font-semibold">
-              Subscribe
+              Get Insights
             </Button>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import MainHeroSection from "@/components/MainHeroSection";
 import VideoSection from "@/components/VideoSection";
-import BlogSection from "@/components/BlogSection";
+import CMSBlogSection from "@/components/CMSBlogSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -10,7 +10,7 @@ const Index = () => {
       <Navigation />
       <MainHeroSection />
       <VideoSection />
-      <BlogSection />
+      <CMSBlogSection />
       <Footer />
     </div>
   );

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Edit, Plus, Eye } from 'lucide-react';
 import { useBlogPosts, useCategories, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost, CMSBlogPost } from '@/hooks/useSupabaseCMS';
+import RichTextEditor from '@/components/ui/rich-text-editor';
 
 const BlogPostManager = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -208,11 +209,11 @@ const BlogPostManager = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="content">Content</Label>
-                <Textarea
-                  id="content"
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  rows={10}
+                <RichTextEditor
+                  content={formData.content}
+                  onChange={(content) => setFormData({ ...formData, content })}
+                  placeholder="Write your blog post content..."
+                  className="min-h-[300px]"
                 />
               </div>
 

@@ -5,23 +5,26 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { blogPosts, blogCategories, BlogPost } from "@/types/blog";
+import { useBlogPosts, useCategories } from "@/hooks/useSupabaseCMS";
 import { Search, Calendar, Clock, ArrowRight, Filter } from "lucide-react";
 
-const BlogListPage = () => {
+const CMSBlogListPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
 
+  const { data: allPosts, isLoading: postsLoading } = useBlogPosts(100, 0, true); // Get published posts
+  const { data: categories } = useCategories();
+
   // Filter posts based on search and category
-  const filteredPosts = blogPosts.filter((post: BlogPost) => {
+  const filteredPosts = allPosts?.filter((post) => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = selectedCategory === "" || post.category === selectedCategory;
+                         post.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         post.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "" || post.category?.name === selectedCategory;
     return matchesSearch && matchesCategory;
-  });
+  }) || [];
 
   // Pagination
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
@@ -29,10 +32,27 @@ const BlogListPage = () => {
   const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
 
   // Get category color
-  const getCategoryColor = (category: string) => {
-    const categoryObj = blogCategories.find(cat => cat.name === category);
-    return categoryObj?.color || "bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-300";
+  const getCategoryColor = (categoryName: string) => {
+    const category = categories?.find(cat => cat.name === categoryName);
+    return category?.color || '#3b82f6';
   };
+
+  const getCategoryBadgeClass = (categoryName: string) => {
+    const color = getCategoryColor(categoryName);
+    return `bg-surface border-2 text-text-primary font-medium`;
+  };
+
+  if (postsLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-lg">Loading articles...</div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -43,10 +63,11 @@ const BlogListPage = () => {
         <div className="editorial-container">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black text-gradient mb-6">
-              Editorial Insights
+              Trading & Investment Insights
             </h1>
             <p className="text-base lg:text-lg text-text-secondary mb-8 leading-relaxed">
-              In-depth analysis and commentary on the gig economy, regulations, and market trends that shape the future of independent work.
+              Professional analysis and strategies from a Wall Street veteran with 35+ years of experience.
+              Master the markets with proven insights on options trading, investment psychology, and wealth building.
             </p>
             
             {/* Search and Filter */}
@@ -69,7 +90,7 @@ const BlogListPage = () => {
                 >
                   All
                 </Button>
-                {blogCategories.map((category) => (
+                {categories?.map((category) => (
                   <Button
                     key={category.slug}
                     variant={selectedCategory === category.name ? "default" : "outline"}
@@ -84,7 +105,7 @@ const BlogListPage = () => {
             
             {/* Mobile Category Filter */}
             <div className="flex flex-wrap gap-2 justify-center mt-4 sm:hidden">
-              {blogCategories.map((category) => (
+              {categories?.map((category) => (
                 <Button
                   key={category.slug}
                   variant={selectedCategory === category.name ? "default" : "outline"}
@@ -121,7 +142,7 @@ const BlogListPage = () => {
 
               {/* Articles Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                {currentPosts.map((post: BlogPost) => (
+                {currentPosts.map((post) => (
                   <Link
                     key={post.id}
                     to={`/blog/${post.slug}`}
@@ -130,8 +151,8 @@ const BlogListPage = () => {
                     <article className="card-modern rounded-3xl overflow-hidden h-full hover:shadow-xl transition-all duration-300">
                       <div className="aspect-video relative overflow-hidden">
                         <img
-                          src={post.image}
-                          alt={post.title}
+                          src={post.cover_image_url || "/placeholder.svg"}
+                          alt={post.cover_image_alt || post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         {post.featured && (
@@ -145,14 +166,14 @@ const BlogListPage = () => {
                       <div className="p-6 flex flex-col flex-1">
                         <div className="flex items-center space-x-3 mb-3">
                           <Badge
-                            variant="secondary"
-                            className={getCategoryColor(post.category)}
+                            className={getCategoryBadgeClass(post.category?.name || 'General')}
+                            style={{ borderColor: getCategoryColor(post.category?.name || 'General') }}
                           >
-                            {post.category}
+                            {post.category?.name || 'General'}
                           </Badge>
                           <div className="flex items-center text-text-muted text-sm">
                             <Clock className="h-3 w-3 mr-1" />
-                            {post.readTime}
+                            {post.read_time || '5 min read'}
                           </div>
                         </div>
                         <h3 className="text-base lg:text-lg font-bold text-text-primary mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
@@ -164,7 +185,11 @@ const BlogListPage = () => {
                         <div className="flex items-center justify-between text-sm">
                           <div className="flex items-center text-text-muted">
                             <Calendar className="h-3 w-3 mr-1" />
-                            {post.publishedAt}
+                            {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric'
+                            })}
                           </div>
                           <div className="text-primary group-hover:text-primary-hover flex items-center font-medium">
                             Read More
@@ -218,10 +243,11 @@ const BlogListPage = () => {
         <div className="editorial-container">
           <div className="text-center max-w-2xl mx-auto">
             <h3 className="text-xl lg:text-2xl font-bold text-text-primary mb-4">
-              Never Miss an Update
+              Master the Markets
             </h3>
             <p className="text-base text-text-secondary mb-8">
-              Get our weekly roundup of the most important gig economy news, regulations, and market insights delivered straight to your inbox.
+              Get exclusive trading strategies, market analysis, and investment insights from a Wall Street professional. 
+              Join thousands of successful traders and investors.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <Input
@@ -230,7 +256,7 @@ const BlogListPage = () => {
                 className="flex-1 h-12"
               />
               <Button variant="cta" size="lg" className="h-12">
-                Subscribe
+                Get Insights
               </Button>
             </div>
           </div>
@@ -242,4 +268,4 @@ const BlogListPage = () => {
   );
 };
 
-export default BlogListPage;
+export default CMSBlogListPage;
