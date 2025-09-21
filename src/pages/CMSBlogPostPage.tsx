@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Calendar, Clock, User, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,13 +7,35 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import ScrollProgressIndicator from "@/components/ScrollProgressIndicator";
+import CTAPopup from "@/components/CTAPopup";
 import { useBlogPost } from "@/hooks/useSupabaseCMS";
+import { useScrollTrigger } from "@/hooks/useScrollTrigger";
+import { useExitIntent } from "@/hooks/useExitIntent";
 import { convertMarkdownToHTML } from "@/utils/markdownHelpers";
 import { OptimizedImage } from "@/components/OptimizedImage";
 
 const CMSBlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useBlogPost(slug || '');
+  
+  // CTA Popup triggers
+  const { shouldTrigger: scrollTrigger, resetTrigger: resetScrollTrigger } = useScrollTrigger();
+  const { shouldTrigger: exitTrigger, resetTrigger: resetExitTrigger } = useExitIntent();
+  
+  const [showCTAPopup, setShowCTAPopup] = useState(false);
+
+  // Combine triggers - show popup if either scroll or exit intent triggers
+  useEffect(() => {
+    if ((scrollTrigger || exitTrigger) && !showCTAPopup) {
+      setShowCTAPopup(true);
+    }
+  }, [scrollTrigger, exitTrigger, showCTAPopup]);
+
+  const handleCloseCTAPopup = () => {
+    setShowCTAPopup(false);
+    resetScrollTrigger();
+    resetExitTrigger();
+  };
 
   if (isLoading) {
     return (
@@ -179,6 +202,12 @@ const CMSBlogPostPage = () => {
       </article>
 
       <Footer />
+      
+      {/* CTA Popup */}
+      <CTAPopup 
+        isOpen={showCTAPopup} 
+        onClose={handleCloseCTAPopup} 
+      />
     </div>
   );
 };
