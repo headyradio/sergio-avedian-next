@@ -40,7 +40,7 @@ const MainHeroSection = () => {
   };
   
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-background via-background/95 to-muted/20 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-grid-pattern"></div>
@@ -50,7 +50,7 @@ const MainHeroSection = () => {
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
       
-      <div className="editorial-container py-20 lg:py-32 relative z-10">
+      <div className="editorial-container py-16 lg:py-20 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           {/* Content Column */}
           <div className="space-y-8 lg:space-y-12">
@@ -118,6 +118,9 @@ const MainHeroSection = () => {
           </div>
         </div>
       </div>
+      
+      {/* Section Connector */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-background/50 pointer-events-none"></div>
     </section>
   );
 };

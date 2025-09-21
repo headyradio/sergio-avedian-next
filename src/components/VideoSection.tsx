@@ -204,10 +204,17 @@ const VideoSection = () => {
   );
 
   return (
-    <section className="py-20 lg:py-32 relative">
+    <section className="pt-8 pb-20 lg:pt-12 lg:pb-32 relative -mt-16 z-10">
       <div className="editorial-container">
+        {/* Section Intro */}
+        <div className="text-center mb-8 animate-fade-in">
+          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <span className="text-sm font-medium text-primary">Fresh Content</span>
+          </div>
+        </div>
+
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-16">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
           <div>
             <h2 className="text-4xl lg:text-5xl font-black text-gradient mb-6">
               Latest Videos
