@@ -1,6 +1,5 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.55.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -23,14 +22,12 @@ serve(async (req) => {
     
     // Get environment variables
     const convertKitApiKey = Deno.env.get('CONVERTKIT_API_KEY');
-    const convertKitApiSecret = Deno.env.get('CONVERTKIT_API_SECRET');
-    const supabaseUrl = Deno.env.get('SUPABASE_URL');
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const convertKitFormId = Deno.env.get('CONVERTKIT_FORM_ID');
 
-    if (!convertKitApiKey || !convertKitApiSecret) {
-      console.error('ConvertKit API credentials not found');
+    if (!convertKitApiKey) {
+      console.error('ConvertKit API key not found');
       return new Response(
-        JSON.stringify({ error: 'ConvertKit API credentials not configured' }), 
+        JSON.stringify({ error: 'ConvertKit API key not configured' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -38,19 +35,16 @@ serve(async (req) => {
       );
     }
 
-    if (!supabaseUrl || !supabaseServiceKey) {
-      console.error('Supabase credentials not found');
+    if (!convertKitFormId) {
+      console.error('ConvertKit Form ID not found');
       return new Response(
-        JSON.stringify({ error: 'Database credentials not configured' }), 
+        JSON.stringify({ error: 'ConvertKit Form ID not configured' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
     }
-
-    // Initialize Supabase client
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Parse request body
     const { email, firstName }: SubscribeRequest = await req.json();
@@ -67,37 +61,15 @@ serve(async (req) => {
 
     console.log(`Processing subscription for: ${email}`);
 
-    // Check if email already exists in local database
-    const { data: existingSubscriber } = await supabase
-      .from('newsletter_subscribers')
-      .select('*')
-      .eq('email', email.toLowerCase())
-      .maybeSingle();
-
-    if (existingSubscriber) {
-      console.log(`Email ${email} already subscribed`);
-      return new Response(
-        JSON.stringify({ 
-          success: true, 
-          message: 'Already subscribed',
-          subscriber: existingSubscriber 
-        }), 
-        { 
-          status: 200, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    // Subscribe to ConvertKit using general subscribers endpoint
+    // Subscribe to ConvertKit using forms endpoint
     const convertKitData = {
       api_key: convertKitApiKey,
       email: email.toLowerCase(),
       ...(firstName && { first_name: firstName })
     };
 
-    console.log('Subscribing to ConvertKit...');
-    const convertKitResponse = await fetch('https://api.convertkit.com/v3/subscribers', {
+    console.log('Subscribing to ConvertKit form...');
+    const convertKitResponse = await fetch(`https://api.convertkit.com/v3/forms/${convertKitFormId}/subscribe`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -108,58 +80,35 @@ serve(async (req) => {
     const convertKitResult = await convertKitResponse.json();
     console.log('ConvertKit response:', convertKitResponse.status, convertKitResult);
 
-    let convertKitSubscriberId = null;
-    let subscriptionStatus = 'pending';
-
     if (convertKitResponse.ok) {
-      convertKitSubscriberId = convertKitResult.subscription?.subscriber?.id || null;
-      subscriptionStatus = 'active';
-      console.log(`Successfully subscribed to ConvertKit with ID: ${convertKitSubscriberId}`);
-    } else {
-      console.error('ConvertKit subscription failed:', convertKitResult);
-      // Continue with local storage even if ConvertKit fails
-      subscriptionStatus = 'convertkit_failed';
-    }
-
-    // Store in local database regardless of ConvertKit success
-    const { data: newSubscriber, error: dbError } = await supabase
-      .from('newsletter_subscribers')
-      .insert({
-        email: email.toLowerCase(),
-        convertkit_subscriber_id: convertKitSubscriberId,
-        subscription_status: subscriptionStatus,
-      })
-      .select()
-      .single();
-
-    if (dbError) {
-      console.error('Database insertion failed:', dbError);
+      console.log(`Successfully subscribed to ConvertKit form ${convertKitFormId}`);
       return new Response(
         JSON.stringify({ 
-          error: 'Failed to store subscription', 
-          details: dbError.message 
+          success: true, 
+          message: 'Successfully subscribed!',
+          subscriber: convertKitResult.subscription || convertKitResult
         }), 
         { 
-          status: 500, 
+          status: 200, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    } else {
+      console.error('ConvertKit subscription failed:', convertKitResult);
+      
+      // Return error response from ConvertKit
+      return new Response(
+        JSON.stringify({ 
+          success: false,
+          error: 'Subscription failed', 
+          details: convertKitResult.message || convertKitResult.error || 'Unknown error from ConvertKit'
+        }), 
+        { 
+          status: convertKitResponse.status,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
         }
       );
     }
-
-    console.log(`Successfully stored subscription in database:`, newSubscriber);
-
-    return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: 'Successfully subscribed!',
-        subscriber: newSubscriber,
-        convertkit_success: convertKitResponse.ok
-      }), 
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
-    );
 
   } catch (error) {
     console.error('Error in convertkit-subscribe function:', error);

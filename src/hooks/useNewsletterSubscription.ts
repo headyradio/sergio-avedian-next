@@ -11,7 +11,8 @@ interface SubscribeResponse {
   success: boolean;
   message: string;
   subscriber?: any;
-  convertkit_success?: boolean;
+  error?: string;
+  details?: string;
 }
 
 export const useNewsletterSubscription = () => {
@@ -46,13 +47,8 @@ export const useNewsletterSubscription = () => {
       if (data.success) {
         toast({
           title: "Successfully Subscribed!",
-          description: data.convertkit_success 
-            ? "Welcome to our newsletter. You'll receive our latest insights and trading psychology tips."
-            : "Subscription saved locally. We'll sync with our email service shortly.",
+          description: "Welcome to our newsletter. You'll receive our latest insights and trading psychology tips.",
         });
-        
-        // Invalidate any newsletter-related queries
-        queryClient.invalidateQueries({ queryKey: ['newsletter-subscribers'] });
       } else {
         throw new Error(data.message || 'Subscription failed');
       }
@@ -61,9 +57,11 @@ export const useNewsletterSubscription = () => {
       console.error('Subscription error:', error);
       
       toast({
-        title: "Subscription Failed",
-        description: error.message || "We couldn't process your subscription. Please try again.",
-        variant: "destructive",
+        title: "Subscription Failed", 
+        description: error.message.includes('already subscribed') || error.message.includes('duplicate')
+          ? "You're already subscribed to our newsletter!"
+          : "We couldn't process your subscription. Please try again.",
+        variant: error.message.includes('already subscribed') || error.message.includes('duplicate') ? "default" : "destructive",
       });
     },
   });
