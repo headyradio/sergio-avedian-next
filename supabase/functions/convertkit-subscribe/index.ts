@@ -22,23 +22,11 @@ serve(async (req) => {
     
     // Get environment variables
     const convertKitApiKey = Deno.env.get('CONVERTKIT_API_KEY_V4');
-    const convertKitFormId = Deno.env.get('CONVERTKIT_FORM_ID');
 
     if (!convertKitApiKey) {
       console.error('ConvertKit API V4 key not found');
       return new Response(
         JSON.stringify({ error: 'ConvertKit API V4 key not configured' }), 
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    if (!convertKitFormId) {
-      console.error('ConvertKit Form ID not found');
-      return new Response(
-        JSON.stringify({ error: 'ConvertKit Form ID not configured' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -61,14 +49,15 @@ serve(async (req) => {
 
     console.log(`Processing subscription for: ${email}`);
 
-    // Subscribe to ConvertKit using V4 API with forms endpoint
+    // Create subscriber directly in ConvertKit using V4 API (no form required)
     const convertKitData = {
       email_address: email.toLowerCase(),
+      state: 'active',
       ...(firstName && { first_name: firstName })
     };
 
-    console.log('Subscribing to ConvertKit V4 form...');
-    const convertKitResponse = await fetch(`https://api.kit.com/v4/forms/${convertKitFormId}/subscribers`, {
+    console.log('Creating subscriber in ConvertKit V4...');
+    const convertKitResponse = await fetch(`https://api.kit.com/v4/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +70,7 @@ serve(async (req) => {
     console.log('ConvertKit V4 response:', convertKitResponse.status, convertKitResult);
 
     if (convertKitResponse.ok) {
-      console.log(`Successfully subscribed to ConvertKit form ${convertKitFormId}`);
+      console.log(`Successfully created subscriber in ConvertKit`);
       return new Response(
         JSON.stringify({ 
           success: true, 
@@ -94,7 +83,7 @@ serve(async (req) => {
         }
       );
     } else {
-      console.error('ConvertKit V4 subscription failed:', convertKitResult);
+      console.error('ConvertKit V4 subscriber creation failed:', convertKitResult);
       
       // Handle V4 error format with consistent errors array
       const errorMessage = convertKitResult.errors 
