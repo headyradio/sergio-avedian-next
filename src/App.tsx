@@ -4,9 +4,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { useState } from "react";
 import Index from "./pages/Index";
 import CoachingPage from "./pages/CoachingPage";
+import AboutPage from "./pages/AboutPage";
 import NotFound from "./pages/NotFound";
 import CMSDemo from "./pages/CMSDemo";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -29,15 +31,17 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="sergio-theme">
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+      <HelmetProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="sergio-theme">
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/coaching" element={<CoachingPage />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/blog" element={<CMSBlogListPage />} />
               <Route path="/blog/:slug" element={<CMSBlogPostPage />} />
               <Route path="/cms-demo" element={<CMSDemo />} />
@@ -56,6 +60,7 @@ const App = () => {
           </BrowserRouter>
         </TooltipProvider>
       </ThemeProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   );
 };
