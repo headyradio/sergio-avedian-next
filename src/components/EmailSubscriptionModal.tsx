@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Mail, X } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Mail } from "lucide-react";
+import { useNewsletterSubscription } from "@/hooks/useNewsletterSubscription";
 
 interface EmailSubscriptionModalProps {
   open: boolean;
@@ -19,8 +19,7 @@ interface EmailSubscriptionModalProps {
 
 const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalProps) => {
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  const { subscribe, isLoading, isSuccess } = useNewsletterSubscription();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -31,36 +30,24 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
     e.preventDefault();
     
     if (!email.trim()) {
-      toast({
-        title: "Email Required",
-        description: "Please enter your email address.",
-        variant: "destructive",
-      });
       return;
     }
 
     if (!validateEmail(email)) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address.",
-        variant: "destructive",
-      });
       return;
     }
 
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Successfully Subscribed!",
-        description: "Welcome to our newsletter. Check your email for confirmation.",
-      });
-      setEmail("");
-      setIsLoading(false);
-      onOpenChange(false);
-    }, 1000);
+    // Call the subscription function
+    subscribe({ email: email.trim() });
   };
+
+  // Reset form and close modal on successful subscription
+  useEffect(() => {
+    if (isSuccess) {
+      setEmail("");
+      onOpenChange(false);
+    }
+  }, [isSuccess, onOpenChange]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

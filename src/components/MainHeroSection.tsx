@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import sergioHeroMain from "@/assets/sergio-hero-main.png";
 import { useHomepageContent } from "@/hooks/useSupabaseCMS";
+import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 const MainHeroSection = () => {
   const { data: content, isLoading } = useHomepageContent();
@@ -81,33 +82,13 @@ const MainHeroSection = () => {
               </p>
             </div>
             
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="group">
-                {heroContent.main_hero_cta_primary}
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button variant="outline" size="lg">
-                {heroContent.main_hero_cta_secondary}
-              </Button>
-            </div>
-            
-            {/* Experience Stats */}
-            <div className="flex items-center gap-6 pt-8 border-t border-border">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-foreground">{heroContent.main_hero_experience_years}</div>
-                <div className="text-sm text-muted-foreground">{heroContent.main_hero_experience_label}</div>
-              </div>
-              <div className="w-px h-12 bg-border"></div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-foreground">10K+</div>
-                <div className="text-sm text-muted-foreground">Students Taught</div>
-              </div>
-              <div className="w-px h-12 bg-border"></div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-foreground">95%</div>
-                <div className="text-sm text-muted-foreground">Success Rate</div>
-              </div>
+            {/* Subscribe CTA */}
+            <div className="flex justify-start">
+              <SubscribeDropdown 
+                variant="cta" 
+                size="lg" 
+                className="text-lg px-8 py-4 font-semibold"
+              />
             </div>
           </div>
           

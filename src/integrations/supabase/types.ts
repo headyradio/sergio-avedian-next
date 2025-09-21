@@ -529,6 +529,36 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscribers: {
+        Row: {
+          convertkit_subscriber_id: string | null
+          created_at: string
+          email: string
+          id: string
+          subscribed_at: string
+          subscription_status: string
+          updated_at: string
+        }
+        Insert: {
+          convertkit_subscriber_id?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          subscribed_at?: string
+          subscription_status?: string
+          updated_at?: string
+        }
+        Update: {
+          convertkit_subscriber_id?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          subscribed_at?: string
+          subscription_status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       rank_snapshots: {
         Row: {
           confidence_score: number | null

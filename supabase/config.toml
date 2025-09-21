@@ -49,3 +49,6 @@ security_update_password_require_reauthentication = true
 
 [functions.youtube-sync]
 verify_jwt = false
+
+[functions.convertkit-subscribe]
+verify_jwt = false
