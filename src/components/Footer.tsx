@@ -8,22 +8,13 @@ const Footer = () => {
 
   const footerSections = [
     {
-      title: "Content",
+      title: "Resources",
       links: [
         { label: "Latest Videos", href: "#videos" },
         { label: "Blog Articles", href: "#blog" },
-        { label: "Gig Economy", href: "#category/gig-economy" },
-        { label: "Rideshare", href: "#category/rideshare" },
-        { label: "Delivery", href: "#category/delivery" },
-      ]
-    },
-    {
-      title: "Topics",
-      links: [
-        { label: "Regulation", href: "#category/regulation" },
         { label: "Markets & Finance", href: "#category/finance" },
-        { label: "Tax Tips", href: "#tax-tips" },
-        { label: "Earnings Guide", href: "#earnings" },
+        { label: "Trading Tips", href: "#trading-tips" },
+        { label: "Market Analysis", href: "#analysis" },
         { label: "Industry News", href: "#news" },
       ]
     },
@@ -43,18 +34,18 @@ const Footer = () => {
     <footer className="bg-surface border-t border-card-border">
       <div className="editorial-container py-16 lg:py-20">
         {/* Main Footer Content */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="mb-4">
               <img 
                 src={sergioAvedianLogo} 
                 alt="Sergio Avedian" 
-                className="h-8 w-auto object-contain"
+                className="h-12 w-auto object-contain"
               />
             </div>
             <p className="text-text-secondary mb-6 leading-relaxed">
-              Your trusted source for gig economy insights, market analysis, and financial strategies. Helping drivers and gig workers maximize their earnings.
+              Your trusted source for market analysis, trading insights, and financial strategies. Helping investors and traders maximize their returns.
             </p>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
@@ -94,27 +85,6 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Newsletter Signup */}
-        <div className="bg-gradient-to-r from-cta/10 to-primary/10 border border-cta/20 rounded-2xl p-8 mb-12">
-          <div className="max-w-2xl mx-auto text-center">
-            <h4 className="text-2xl font-bold text-text-primary mb-4">
-              Stay Ahead of the Curve
-            </h4>
-            <p className="text-lg text-text-secondary mb-6">
-              Join 10,000+ gig workers getting weekly insights, earnings tips, and market updates.
-            </p>
-            <div className="flex justify-center">
-              <SubscribeDropdown 
-                variant="cta" 
-                size="lg" 
-                className="text-lg px-8 py-4"
-              />
-            </div>
-            <p className="text-sm text-text-muted mt-3">
-              No spam. Unsubscribe anytime. Privacy policy applies.
-            </p>
-          </div>
-        </div>
 
         {/* Bottom Footer */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between pt-8 border-t border-card-border">
@@ -144,7 +114,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="text-text-muted text-sm">
-            Built with passion for the gig economy community
+            Built with passion for the trading community
           </div>
         </div>
       </div>

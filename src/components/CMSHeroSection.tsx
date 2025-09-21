@@ -51,8 +51,8 @@ const CMSHeroSection = () => {
   };
 
   // Use CMS content with fallbacks
-  const heroTitle = homepageContent?.hero_title || latestVideo?.title || "Navigating the Gig Economy Revolution";
-  const heroDescription = homepageContent?.hero_description || latestVideo?.description?.substring(0, 200) || "Expert insights on rideshare, delivery, regulation, and financial strategies for gig workers. Join thousands who trust Sergio's analysis.";
+  const heroTitle = homepageContent?.hero_title || latestVideo?.title || "Mastering Financial Markets";
+  const heroDescription = homepageContent?.hero_description || latestVideo?.description?.substring(0, 200) || "Expert insights on trading, market analysis, and financial strategies for investors. Join thousands who trust Sergio's analysis.";
   const ctaPrimary = homepageContent?.hero_cta_primary || "Watch Latest Video";
   const ctaSecondary = homepageContent?.hero_cta_secondary || "Get Weekly Insights";
   const statsSubscribers = homepageContent?.stats_subscribers || "50K+";
@@ -144,7 +144,7 @@ const CMSHeroSection = () => {
             <div className="relative">
               <img
                 src={homepageContent?.hero_image_url || latestVideo?.thumbnail_high || sergioHero}
-                alt={homepageContent?.hero_image_alt || (latestVideo ? latestVideo.title : "Sergio Avedian - Gig Economy Expert")}
+                alt={homepageContent?.hero_image_alt || (latestVideo ? latestVideo.title : "Sergio Avedian - Financial Trading Expert")}
                 className="w-full h-auto rounded-3xl shadow-large"
               />
               {/* Play overlay */}

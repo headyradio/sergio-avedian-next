@@ -98,7 +98,7 @@ const VideoGrid = () => {
               Latest Videos
             </h2>
             <p className="text-lg text-text-secondary">
-              Stay informed with expert analysis on the gig economy
+              Stay informed with expert analysis on financial markets
             </p>
           </div>
           <Button variant="editorial" size="lg">
@@ -228,7 +228,7 @@ const VideoGrid = () => {
             Never Miss a Video
           </h3>
           <p className="text-lg text-text-secondary mb-8 max-w-2xl mx-auto">
-            Get notified when new videos drop. Join thousands of gig workers who stay ahead of the curve.
+            Get notified when new videos drop. Join thousands of investors who stay ahead of the curve.
           </p>
           <div className="flex justify-center">
             <SubscribeDropdown 

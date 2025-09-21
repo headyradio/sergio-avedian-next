@@ -216,7 +216,7 @@ const VideoSection = () => {
               Latest Videos
             </h2>
             <p className="text-xl text-text-secondary prose-modern">
-              Stay informed with expert analysis on the gig economy
+              Stay informed with expert analysis on financial markets
             </p>
           </div>
         </div>
