@@ -208,12 +208,6 @@ const VideoSection = () => {
   return (
     <section className="pt-8 pb-20 lg:pt-12 lg:pb-32 relative -mt-16 z-10">
       <div className="editorial-container">
-        {/* Section Intro */}
-        <div className="text-center mb-8 animate-fade-in">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <span className="text-sm font-medium text-primary">Fresh Content</span>
-          </div>
-        </div>
 
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-12">
@@ -225,15 +219,6 @@ const VideoSection = () => {
               Stay informed with expert analysis on the gig economy
             </p>
           </div>
-          <Button 
-            variant="secondary" 
-            size="lg"
-            onClick={syncVideos}
-            disabled={syncing}
-            className="glass-card"
-          >
-            {syncing ? 'Syncing...' : 'Sync Videos'}
-          </Button>
         </div>
 
         {loading ? (
@@ -271,6 +256,16 @@ const VideoSection = () => {
               <div>
                 <h3 className="text-2xl font-bold text-text-primary mb-6">LATEST VIDEOS</h3>
                 <RegularVideosGrid videos={getRegularVideos()} />
+                <div className="flex justify-center mt-8">
+                  <Button 
+                    variant="secondary" 
+                    size="lg"
+                    onClick={() => window.open('https://www.youtube.com/@SergioAvedian/', '_blank')}
+                    className="font-semibold"
+                  >
+                    View More Videos
+                  </Button>
+                </div>
               </div>
             )}
 
