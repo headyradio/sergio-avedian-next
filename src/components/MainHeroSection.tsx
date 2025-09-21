@@ -108,9 +108,8 @@ const MainHeroSection = () => {
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -left-6 bg-background border border-border rounded-2xl p-6 shadow-lg">
                 <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">Sergio Avedian</p>
+                    <p className="text-lg font-medium text-foreground">Sergio Avedian</p>
                     <p className="text-xs text-muted-foreground">Wall Street Veteran and Content Creator</p>
                   </div>
                 </div>
