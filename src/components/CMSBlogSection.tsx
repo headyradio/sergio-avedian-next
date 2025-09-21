@@ -4,6 +4,8 @@ import { Calendar, Clock, ArrowRight, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useBlogPosts, useFeaturedBlogPosts, CMSBlogPost } from "@/hooks/useSupabaseCMS";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
+import { OptimizedImage } from "@/components/OptimizedImage";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 // Loading skeleton component
 const BlogCardSkeleton = () => (
@@ -22,10 +24,12 @@ const FeaturedBlogCard = ({ post }: { post: CMSBlogPost }) => (
   <Link to={`/blog/${post.slug}`}>
     <Card className="overflow-hidden card-modern group cursor-pointer">
       <div className="relative">
-        <img
+        <OptimizedImage
           src={post.cover_image_url || "/placeholder.svg"}
           alt={post.cover_image_alt || post.title}
           className="w-full h-64 lg:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
+          priority={true}
+          aspectRatio="auto"
         />
         <div className="absolute top-4 left-4">
           <span className="bg-brand-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
@@ -81,15 +85,20 @@ const FeaturedBlogCard = ({ post }: { post: CMSBlogPost }) => (
   </Link>
 );
 
-const BlogCard = ({ post }: { post: CMSBlogPost }) => (
-  <Link to={`/blog/${post.slug}`}>
-    <Card className="overflow-hidden card-modern group cursor-pointer">
-      <div className="relative">
-        <img
-          src={post.cover_image_url || "/placeholder.svg"}
-          alt={post.cover_image_alt || post.title}
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+const BlogCard = ({ post }: { post: CMSBlogPost }) => {
+  const { ref, isIntersecting } = useIntersectionObserver();
+
+  return (
+    <div ref={ref}>
+      <Link to={`/blog/${post.slug}`}>
+        <Card className="overflow-hidden card-modern group cursor-pointer">
+          <div className="relative">
+            <OptimizedImage
+              src={isIntersecting ? (post.cover_image_url || "/placeholder.svg") : "/placeholder.svg"}
+              alt={post.cover_image_alt || post.title}
+              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+              aspectRatio="auto"
+            />
       </div>
       
       <div className="p-6 space-y-4">
@@ -125,10 +134,12 @@ const BlogCard = ({ post }: { post: CMSBlogPost }) => (
             <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
           </Button>
         </div>
-      </div>
-    </Card>
-  </Link>
+        </div>
+      </Card>
+    </Link>
+  </div>
 );
+};
 
 const CMSBlogSection = () => {
   const { data: featuredPosts, isLoading: featuredLoading } = useFeaturedBlogPosts();
