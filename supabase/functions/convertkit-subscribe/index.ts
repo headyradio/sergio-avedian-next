@@ -21,13 +21,13 @@ serve(async (req) => {
     console.log('ConvertKit Subscribe function called');
     
     // Get environment variables
-    const convertKitApiKey = Deno.env.get('CONVERTKIT_API_KEY');
+    const convertKitApiKey = Deno.env.get('CONVERTKIT_API_KEY_V4');
     const convertKitFormId = Deno.env.get('CONVERTKIT_FORM_ID');
 
     if (!convertKitApiKey) {
-      console.error('ConvertKit API key not found');
+      console.error('ConvertKit API V4 key not found');
       return new Response(
-        JSON.stringify({ error: 'ConvertKit API key not configured' }), 
+        JSON.stringify({ error: 'ConvertKit API V4 key not configured' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -61,24 +61,24 @@ serve(async (req) => {
 
     console.log(`Processing subscription for: ${email}`);
 
-    // Subscribe to ConvertKit using forms endpoint
+    // Subscribe to ConvertKit using V4 API with forms endpoint
     const convertKitData = {
-      api_key: convertKitApiKey,
-      email: email.toLowerCase(),
+      email_address: email.toLowerCase(),
       ...(firstName && { first_name: firstName })
     };
 
-    console.log('Subscribing to ConvertKit form...');
-    const convertKitResponse = await fetch(`https://api.convertkit.com/v3/forms/${convertKitFormId}/subscribe`, {
+    console.log('Subscribing to ConvertKit V4 form...');
+    const convertKitResponse = await fetch(`https://api.kit.com/v4/forms/${convertKitFormId}/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Kit-Api-Key': convertKitApiKey,
       },
       body: JSON.stringify(convertKitData),
     });
 
     const convertKitResult = await convertKitResponse.json();
-    console.log('ConvertKit response:', convertKitResponse.status, convertKitResult);
+    console.log('ConvertKit V4 response:', convertKitResponse.status, convertKitResult);
 
     if (convertKitResponse.ok) {
       console.log(`Successfully subscribed to ConvertKit form ${convertKitFormId}`);
@@ -86,7 +86,7 @@ serve(async (req) => {
         JSON.stringify({ 
           success: true, 
           message: 'Successfully subscribed!',
-          subscriber: convertKitResult.subscription || convertKitResult
+          subscriber: convertKitResult.subscriber || convertKitResult
         }), 
         { 
           status: 200, 
@@ -94,14 +94,18 @@ serve(async (req) => {
         }
       );
     } else {
-      console.error('ConvertKit subscription failed:', convertKitResult);
+      console.error('ConvertKit V4 subscription failed:', convertKitResult);
       
-      // Return error response from ConvertKit
+      // Handle V4 error format with consistent errors array
+      const errorMessage = convertKitResult.errors 
+        ? convertKitResult.errors.join(', ')
+        : convertKitResult.message || convertKitResult.error || 'Unknown error from ConvertKit';
+      
       return new Response(
         JSON.stringify({ 
           success: false,
           error: 'Subscription failed', 
-          details: convertKitResult.message || convertKitResult.error || 'Unknown error from ConvertKit'
+          details: errorMessage
         }), 
         { 
           status: convertKitResponse.status,
