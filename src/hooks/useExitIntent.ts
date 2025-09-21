@@ -27,17 +27,21 @@ export const useExitIntent = (options: UseExitIntentOptions = {}) => {
 
     const handleMouseLeave = (e: MouseEvent) => {
       // Check if minimum time has passed
-      if (Date.now() - startTimeRef.current < minTimeOnPage) {
+      const timeElapsed = Date.now() - startTimeRef.current;
+      if (timeElapsed < minTimeOnPage) {
+        console.log(`CTA Exit: Time check failed - ${timeElapsed}ms < ${minTimeOnPage}ms`);
         return;
       }
 
       // Check if already triggered
       if (hasTriggered) {
+        console.log(`CTA Exit: Already triggered`);
         return;
       }
 
       // Check if mouse is leaving from the top of the page
       if (e.clientY <= sensitivity && e.relatedTarget === null) {
+        console.log(`CTA Exit: TRIGGERED! Mouse at Y=${e.clientY}, sensitivity=${sensitivity}`);
         // Add a small delay to avoid false positives
         timeoutRef.current = setTimeout(() => {
           setShouldTrigger(true);

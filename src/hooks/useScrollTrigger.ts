@@ -25,39 +25,45 @@ export const useScrollTrigger = (options: UseScrollTriggerOptions = {}) => {
       return;
     }
 
-    const handleScroll = () => {
-      // Check if minimum time has passed
-      if (Date.now() - startTimeRef.current < minTimeOnPage) {
-        return;
-      }
+  const handleScroll = () => {
+    // Check if minimum time has passed
+    const timeElapsed = Date.now() - startTimeRef.current;
+    if (timeElapsed < minTimeOnPage) {
+      console.log(`CTA Scroll: Time check failed - ${timeElapsed}ms < ${minTimeOnPage}ms`);
+      return;
+    }
 
-      // Check if already triggered
-      if (hasTriggered || hasMetThresholdRef.current) {
-        return;
-      }
+    // Check if already triggered
+    if (hasTriggered || hasMetThresholdRef.current) {
+      console.log(`CTA Scroll: Already triggered - hasTriggered: ${hasTriggered}, hasMetThreshold: ${hasMetThresholdRef.current}`);
+      return;
+    }
 
-      // Calculate scroll progress through main content
-      const scrollTop = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      // Try to find main content area, fallback to full document
-      const mainContent = document.querySelector('main') || document.querySelector('article') || document.body;
-      const contentHeight = mainContent.scrollHeight;
-      const contentTop = mainContent.offsetTop || 0;
-      
-      // Calculate scroll progress relative to content
-      const scrollProgress = Math.min(
-        Math.max((scrollTop + windowHeight - contentTop) / contentHeight, 0),
-        1
-      );
+    // Calculate scroll progress through main content
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    
+    // Try to find main content area, fallback to full document
+    const mainContent = document.querySelector('main') || document.querySelector('article') || document.body;
+    const contentHeight = mainContent.scrollHeight;
+    const contentTop = mainContent.offsetTop || 0;
+    
+    // Calculate scroll progress relative to content
+    const scrollProgress = Math.min(
+      Math.max((scrollTop + windowHeight - contentTop) / contentHeight, 0),
+      1
+    );
 
-      if (scrollProgress >= threshold) {
-        hasMetThresholdRef.current = true;
-        setShouldTrigger(true);
-        setHasTriggered(true);
-      }
-    };
+    console.log(`CTA Scroll: Progress ${(scrollProgress * 100).toFixed(1)}% (threshold: ${(threshold * 100).toFixed(1)}%)`);
+
+    if (scrollProgress >= threshold) {
+      console.log(`CTA Scroll: TRIGGERED! Setting popup to show`);
+      hasMetThresholdRef.current = true;
+      setShouldTrigger(true);
+      setHasTriggered(true);
+    }
+  };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     

@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import ScrollProgressIndicator from "@/components/ScrollProgressIndicator";
 import CTAPopup from "@/components/CTAPopup";
+import CTATestButton from "@/components/CTATestButton";
 import { useBlogPost } from "@/hooks/useSupabaseCMS";
 import { useScrollTrigger } from "@/hooks/useScrollTrigger";
 import { useExitIntent } from "@/hooks/useExitIntent";
@@ -18,15 +19,25 @@ const CMSBlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, error } = useBlogPost(slug || '');
   
-  // CTA Popup triggers
-  const { shouldTrigger: scrollTrigger, resetTrigger: resetScrollTrigger } = useScrollTrigger();
-  const { shouldTrigger: exitTrigger, resetTrigger: resetExitTrigger } = useExitIntent();
+  // CTA Popup triggers with reduced times for testing
+  const { shouldTrigger: scrollTrigger, resetTrigger: resetScrollTrigger } = useScrollTrigger({
+    threshold: 0.3, // Trigger at 30% scroll instead of 65%
+    minTimeOnPage: 5000, // 5 seconds instead of 30
+    cooldownPeriod: 5 * 60 * 1000 // 5 minutes instead of 24 hours for testing
+  });
+  const { shouldTrigger: exitTrigger, resetTrigger: resetExitTrigger } = useExitIntent({
+    minTimeOnPage: 3000, // 3 seconds instead of 20
+    sensitivity: 50,
+    cooldownPeriod: 5 * 60 * 1000 // 5 minutes instead of 24 hours for testing
+  });
   
   const [showCTAPopup, setShowCTAPopup] = useState(false);
 
   // Combine triggers - show popup if either scroll or exit intent triggers
   useEffect(() => {
+    console.log(`CTA BlogPost: Triggers check - scroll: ${scrollTrigger}, exit: ${exitTrigger}, showPopup: ${showCTAPopup}`);
     if ((scrollTrigger || exitTrigger) && !showCTAPopup) {
+      console.log(`CTA BlogPost: SHOWING POPUP!`);
       setShowCTAPopup(true);
     }
   }, [scrollTrigger, exitTrigger, showCTAPopup]);
@@ -208,6 +219,9 @@ const CMSBlogPostPage = () => {
         isOpen={showCTAPopup} 
         onClose={handleCloseCTAPopup} 
       />
+      
+      {/* Test Button for CTA Popup - Remove this in production */}
+      <CTATestButton />
     </div>
   );
 };
