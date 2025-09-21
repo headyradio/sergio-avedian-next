@@ -3,6 +3,7 @@ import { TrendingUp } from "lucide-react";
 import sergioHeroMain from "@/assets/sergio-hero-main.png";
 import { useHomepageContent } from "@/hooks/useSupabaseCMS";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
+import StockMarketWidget from "@/components/StockMarketWidget";
 
 const MainHeroSection = () => {
   const { data: content, isLoading } = useHomepageContent();
@@ -101,15 +102,9 @@ const MainHeroSection = () => {
                 className="w-full h-auto rounded-3xl shadow-2xl"
               />
               
-              {/* Floating Badge */}
-              <div className="absolute -bottom-6 -left-6 bg-background border border-border rounded-2xl p-6 shadow-lg">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Live Trading</p>
-                    <p className="text-xs text-muted-foreground">Active Now</p>
-                  </div>
-                </div>
+              {/* Floating Market Data Badge */}
+              <div className="absolute -bottom-6 -left-6 bg-background/80 backdrop-blur-sm border border-border rounded-2xl p-4 shadow-lg">
+                <StockMarketWidget variant="compact" />
               </div>
             </div>
             

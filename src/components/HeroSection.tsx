@@ -3,6 +3,7 @@ import { Play, Mail } from "lucide-react";
 import sergioHero from "@/assets/sergio-hero.jpg";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import StockMarketWidget from "@/components/StockMarketWidget";
 
 interface LatestVideo {
   video_id: string;
@@ -84,22 +85,9 @@ const HeroSection = () => {
               </Button>
             </div>
 
-            {/* Social Proof */}
-            <div className="flex items-center space-x-8 pt-12">
-              <div className="text-center">
-                <div className="text-3xl font-black text-gradient">50K+</div>
-                <div className="text-sm text-text-muted font-mono uppercase tracking-wider">YouTube Subscribers</div>
-              </div>
-              <div className="w-px h-12 bg-border"></div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-gradient">10K+</div>
-                <div className="text-sm text-text-muted font-mono uppercase tracking-wider">Newsletter Readers</div>
-              </div>
-              <div className="w-px h-12 bg-border"></div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-gradient">500+</div>
-                <div className="text-sm text-text-muted font-mono uppercase tracking-wider">Videos Published</div>
-              </div>
+            {/* Market Data Section */}
+            <div className="pt-12">
+              <StockMarketWidget variant="expanded" />
             </div>
           </div>
 
