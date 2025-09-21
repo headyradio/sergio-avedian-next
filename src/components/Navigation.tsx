@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import SubscribeDropdown from "./SubscribeDropdown";
 import EmailSubscriptionModal from "./EmailSubscriptionModal";
@@ -10,9 +10,15 @@ import logoImage from "@/assets/sergio-avedian-logo.png";
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
+  const location = useLocation();
+
+  // Function to get the correct Videos href based on current location
+  const getVideosHref = () => {
+    return location.pathname === "/" ? "#videos" : "/#videos";
+  };
 
   const navItems = [
-    { label: "Videos", href: "#videos", isExternal: false },
+    { label: "Videos", href: getVideosHref(), isExternal: false, isVideos: true },
     { label: "Blog", href: "/blog", isExternal: true },
     { label: "Coaching", href: "/coaching", isExternal: true },
     { label: "Newsletter", href: "#newsletter", isExternal: false, isModal: true },
@@ -51,6 +57,14 @@ const Navigation = () => {
                 >
                   {item.label}
                 </button>
+              ) : item.isVideos ? (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="text-text-secondary hover:text-text-primary transition-colors duration-300 font-medium link-animated"
+                >
+                  {item.label}
+                </a>
               ) : (
                 <a
                   key={item.label}
@@ -118,6 +132,15 @@ const Navigation = () => {
                 >
                   {item.label}
                 </button>
+              ) : item.isVideos ? (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="block text-text-secondary hover:text-text-primary transition-colors duration-200 font-medium py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
               ) : (
                 <a
                   key={item.label}
