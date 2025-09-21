@@ -27,7 +27,7 @@ const GoldSubscriptionSection = () => {
   ];
 
   const handleJoinMembership = () => {
-    window.open("https://www.youtube.com/@SergioAvedian/join", "_blank", "noopener,noreferrer");
+    window.open("https://www.youtube.com/channel/UCAqOtdXGhmq57ztQQw2TQqQ/join", "_blank", "noopener,noreferrer");
   };
 
   return (
