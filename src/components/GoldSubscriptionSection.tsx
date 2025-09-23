@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Crown, Badge, Video, Phone, Clock } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Crown, Badge, Video, Users, Clock, Info } from "lucide-react";
 
 const GoldSubscriptionSection = () => {
   const benefits = [
@@ -20,9 +21,11 @@ const GoldSubscriptionSection = () => {
       description: "Watch past member-only live streams with full replay access"
     },
     {
-      icon: Phone,
-      title: "Direct Phone Access",
-      description: "Get my personal phone number for direct trading mentorship"
+      icon: Users,
+      title: "Private Telegram Chat Group Access",
+      description: "My Telegram chat group is like personal mentorship in a group setting.",
+      hasTooltip: true,
+      tooltipText: "Access to Telegram group is granted manually once membership has been activated."
     }
   ];
 
@@ -31,8 +34,9 @@ const GoldSubscriptionSection = () => {
   };
 
   return (
-    <section className="py-16">
-      <div className="editorial-container">
+    <TooltipProvider>
+      <section className="py-16">
+        <div className="editorial-container">
         <Card className="card-modern overflow-hidden bg-gradient-to-br from-amber-50/50 to-yellow-100/30 dark:from-amber-950/20 dark:to-yellow-900/10 border-amber-200/50 dark:border-amber-800/30">
           <CardContent className="p-8 lg:p-12">
             <div className="text-center mb-8">
@@ -60,9 +64,21 @@ const GoldSubscriptionSection = () => {
                       <Icon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-text-primary mb-1">
-                        {benefit.title}
-                      </h3>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-text-primary">
+                          {benefit.title}
+                        </h3>
+                        {benefit.hasTooltip && (
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <Info className="h-4 w-4 text-text-secondary hover:text-text-primary transition-colors" />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-xs max-w-48">{benefit.tooltipText}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                      </div>
                       <p className="text-sm text-text-secondary">
                         {benefit.description}
                       </p>
@@ -87,8 +103,9 @@ const GoldSubscriptionSection = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
-    </section>
+        </div>
+      </section>
+    </TooltipProvider>
   );
 };
 
