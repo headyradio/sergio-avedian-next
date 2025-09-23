@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import VideoCarousel from "./VideoCarousel";
 import ShortsPlayer from "./ShortsPlayer";
-import GoldSubscriptionSection from "./GoldSubscriptionSection";
+
 import SubscribeDropdown from "./SubscribeDropdown";
 import { Card, CardContent } from "@/components/ui/card";
 import { Play, Clock, Eye } from "lucide-react";
@@ -269,8 +269,6 @@ const VideoSection = () => {
               </div>
             )}
 
-            {/* GOLD SUBSCRIPTION Section */}
-            <GoldSubscriptionSection />
 
             {/* POWER HOUR Section */}
             <VideoCarousel
