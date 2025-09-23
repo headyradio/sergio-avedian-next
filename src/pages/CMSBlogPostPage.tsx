@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import ScrollProgressIndicator from "@/components/ScrollProgressIndicator";
 import CTAPopup from "@/components/CTAPopup";
-import CTATestButton from "@/components/CTATestButton";
+
 import { useBlogPost } from "@/hooks/useSupabaseCMS";
 import { useScrollTrigger } from "@/hooks/useScrollTrigger";
 import { useExitIntent } from "@/hooks/useExitIntent";
@@ -220,8 +220,6 @@ const CMSBlogPostPage = () => {
         onClose={handleCloseCTAPopup} 
       />
       
-      {/* Test Button for CTA Popup - Remove this in production */}
-      <CTATestButton />
     </div>
   );
 };

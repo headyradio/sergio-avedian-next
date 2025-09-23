@@ -32,27 +32,14 @@ const CTAPopup = ({ isOpen, onClose }: CTAPopupProps) => {
     <>
       <Dialog open={isOpen} onOpenChange={handleDismiss}>
         <DialogContent className="sm:max-w-md mx-4 p-0 overflow-hidden bg-card border-card-border shadow-2xl">
-          <div className="relative bg-gradient-to-br from-primary/5 via-background to-brand-secondary/5 p-6">
-            <DialogClose asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="absolute right-4 top-4 rounded-full w-8 h-8 p-0 hover:bg-surface/80"
-                onClick={handleDismiss}
-              >
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
-            </DialogClose>
-            
+          <div className="relative bg-gradient-to-br from-primary/5 via-background to-brand-secondary/5 p-6">            
             <div className="text-center space-y-4">
               <h3 className="text-xl font-bold text-text-primary bg-gradient-to-r from-primary to-brand-secondary bg-clip-text text-transparent">
-                Free Stock Trading Advice, Straight To You
+                Get Sergio's Latest Insights Delivered to Your Inbox
               </h3>
               
               <p className="text-sm text-text-secondary leading-relaxed">
-                Unlock free, daily stock trading insights from Sergio Avedian—35+ years of Wall Street experience, 
-                trusted by over 2,580 subscribers. Join the community now.
+                New to investing or already an active trader, get practical, no‑hype guidance from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor. Proven long‑term strategies and compounding made simple. Trusted by 2,580+ subscribers. Join the community now.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
