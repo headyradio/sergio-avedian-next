@@ -80,10 +80,10 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Mail className="h-5 w-5 text-primary" />
-            Free Stock Trading Advice, Straight to Your Inbox
+            Get Sergio's Latest Insights Delivered to Your Inbox
           </DialogTitle>
           <DialogDescription>
-            Unlock free, daily stock trading insights from Sergio Avedian—35+ years of Wall Street experience, trusted by over 2,580 subscribers. Join the community now.
+            New to investing or already an active trader, get practical, no‑hype guidance from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor. Proven long‑term strategies and compounding made simple. Trusted by 2,580+ subscribers. Join the community now.
           </DialogDescription>
         </DialogHeader>
         
