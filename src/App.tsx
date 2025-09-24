@@ -18,6 +18,8 @@ import CMSBlogListPage from "./pages/CMSBlogListPage";
 import CMSBlogPostPage from "./pages/CMSBlogPostPage";
 import TestBlogPost from "./pages/TestBlogPost";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import CookiePolicyPage from "./pages/CookiePolicyPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -50,6 +52,8 @@ const App = () => {
               <Route path="/blog/:slug" element={<CMSBlogPostPage />} />
               <Route path="/test-blog" element={<TestBlogPost />} />
               <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/cookie-policy" element={<CookiePolicyPage />} />
               <Route path="/cms-demo" element={<CMSDemo />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route 

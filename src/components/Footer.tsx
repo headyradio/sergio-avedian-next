@@ -30,7 +30,6 @@ const Footer = () => {
         { label: "Personal Coaching", href: "/coaching", type: "internal" },
         { label: "YouTube Channel", href: "https://www.youtube.com/@SergioAvedian/", type: "external" },
         { label: "LinkedIn", href: "https://www.linkedin.com/in/sergio-avedian-9939291/", type: "external" },
-        { label: "Terms of Service", href: "/terms-of-service", type: "internal" },
       ]
     }
   ];
@@ -141,35 +140,24 @@ const Footer = () => {
         </div>
 
 
-        {/* Bottom Footer */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between pt-8 border-t border-card-border">
-          <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6 mb-4 md:mb-0">
-            <p className="text-text-muted">
-              © {currentYear} Sergio Avedian. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-6">
-              <a
-                href="#privacy"
-                className="text-text-muted hover:text-text-primary transition-colors duration-200 text-sm"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="#terms"
-                className="text-text-muted hover:text-text-primary transition-colors duration-200 text-sm"
-              >
-                Terms of Service
-              </a>
-              <a
-                href="#cookies"
-                className="text-text-muted hover:text-text-primary transition-colors duration-200 text-sm"
-              >
-                Cookie Policy
-              </a>
+        {/* Bottom Copyright Section */}
+        <div className="border-t border-border/40 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
+            <div className="flex items-center gap-1">
+              <span>© 2025 Sergio Avedian. All rights reserved.</span>
             </div>
-          </div>
-          <div className="text-text-muted text-sm">
-            Built with passion for the trading community
+            <div className="flex items-center gap-6">
+              <Link to="/privacy-policy" className="hover:text-primary transition-colors">
+                Privacy Policy
+              </Link>
+              <Link to="/terms-of-service" className="hover:text-primary transition-colors">
+                Terms of Service
+              </Link>
+              <Link to="/cookie-policy" className="hover:text-primary transition-colors">
+                Cookie Policy
+              </Link>
+              <span className="text-text-muted">Built with passion for the trading community</span>
+            </div>
           </div>
         </div>
       </div>
