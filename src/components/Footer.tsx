@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Youtube, Twitter, Linkedin, Mail } from "lucide-react";
+import { Youtube, X, Linkedin, Mail } from "lucide-react";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import sergioAvedianLogo from "@/assets/sergio-avedian-logo-2.png";
 import { Link } from "react-router-dom";
@@ -28,8 +28,8 @@ const Footer = () => {
         { label: "Newsletter", href: "#newsletter", type: "modal" },
         { label: "Contact", href: "/contact", type: "internal" },
         { label: "Personal Coaching", href: "/coaching", type: "internal" },
-        { label: "YouTube Channel", href: "https://youtube.com/@sergioavedian", type: "external" },
-        { label: "LinkedIn", href: "https://linkedin.com/in/sergioavedian", type: "external" },
+        { label: "YouTube Channel", href: "https://www.youtube.com/@SergioAvedian/", type: "external" },
+        { label: "LinkedIn", href: "https://www.linkedin.com/in/sergio-avedian-9939291/", type: "external" },
       ]
     }
   ];
@@ -63,14 +63,14 @@ const Footer = () => {
               />
             </div>
             <p className="text-text-secondary mb-6 leading-relaxed">
-              Your trusted source for market analysis, trading insights, and financial strategies. Helping investors and traders maximize their returns.
+              Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.
             </p>
             <div className="flex items-center space-x-4">
               <Button 
                 variant="ghost" 
                 size="icon" 
                 className="text-text-muted hover:text-primary"
-                onClick={() => window.open("https://youtube.com/@sergioavedian", "_blank", "noopener noreferrer")}
+                onClick={() => window.open("https://www.youtube.com/@SergioAvedian/", "_blank", "noopener noreferrer")}
               >
                 <Youtube className="h-5 w-5" />
               </Button>
@@ -78,15 +78,15 @@ const Footer = () => {
                 variant="ghost" 
                 size="icon" 
                 className="text-text-muted hover:text-primary"
-                onClick={() => window.open("https://twitter.com/sergioavedian", "_blank", "noopener noreferrer")}
+                onClick={() => window.open("https://x.com/sergioaved", "_blank", "noopener noreferrer")}
               >
-                <Twitter className="h-5 w-5" />
+                <X className="h-5 w-5" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 className="text-text-muted hover:text-primary"
-                onClick={() => window.open("https://linkedin.com/in/sergioavedian", "_blank", "noopener noreferrer")}
+                onClick={() => window.open("https://www.linkedin.com/in/sergio-avedian-9939291/", "_blank", "noopener noreferrer")}
               >
                 <Linkedin className="h-5 w-5" />
               </Button>
