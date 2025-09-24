@@ -4,8 +4,11 @@ import GoldSubscriptionSection from "@/components/GoldSubscriptionSection";
 import VideoSection from "@/components/VideoSection";
 import CMSBlogSection from "@/components/CMSBlogSection";
 import Footer from "@/components/Footer";
+import useScrollToAnchor from "@/hooks/useScrollToAnchor";
 
 const Index = () => {
+  useScrollToAnchor();
+  
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
