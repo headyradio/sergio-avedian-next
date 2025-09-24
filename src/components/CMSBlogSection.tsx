@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Calendar, Clock, ArrowRight, User } from "lucide-react";
+import { Calendar, Clock, ArrowRight, User, Award, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CMSBlogPost } from "@/hooks/useSupabaseCMS";
 import { useHomepageBlogPosts } from "@/hooks/useHomepageBlogPosts";
@@ -194,21 +194,46 @@ const CMSBlogSection = () => {
           </div>
         )}
 
-        {/* Newsletter CTA */}
+        {/* Coaching CTA */}
         <div className="mt-20 text-center glass-card p-12 rounded-3xl">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <Award className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-foreground">35+ Years Wall Street Experience</span>
+          </div>
+          
           <h3 className="text-3xl font-black text-text-primary mb-4">
-            Master the Markets
+            Need More Guidance?
           </h3>
           <p className="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-            Get exclusive trading strategies and market analysis delivered directly to your inbox. 
-            Join thousands of successful traders and investors.
+            Work directly with Sergio to develop custom strategies, master risk management, 
+            and build the mental discipline needed for consistent trading success.
           </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-lg mx-auto mb-8">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary">35+</div>
+              <div className="text-xs text-text-secondary">Years Experience</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary">500+</div>
+              <div className="text-xs text-text-secondary">Traders Mentored</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary">Multiple</div>
+              <div className="text-xs text-text-secondary">Market Cycles</div>
+            </div>
+          </div>
+          
           <div className="flex justify-center">
-            <SubscribeDropdown 
-              variant="cta" 
-              size="lg" 
-              className="text-lg px-8 py-4 font-semibold"
-            />
+            <Link to="/coaching">
+              <Button 
+                size="lg" 
+                className="cta-electric text-lg px-8 py-4 font-semibold"
+              >
+                <Phone className="w-5 h-5 mr-2" />
+                Get Personal Coaching
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
