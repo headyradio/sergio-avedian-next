@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -84,12 +83,8 @@ serve(async (req) => {
       }
     }
 
-    // Initialize Resend
-    const resend = new Resend(resendApiKey);
-
-    // Send notification email to Sergio
-    console.log('Sending notification email...');
-    const notificationResult = await resend.emails.send({
+    // Send emails using Resend API directly via fetch
+    const notificationEmailData = {
       from: 'Contact Form <noreply@lovable.app>',
       to: ['sergio@sergioavedian.com'],
       subject: `New Contact Form Submission: ${subject}`,
@@ -108,12 +103,27 @@ serve(async (req) => {
         <div style="margin-top: 20px; padding: 10px; background: #e5f3ff; border-radius: 4px; font-size: 12px; color: #666;">
           <p>This message was sent through the contact form on your website.</p>
         </div>
-      `,
+      `
+    };
+
+    console.log('Sending notification email...');
+    const notificationResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(notificationEmailData),
     });
 
+    if (!notificationResponse.ok) {
+      const errorText = await notificationResponse.text();
+      console.error('Notification email failed:', errorText);
+      throw new Error('Failed to send notification email');
+    }
+
     // Send confirmation email to user
-    console.log('Sending confirmation email...');
-    const confirmationResult = await resend.emails.send({
+    const confirmationEmailData = {
       from: 'Sergio Avedian <noreply@lovable.app>',
       to: [email],
       subject: 'Thank you for reaching out!',
@@ -139,7 +149,7 @@ serve(async (req) => {
             </p>
             
             <div style="text-align: center; margin: 30px 0;">
-              <a href="https://your-website.com" style="background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block;">
+              <a href="https://sergioavedian.com" style="background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 500; display: inline-block;">
                 Visit My Website
               </a>
             </div>
@@ -151,21 +161,23 @@ serve(async (req) => {
             </p>
           </div>
         </div>
-      `,
+      `
+    };
+
+    console.log('Sending confirmation email...');
+    const confirmationResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(confirmationEmailData),
     });
 
-    console.log('Notification email result:', notificationResult);
-    console.log('Confirmation email result:', confirmationResult);
-
-    if (notificationResult.error) {
-      console.error('Notification email error:', notificationResult.error);
-      throw new Error('Failed to send notification email');
-    }
-
-    if (confirmationResult.error) {
-      console.error('Confirmation email error:', confirmationResult.error);
-      // Don't throw here - notification is more important
-      console.log('Confirmation email failed but continuing...');
+    // Don't fail if confirmation email fails
+    if (!confirmationResponse.ok) {
+      const errorText = await confirmationResponse.text();
+      console.error('Confirmation email failed:', errorText);
     }
 
     return new Response(
