@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -15,9 +15,18 @@ const CMSBlogListPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
+  const [searchParams] = useSearchParams();
 
   const { data: allPosts, isLoading: postsLoading } = useBlogPosts(100, 0, true); // Get published posts
   const { data: categories } = useCategories();
+
+  // Set search term from URL parameters on mount
+  useEffect(() => {
+    const urlSearchTerm = searchParams.get('search');
+    if (urlSearchTerm) {
+      setSearchTerm(urlSearchTerm);
+    }
+  }, [searchParams]);
 
   // Filter posts based on search and category
   const filteredPosts = allPosts?.filter((post) => {

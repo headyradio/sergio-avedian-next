@@ -5,11 +5,13 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import SubscribeDropdown from "./SubscribeDropdown";
 import EmailSubscriptionModal from "./EmailSubscriptionModal";
+import SearchModal from "./SearchModal";
 import logoImage from "@/assets/sergio-avedian-logo.png";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const location = useLocation();
 
   // Function to get the correct Videos href based on current location
@@ -79,7 +81,12 @@ const Navigation = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-6">
-            <Button variant="ghost" size="icon" className="hover:glow-primary">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hover:glow-primary"
+              onClick={() => setIsSearchModalOpen(true)}
+            >
               <Search className="h-5 w-5" />
             </Button>
             <SubscribeDropdown variant="cta" size="sm" className="cta-electric" />
@@ -153,7 +160,14 @@ const Navigation = () => {
               )
             )}
             <div className="flex items-center space-x-3 pt-2">
-              <Button variant="ghost" size="icon">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsSearchModalOpen(true);
+                }}
+              >
                 <Search className="h-4 w-4" />
               </Button>
               <SubscribeDropdown variant="cta" size="sm" className="flex-1" />
@@ -166,6 +180,12 @@ const Navigation = () => {
       <EmailSubscriptionModal
         open={isNewsletterModalOpen}
         onOpenChange={setIsNewsletterModalOpen}
+      />
+
+      {/* Search Modal */}
+      <SearchModal
+        open={isSearchModalOpen}
+        onOpenChange={setIsSearchModalOpen}
       />
     </nav>
   );
