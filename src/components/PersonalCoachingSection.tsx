@@ -27,50 +27,6 @@ const PersonalCoachingSection = () => {
     }
   ];
 
-  const packages = [
-    {
-      name: "Single Session",
-      price: 750,
-      duration: "90 minutes",
-      description: "Perfect for specific questions or portfolio review",
-      features: [
-        "1-on-1 video consultation",
-        "Portfolio analysis",
-        "Custom action plan",
-        "Follow-up email summary"
-      ],
-      popular: false
-    },
-    {
-      name: "Monthly Mentorship",
-      price: 2500,
-      duration: "4 sessions + support",
-      description: "Ongoing guidance and accountability",
-      features: [
-        "4 x 60-minute sessions",
-        "Unlimited email support",
-        "Custom strategy development",
-        "Portfolio monitoring",
-        "Market alerts & insights"
-      ],
-      popular: true
-    },
-    {
-      name: "Quarterly Intensive",
-      price: 6500,
-      duration: "12 weeks comprehensive",
-      description: "Complete transformation program",
-      features: [
-        "12 x 60-minute sessions",
-        "Daily market commentary",
-        "Custom trading plan",
-        "Risk management framework",
-        "Psychology coaching",
-        "Direct phone access"
-      ],
-      popular: false
-    }
-  ];
 
   return (
     <section className="py-20 bg-gradient-to-br from-surface/30 to-background relative overflow-hidden">
@@ -85,7 +41,7 @@ const PersonalCoachingSection = () => {
         <div className="max-w-4xl mx-auto text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Crown className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-foreground">Premium Coaching</span>
+            <span className="text-sm font-medium text-foreground">1-on-1 Support</span>
           </div>
           
           <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
@@ -114,70 +70,74 @@ const PersonalCoachingSection = () => {
           ))}
         </div>
 
-        {/* Coaching Packages */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {packages.map((pkg, index) => (
-            <Card key={index} className={`${pkg.popular ? 'card-premium ring-2 ring-primary/20' : 'card-modern'} h-full flex flex-col relative`}>
-              {pkg.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground px-4 py-1">
-                    Most Popular
-                  </Badge>
-                </div>
-              )}
-              
-              <CardHeader className="text-center">
-                <CardTitle className="text-xl mb-2">{pkg.name}</CardTitle>
-                <div className="text-3xl font-bold text-primary mb-2">
-                  ${pkg.price.toLocaleString()}
-                </div>
-                <CardDescription className="text-sm text-text-muted">
-                  {pkg.duration}
-                </CardDescription>
-                <CardDescription className="text-base text-text-secondary mt-2">
-                  {pkg.description}
-                </CardDescription>
-              </CardHeader>
-              
-              <CardContent className="flex-grow">
-                <ul className="space-y-3">
-                  {pkg.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-text-secondary">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-              
-              <CardFooter>
-                <Button 
-                  className={`w-full ${pkg.popular ? 'cta-electric' : ''}`}
-                  variant={pkg.popular ? "default" : "outline"}
-                  size="lg"
-                >
-                  {pkg.popular ? 'Start Coaching' : 'Book Session'}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+        {/* Why Choose Personal Coaching */}
+        <div className="max-w-4xl mx-auto text-center mb-16">
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+            Why Work With Sergio One-on-One?
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="text-left">
+              <h4 className="text-lg font-semibold text-foreground mb-3">Proven Track Record</h4>
+              <p className="text-text-secondary">
+                35+ years navigating Wall Street's ups and downs. Learn from someone who's actually been through multiple market cycles and economic downturns.
+              </p>
+            </div>
+            <div className="text-left">
+              <h4 className="text-lg font-semibold text-foreground mb-3">Personalized Approach</h4>
+              <p className="text-text-secondary">
+                No cookie-cutter strategies. Every coaching session is tailored to your specific goals, risk tolerance, and current market conditions.
+              </p>
+            </div>
+            <div className="text-left">
+              <h4 className="text-lg font-semibold text-foreground mb-3">Real-World Experience</h4>
+              <p className="text-text-secondary">
+                Learn practical strategies that actually work in today's markets, not just theoretical concepts from textbooks.
+              </p>
+            </div>
+            <div className="text-left">
+              <h4 className="text-lg font-semibold text-foreground mb-3">Ongoing Support</h4>
+              <p className="text-text-secondary">
+                Get the guidance and accountability you need to stay disciplined and make consistent progress toward your financial goals.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Call to Action */}
+        {/* Enhanced Call to Action */}
         <div className="text-center mt-16">
-          <Card className="card-premium max-w-2xl mx-auto">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-foreground mb-4">
-                Ready to Transform Your Trading?
+          <Card className="card-premium max-w-3xl mx-auto">
+            <CardContent className="p-10">
+              <h3 className="text-3xl font-bold text-foreground mb-6">
+                Ready to Take Your Trading to the Next Level?
               </h3>
-              <p className="text-text-secondary mb-6">
-                Schedule a complimentary 15-minute consultation to discuss your goals 
-                and see if personal coaching is right for you.
+              <p className="text-xl text-text-secondary mb-8 max-w-2xl mx-auto leading-relaxed">
+                Let's have a no-pressure conversation about your trading goals and challenges. 
+                In just 15 minutes, you'll get personalized insights and see if working together makes sense.
               </p>
-              <Button size="lg" className="cta-electric">
+              
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center justify-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span className="text-text-secondary">No sales pitch - just valuable insights</span>
+                </div>
+                <div className="flex items-center justify-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span className="text-text-secondary">Personalized advice for your situation</span>
+                </div>
+                <div className="flex items-center justify-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  <span className="text-text-secondary">Zero commitment required</span>
+                </div>
+              </div>
+              
+              <Button size="lg" className="cta-electric text-lg px-10 py-4">
                 <Phone className="w-5 h-5 mr-2" />
-                Book Free Consultation
+                Schedule Your Free 15-Minute Call
               </Button>
+              
+              <p className="text-sm text-text-muted mt-4">
+                Usually books up 2-3 weeks in advance
+              </p>
             </CardContent>
           </Card>
         </div>
