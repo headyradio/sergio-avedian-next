@@ -205,24 +205,9 @@ const CMSBlogSection = () => {
             Need More Guidance?
           </h3>
           <p className="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-            Work directly with Sergio to develop custom strategies, master risk management, 
-            and build the mental discipline needed for consistent trading success.
+            Book a free 15-minute consultation to discuss your trading goals and see how personalized coaching 
+            can accelerate your path to consistent profits.
           </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-lg mx-auto mb-8">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary">35+</div>
-              <div className="text-xs text-text-secondary">Years Experience</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary">500+</div>
-              <div className="text-xs text-text-secondary">Traders Mentored</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-primary">Multiple</div>
-              <div className="text-xs text-text-secondary">Market Cycles</div>
-            </div>
-          </div>
           
           <div className="flex justify-center">
             <Link to="/coaching">
@@ -231,7 +216,7 @@ const CMSBlogSection = () => {
                 className="cta-electric text-lg px-8 py-4 font-semibold"
               >
                 <Phone className="w-5 h-5 mr-2" />
-                Get Personal Coaching
+                Book Free 15-Minute Consultation
               </Button>
             </Link>
           </div>
