@@ -30,6 +30,7 @@ const Footer = () => {
         { label: "Personal Coaching", href: "/coaching", type: "internal" },
         { label: "YouTube Channel", href: "https://www.youtube.com/@SergioAvedian/", type: "external" },
         { label: "LinkedIn", href: "https://www.linkedin.com/in/sergio-avedian-9939291/", type: "external" },
+        { label: "Terms of Service", href: "/terms-of-service", type: "internal" },
       ]
     }
   ];
