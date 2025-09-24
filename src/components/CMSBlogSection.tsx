@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useBlogPosts, useFeaturedBlogPosts, CMSBlogPost } from "@/hooks/useSupabaseCMS";
+import { CMSBlogPost } from "@/hooks/useSupabaseCMS";
+import { useHomepageBlogPosts } from "@/hooks/useHomepageBlogPosts";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import { OptimizedImage } from "@/components/OptimizedImage";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
@@ -142,11 +143,13 @@ const BlogCard = ({ post }: { post: CMSBlogPost }) => {
 };
 
 const CMSBlogSection = () => {
-  const { data: featuredPosts, isLoading: featuredLoading } = useFeaturedBlogPosts();
-  const { data: regularPosts, isLoading: regularLoading } = useBlogPosts(6, 0);
+  const { data: blogData, isLoading } = useHomepageBlogPosts();
 
-  const featuredPost = featuredPosts?.[0];
-  const otherPosts = regularPosts?.filter(post => !post.featured) || [];
+  const { featuredPost, regularPosts, hasMorePosts } = blogData || {
+    featuredPost: null,
+    regularPosts: [],
+    hasMorePosts: false
+  };
 
   return (
     <section className="py-24 lg:py-32 bg-surface">
@@ -162,7 +165,7 @@ const CMSBlogSection = () => {
         </div>
 
         {/* Featured Post */}
-        {featuredLoading ? (
+        {isLoading ? (
           <div className="mb-16">
             <BlogCardSkeleton />
           </div>
@@ -172,13 +175,25 @@ const CMSBlogSection = () => {
           </div>
         ) : null}
 
-        {/* Regular Posts Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {regularLoading
+        {/* Regular Posts Grid - 2 rows × 3 columns */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {isLoading
             ? Array.from({ length: 6 }, (_, i) => <BlogCardSkeleton key={i} />)
-            : otherPosts.map((post) => <BlogCard key={post.id} post={post} />)
+            : regularPosts.map((post) => <BlogCard key={post.id} post={post} />)
           }
         </div>
+
+        {/* Read More Articles CTA */}
+        {hasMorePosts && !isLoading && (
+          <div className="text-center">
+            <Link to="/blog">
+              <Button variant="outline" size="lg" className="group">
+                Read More Articles
+                <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </div>
+        )}
 
         {/* Newsletter CTA */}
         <div className="mt-20 text-center glass-card p-12 rounded-3xl">
