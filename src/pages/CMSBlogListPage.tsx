@@ -84,48 +84,52 @@ const CMSBlogListPage = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      {/* Hero Section */}
-      <section className="relative py-24 lg:py-40 overflow-hidden">
-        {/* Premium Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background via-surface/50 to-surface-secondary"></div>
+      {/* Hero Section - Tightened and Modern */}
+      <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 overflow-hidden">
+        {/* Refined Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-surface/30 to-surface-secondary/50"></div>
         <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, hsl(195 100% 60% / 0.05), transparent 50%), 
-                           radial-gradient(circle at 75% 75%, hsl(280 100% 70% / 0.05), transparent 50%)`
+          backgroundImage: `radial-gradient(circle at 30% 20%, hsl(195 100% 60% / 0.03), transparent 50%), 
+                           radial-gradient(circle at 70% 80%, hsl(280 100% 70% / 0.03), transparent 50%)`
         }}></div>
         
         <div className="relative editorial-container">
-          <div className="text-center max-w-5xl mx-auto">
-            <h1 className="text-4xl lg:text-6xl xl:text-7xl font-black text-gradient mb-8 leading-tight">
+          <div className="text-center max-w-4xl mx-auto">
+            {/* Compact Title */}
+            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-black text-gradient mb-4 leading-tight">
               Sergio's Blog
             </h1>
-            <p className="text-lg lg:text-xl text-text-secondary mb-12 leading-relaxed max-w-3xl mx-auto">
-              Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.
+            
+            {/* Condensed Description */}
+            <p className="text-base lg:text-lg text-text-secondary mb-8 leading-relaxed max-w-2xl mx-auto">
+              Practical, no‑hype guidance from 35+ years on Wall Street — focused on building wealth without a financial advisor.
             </p>
             
-            {/* Premium Search and Filter */}
-            <div className="flex flex-col gap-6 max-w-4xl mx-auto">
-              {/* Enhanced Search */}
+            {/* Compact Search and Filter */}
+            <div className="flex flex-col gap-4 max-w-3xl mx-auto">
+              {/* Streamlined Search */}
               <div className="relative group">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-brand-secondary/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative glass-card rounded-2xl p-1">
-                  <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-text-muted h-5 w-5 z-10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-brand-secondary/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative glass-card rounded-xl overflow-hidden">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-muted h-4 w-4 z-10" />
                   <Input
                     type="text"
                     placeholder="Search articles, topics, strategies..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-14 pr-6 h-14 text-lg bg-transparent border-0 focus:ring-2 focus:ring-primary/30 rounded-2xl placeholder:text-text-muted/70"
+                    className="pl-12 pr-4 h-12 bg-transparent border-0 focus:ring-2 focus:ring-primary/20 rounded-xl placeholder:text-text-muted/70"
                   />
                 </div>
               </div>
               
-              {/* Premium Category Filter */}
+              {/* Compact Category Filter */}
               <div className="relative">
-                <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2 -mx-4 px-4">
+                <div className="flex gap-2 justify-center flex-wrap max-w-4xl mx-auto">
                   <Button
                     variant={selectedCategory === "" ? "default" : "outline"}
                     onClick={() => setSelectedCategory("")}
-                    className="h-11 px-6 flex-shrink-0 glass-card hover:scale-105 transition-all duration-200 font-medium"
+                    size="sm"
+                    className="h-9 px-4 glass-card hover:scale-105 transition-all duration-200 font-medium text-sm"
                   >
                     All Articles
                   </Button>
@@ -134,19 +138,17 @@ const CMSBlogListPage = () => {
                       key={category.slug}
                       variant={selectedCategory === category.name ? "default" : "outline"}
                       onClick={() => setSelectedCategory(category.name)}
-                      className="h-11 px-6 flex-shrink-0 glass-card hover:scale-105 transition-all duration-200 font-medium"
+                      size="sm"
+                      className="h-9 px-4 glass-card hover:scale-105 transition-all duration-200 font-medium text-sm"
                       style={{
                         borderColor: selectedCategory === category.name ? category.color : undefined,
-                        boxShadow: selectedCategory === category.name ? `0 0 20px ${category.color}30` : undefined
+                        boxShadow: selectedCategory === category.name ? `0 0 15px ${category.color}25` : undefined
                       }}
                     >
                       {category.name}
                     </Button>
                   ))}
                 </div>
-                {/* Enhanced fade gradients */}
-                <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent pointer-events-none" />
               </div>
             </div>
           </div>
