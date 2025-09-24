@@ -41,10 +41,16 @@ const Footer = () => {
       setIsNewsletterModalOpen(true);
     } else if (link.type === "anchor") {
       e.preventDefault();
-      const elementId = link.href.substring(2); // Remove /#
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Check if we're already on the home page
+      if (window.location.pathname === '/') {
+        const elementId = link.href.substring(2); // Remove /#
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        // Navigate to home page with hash, let the home page handle scrolling
+        window.location.href = link.href;
       }
     }
   };
