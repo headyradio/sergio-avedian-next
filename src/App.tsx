@@ -9,6 +9,7 @@ import { useState } from "react";
 import Index from "./pages/Index";
 import CoachingPage from "./pages/CoachingPage";
 import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 import CMSDemo from "./pages/CMSDemo";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -43,6 +44,7 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/coaching" element={<CoachingPage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/blog" element={<CMSBlogListPage />} />
               <Route path="/blog/:slug" element={<CMSBlogPostPage />} />
               <Route path="/test-blog" element={<TestBlogPost />} />

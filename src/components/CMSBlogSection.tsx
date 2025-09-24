@@ -152,7 +152,7 @@ const CMSBlogSection = () => {
   };
 
   return (
-    <section className="py-24 lg:py-32 bg-surface">
+    <section id="blog" className="py-24 lg:py-32 bg-surface">
       <div className="editorial-container">
         <div className="text-center space-y-6 mb-16">
           <h2 className="text-4xl lg:text-5xl font-black tracking-tight text-text-primary">

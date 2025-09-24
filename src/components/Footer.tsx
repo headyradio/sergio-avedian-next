@@ -2,33 +2,51 @@ import { Button } from "@/components/ui/button";
 import { Youtube, Twitter, Linkedin, Mail } from "lucide-react";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import sergioAvedianLogo from "@/assets/sergio-avedian-logo-2.png";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import EmailSubscriptionModal from "@/components/EmailSubscriptionModal";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
 
   const footerSections = [
     {
       title: "Resources",
       links: [
-        { label: "Latest Videos", href: "#videos" },
-        { label: "Blog Articles", href: "#blog" },
-        { label: "Markets & Finance", href: "#category/finance" },
-        { label: "Trading Tips", href: "#trading-tips" },
-        { label: "Market Analysis", href: "#analysis" },
-        { label: "Industry News", href: "#news" },
+        { label: "Latest Videos", href: "/#videos", type: "anchor" },
+        { label: "Blog Articles", href: "/blog", type: "internal" },
+        { label: "Trading Education", href: "/coaching", type: "internal" },
+        { label: "About Sergio", href: "/about", type: "internal" },
+        { label: "Investment Strategies", href: "/blog?category=investment", type: "internal" },
+        { label: "Options Trading", href: "/blog?category=trading", type: "internal" },
       ]
     },
     {
       title: "Connect",
       links: [
-        { label: "Newsletter", href: "#newsletter" },
-        { label: "About Sergio", href: "#about" },
-        { label: "Media Kit", href: "#media" },
-        { label: "Contact", href: "#contact" },
-        { label: "Speaking", href: "#speaking" },
+        { label: "Newsletter", href: "#newsletter", type: "modal" },
+        { label: "Contact", href: "/contact", type: "internal" },
+        { label: "Personal Coaching", href: "/coaching", type: "internal" },
+        { label: "YouTube Channel", href: "https://youtube.com/@sergioavedian", type: "external" },
+        { label: "LinkedIn", href: "https://linkedin.com/in/sergioavedian", type: "external" },
       ]
     }
   ];
+
+  const handleLinkClick = (link: any, e: React.MouseEvent) => {
+    if (link.type === "modal") {
+      e.preventDefault();
+      setIsNewsletterModalOpen(true);
+    } else if (link.type === "anchor") {
+      e.preventDefault();
+      const elementId = link.href.substring(2); // Remove /#
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
 
   return (
     <footer className="bg-surface border-t border-card-border">
@@ -48,18 +66,35 @@ const Footer = () => {
               Your trusted source for market analysis, trading insights, and financial strategies. Helping investors and traders maximize their returns.
             </p>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-text-muted hover:text-primary"
+                onClick={() => window.open("https://youtube.com/@sergioavedian", "_blank", "noopener noreferrer")}
+              >
                 <Youtube className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-text-muted hover:text-primary"
+                onClick={() => window.open("https://twitter.com/sergioavedian", "_blank", "noopener noreferrer")}
+              >
                 <Twitter className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-text-muted hover:text-primary"
+                onClick={() => window.open("https://linkedin.com/in/sergioavedian", "_blank", "noopener noreferrer")}
+              >
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
-                <Mail className="h-5 w-5" />
-              </Button>
+              <Link to="/contact">
+                <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
+                  <Mail className="h-5 w-5" />
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -72,12 +107,31 @@ const Footer = () => {
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-text-secondary hover:text-text-primary transition-colors duration-200"
-                    >
-                      {link.label}
-                    </a>
+                    {link.type === "internal" ? (
+                      <Link
+                        to={link.href}
+                        className="text-text-secondary hover:text-text-primary transition-colors duration-200"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : link.type === "external" ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-text-secondary hover:text-text-primary transition-colors duration-200"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <a
+                        href={link.href}
+                        onClick={(e) => handleLinkClick(link, e)}
+                        className="text-text-secondary hover:text-text-primary transition-colors duration-200 cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -118,6 +172,10 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <EmailSubscriptionModal 
+        open={isNewsletterModalOpen} 
+        onOpenChange={setIsNewsletterModalOpen} 
+      />
     </footer>
   );
 };
