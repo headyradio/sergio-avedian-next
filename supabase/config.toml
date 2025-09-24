@@ -52,3 +52,6 @@ verify_jwt = false
 
 [functions.convertkit-subscribe]
 verify_jwt = false
+
+[functions.send-contact-email]
+verify_jwt = false
