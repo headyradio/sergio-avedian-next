@@ -5,6 +5,7 @@ import forbesLogo from "@/assets/forbes-logo.png";
 import businessInsiderLogo from "@/assets/business-insider-logo.png";
 import nytLogo from "@/assets/nyt-logo.png";
 import wsjLogo from "@/assets/wsj-logo.png";
+import bloombergLogo from "@/assets/bloomberg-logo.png";
 import { useHomepageContent } from "@/hooks/useSupabaseCMS";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 
@@ -129,7 +130,7 @@ const MainHeroSection = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 items-center justify-items-center max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-8 items-center justify-items-center max-w-5xl mx-auto">
             {/* The New York Times */}
             <div className="opacity-60 hover:opacity-80 transition-opacity duration-300">
               <a
@@ -146,17 +147,17 @@ const MainHeroSection = () => {
               </a>
             </div>
             
-            {/* Business Insider */}
+            {/* Bloomberg */}
             <div className="opacity-60 hover:opacity-80 transition-opacity duration-300">
               <a
-                href="https://www.businessinsider.com/uber-cracks-down-on-driver-gps-locations-deactivating-accounts-2025-9?utm_source=flipboard&utm_content=topic%2Fubereats"
+                href="https://www.bloomberg.com/news/features/2022-05-27/how-uber-and-lyft-gamify-the-gig-economy"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block"
               >
                 <img
-                  src={businessInsiderLogo}
-                  alt="Business Insider"
+                  src={bloombergLogo}
+                  alt="Bloomberg"
                   className="h-8 w-auto object-contain filter grayscale"
                 />
               </a>
@@ -189,6 +190,22 @@ const MainHeroSection = () => {
                 <img
                   src={forbesLogo}
                   alt="Forbes"
+                  className="h-8 w-auto object-contain filter grayscale"
+                />
+              </a>
+            </div>
+            
+            {/* Business Insider */}
+            <div className="opacity-60 hover:opacity-80 transition-opacity duration-300">
+              <a
+                href="https://www.businessinsider.com/uber-cracks-down-on-driver-gps-locations-deactivating-accounts-2025-9?utm_source=flipboard&utm_content=topic%2Fubereats"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <img
+                  src={businessInsiderLogo}
+                  alt="Business Insider"
                   className="h-8 w-auto object-contain filter grayscale"
                 />
               </a>
