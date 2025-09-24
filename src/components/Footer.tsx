@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Youtube, X, Linkedin, Mail } from "lucide-react";
+import { Youtube, Linkedin, Mail } from "lucide-react";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import sergioAvedianLogo from "@/assets/sergio-avedian-logo-2.png";
+import xLogo from "@/assets/x-logo.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import EmailSubscriptionModal from "@/components/EmailSubscriptionModal";
@@ -80,7 +81,7 @@ const Footer = () => {
                 className="text-text-muted hover:text-primary"
                 onClick={() => window.open("https://x.com/sergioaved", "_blank", "noopener noreferrer")}
               >
-                <X className="h-5 w-5" />
+                <img src={xLogo} alt="X (Twitter)" className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
