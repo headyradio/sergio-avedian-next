@@ -156,11 +156,10 @@ const CMSBlogSection = () => {
       <div className="editorial-container">
         <div className="text-center space-y-6 mb-16">
           <h2 className="text-4xl lg:text-5xl font-black tracking-tight text-text-primary">
-            Trading & Investment Insights
+            Sergio's Blog
           </h2>
           <p className="text-xl text-text-secondary max-w-3xl mx-auto prose-modern">
-            Professional analysis and strategies from a Wall Street veteran with 35+ years of experience.
-            Master options trading, investment psychology, and wealth-building techniques.
+            Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.
           </p>
         </div>
 

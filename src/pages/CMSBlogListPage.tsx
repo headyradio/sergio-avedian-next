@@ -80,21 +80,11 @@ const CMSBlogListPage = () => {
         
         <div className="relative editorial-container">
           <div className="text-center max-w-5xl mx-auto">
-            {/* Premium Badge */}
-            <div className="inline-flex items-center px-4 py-2 rounded-full glass-card mb-8">
-              <div className="w-2 h-2 bg-gradient-to-r from-primary to-brand-secondary rounded-full mr-3 animate-pulse"></div>
-              <span className="text-sm font-medium text-text-secondary">Expert Market Analysis</span>
-            </div>
-            
             <h1 className="text-4xl lg:text-6xl xl:text-7xl font-black text-gradient mb-8 leading-tight">
-              Trading & Investment
-              <span className="block text-transparent bg-gradient-to-r from-primary via-brand-secondary to-cta-primary bg-clip-text">
-                Insights
-              </span>
+              Sergio's Blog
             </h1>
             <p className="text-lg lg:text-xl text-text-secondary mb-12 leading-relaxed max-w-3xl mx-auto">
-              Professional analysis and strategies from a Wall Street veteran with 35+ years of experience.
-              Master the markets with proven insights on options trading, investment psychology, and wealth building.
+              Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.
             </p>
             
             {/* Premium Search and Filter */}
