@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Crown, Phone, FileText, TrendingUp, Shield } from "lucide-react";
+import ContactFormModal from "@/components/ContactFormModal";
 
 const PersonalCoachingSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const features = [
     {
       icon: <FileText className="w-5 h-5" />,
@@ -130,7 +134,11 @@ const PersonalCoachingSection = () => {
                 </div>
               </div>
               
-              <Button size="lg" className="cta-electric text-lg px-10 py-4">
+              <Button 
+                size="lg" 
+                className="cta-electric text-lg px-10 py-4"
+                onClick={() => setIsModalOpen(true)}
+              >
                 <Phone className="w-5 h-5 mr-2" />
                 Schedule Your Free 15-Minute Call
               </Button>
@@ -142,6 +150,12 @@ const PersonalCoachingSection = () => {
           </Card>
         </div>
       </div>
+      
+      <ContactFormModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)}
+        defaultSubject="Free 15-Minute Consultation Request"
+      />
     </section>
   );
 };

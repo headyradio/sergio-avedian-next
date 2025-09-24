@@ -22,7 +22,12 @@ const contactSchema = z.object({
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-const ContactForm = () => {
+interface ContactFormProps {
+  defaultSubject?: string;
+  onSuccess?: () => void;
+}
+
+const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
   const { toast } = useToast();
   const { submitContact, isSubmitting } = useContactForm();
   const [isSuccess, setIsSuccess] = useState(false);
@@ -33,7 +38,7 @@ const ContactForm = () => {
       name: "",
       email: "",
       phone: "",
-      subject: "",
+      subject: defaultSubject || "",
       message: "",
       honeypot: "", // Hidden anti-spam field
     },
@@ -58,6 +63,7 @@ const ContactForm = () => {
       await submitContact(submissionData);
       setIsSuccess(true);
       form.reset();
+      onSuccess?.();
       toast({
         title: "Message sent successfully!",
         description: "Thank you for reaching out. Sergio will get back to you soon.",

@@ -92,7 +92,7 @@ serve(async (req) => {
     console.log('Sending notification email...');
     const notificationResult = await resend.emails.send({
       from: 'Contact Form <noreply@lovable.app>',
-      to: ['sergio.avedian@gmail.com'], // Replace with Sergio's actual email
+      to: ['sergio@sergioavedian.com'],
       subject: `New Contact Form Submission: ${subject}`,
       html: `
         <h2>New Contact Form Submission</h2>
