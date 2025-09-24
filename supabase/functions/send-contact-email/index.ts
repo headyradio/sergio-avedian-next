@@ -61,7 +61,7 @@ serve(async (req) => {
 
     // Send notification email using Resend API directly
     const emailPayload = {
-      from: 'Contact Form <contact@lovable.app>',
+      from: 'Contact Form <onboarding@resend.dev>',
       to: ['sergio@sergioavedian.com'],
       subject: `New Contact Form Submission: ${subject}`,
       html: `
