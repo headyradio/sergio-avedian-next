@@ -20,7 +20,7 @@ const Footer = () => {
         { label: "Trading Education", href: "/coaching", type: "internal" },
         { label: "About Sergio", href: "/about", type: "internal" },
         { label: "Investment Strategies", href: "/blog?category=investment", type: "internal" },
-        { label: "Options Trading", href: "/blog?category=trading", type: "internal" },
+        { label: "Options Trading", href: "/blog?category=options", type: "internal" },
       ]
     },
     {

@@ -20,11 +20,26 @@ const CMSBlogListPage = () => {
   const { data: allPosts, isLoading: postsLoading } = useBlogPosts(100, 0, true); // Get published posts
   const { data: categories } = useCategories();
 
-  // Set search term from URL parameters on mount
+  // Set search term and category from URL parameters on mount
   useEffect(() => {
     const urlSearchTerm = searchParams.get('search');
+    const urlCategory = searchParams.get('category');
+    
     if (urlSearchTerm) {
       setSearchTerm(urlSearchTerm);
+    }
+    
+    if (urlCategory) {
+      // Map URL category parameters to actual category names
+      const categoryMap: { [key: string]: string } = {
+        'investment': 'Investment Strategy',
+        'trading': 'Trading Psychology',
+        'long-term': 'Long-term Investing',
+        'options': 'Options Trading'
+      };
+      
+      const mappedCategory = categoryMap[urlCategory.toLowerCase()] || urlCategory;
+      setSelectedCategory(mappedCategory);
     }
   }, [searchParams]);
 
