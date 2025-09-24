@@ -25,28 +25,45 @@ const CookiePolicyPage = () => {
               <div className="prose prose-lg max-w-none text-text-secondary space-y-6">
                 <p className="text-sm text-text-muted mb-6">Last updated: December 24, 2024</p>
                 
-                <p>This Cookie Policy explains how SergioAvedian.com uses cookies and similar technologies when you visit our website.</p>
+                <p>This Cookie Policy explains how SergioAvedian.com uses cookies and similar technologies on our website and services. For more details about our data practices, see the Privacy Policy.</p>
 
-                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">What Are Cookies</h2>
-                <p>Cookies are small text files that are placed on your device when you visit a website. They help the website remember information about your visit, which can make it easier to visit the site again and make the site more useful to you.</p>
-
-                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">How We Use Cookies</h2>
-                <p>We use cookies to enhance your experience on our website, analyze website traffic, and for marketing purposes. This helps us improve our services and provide you with more relevant content.</p>
-
-                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Types of Cookies We Use</h2>
+                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">What are cookies and similar technologies</h2>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Essential Cookies:</strong> These are necessary for the website to function properly.</li>
-                  <li><strong>Analytics Cookies:</strong> These help us understand how visitors interact with our website.</li>
-                  <li><strong>Marketing Cookies:</strong> These are used to track visitors across websites for marketing purposes.</li>
+                  <li><strong>Cookies</strong> are small files stored on a device to remember settings and actions.</li>
+                  <li><strong>Similar technologies</strong> include pixels, web beacons, local storage, and SDKs used for functionality, analytics, and, where applicable, advertising.</li>
                 </ul>
 
-                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Managing Cookies</h2>
-                <p>You can control and manage cookies through your browser settings. Please note that disabling certain cookies may affect the functionality of our website.</p>
+                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">How we use cookies</h2>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Strictly necessary:</strong> enable core site functionality, security, login, subscription, checkout.</li>
+                  <li><strong>Functional:</strong> remember preferences (e.g., language, cookie choices, saved settings, dark/light theme).</li>
+                  <li><strong>Analytics/performance:</strong> measure traffic, page performance, and content effectiveness to improve user experience.</li>
+                  <li><strong>Advertising/retargeting (if enabled):</strong> provide or measure ads and limit repetition. We minimize tracking, and any such use will be disclosed in the banner with controls.</li>
+                </ul>
 
-                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Contact Us</h2>
-                <p>If you have any questions about this Cookie Policy, please contact us at:</p>
+                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Examples of data collected</h2>
+                <p>Pages viewed, time on page, referral URLs, device/browser details, approximate location, and interactions with courses, webinars, and forms. We do not store full payment card data in cookies.</p>
+
+                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Managing your preferences</h2>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li><strong>Cookie banner:</strong> set or change preferences at any time via "Cookie Settings" in the footer.</li>
+                  <li><strong>Browser/device controls:</strong> block or delete cookies in settings; functionality may be limited if strictly necessary cookies are disabled.</li>
+                  <li><strong>Analytics opt‑outs:</strong> use tools such as Google's opt‑out add‑on (if applicable) or adjust permissions in "Cookie Settings."</li>
+                  <li><strong>Ads opt‑outs:</strong> visit industry sites like aboutads.info/choices and youradchoices.ca/choices (where available) or use platform settings.</li>
+                  <li><strong>Global Privacy Control (GPC):</strong> we endeavor to honor GPC signals supported by your browser for applicable opt‑out rights.</li>
+                </ul>
+
+                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Retention</h2>
+                <p>Cookies persist for session or persistent periods depending on their function. We aim to limit retention to what is necessary for the stated purposes.</p>
+
+                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Updates to this policy</h2>
+                <p>We may update this Cookie Policy to reflect changes in technology, law, or our practices. Material updates will be posted with a new "Last updated" date.</p>
+
+                <h2 className="text-2xl font-bold mt-8 mb-4 text-text-primary">Contact</h2>
+                <p>For questions or requests related to cookies or tracking technologies, contact us at:</p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p>Email: sergio@sergioavedian.com</p>
+                  <p><strong>SergioAvedian.com</strong></p>
+                  <p>Email: privacy@sergioavedian.com</p>
                 </div>
               </div>
             </div>

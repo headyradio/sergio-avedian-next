@@ -146,7 +146,7 @@ const Footer = () => {
             <div className="flex items-center gap-1">
               <span>© 2025 Sergio Avedian. All rights reserved.</span>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center gap-4 md:gap-6">
               <Link to="/privacy-policy" className="hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
@@ -156,6 +156,15 @@ const Footer = () => {
               <Link to="/cookie-policy" className="hover:text-primary transition-colors">
                 Cookie Policy
               </Link>
+              <a href="#" className="hover:text-primary transition-colors">
+                Do Not Sell or Share My Personal Information
+              </a>
+              <a href="#" className="hover:text-primary transition-colors">
+                Limit the Use of My Sensitive Personal Information
+              </a>
+              <a href="#" className="hover:text-primary transition-colors">
+                Cookie Settings
+              </a>
               <span className="text-text-muted">Built with passion for the trading community</span>
             </div>
           </div>
