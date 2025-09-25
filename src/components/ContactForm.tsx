@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send, CheckCircle } from "lucide-react";
-import { useContactForm } from "@/hooks/useContactForm";
+import { useEmailJSContactForm } from "@/hooks/useEmailJSContactForm";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
@@ -29,7 +29,7 @@ interface ContactFormProps {
 
 const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
   const { toast } = useToast();
-  const { submitContact, isSubmitting } = useContactForm();
+  const { submitContact, isSubmitting } = useEmailJSContactForm();
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm<ContactFormData>({
