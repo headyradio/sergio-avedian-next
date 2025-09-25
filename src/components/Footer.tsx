@@ -18,7 +18,7 @@ const Footer = () => {
         { label: "Latest Videos", href: "/#videos", type: "anchor" },
         { label: "Blog Articles", href: "/blog", type: "internal" },
         { label: "Trading Education", href: "/coaching", type: "internal" },
-        { label: "About Sergio", href: "/about", type: "internal" },
+        { label: "About Sergio", href: "/about-sergio", type: "internal" },
         { label: "Investment Strategies", href: "/blog?category=investment", type: "internal" },
         { label: "Options Trading", href: "/blog?category=options", type: "internal" },
       ]

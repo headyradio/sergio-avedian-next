@@ -24,7 +24,7 @@ const Navigation = () => {
     { label: "Blog", href: "/blog", isExternal: true },
     { label: "Coaching", href: "/coaching", isExternal: true },
     { label: "Newsletter", href: "#newsletter", isExternal: false, isModal: true },
-    { label: "About", href: "/about", isExternal: true },
+    { label: "About", href: "/about-sergio", isExternal: true },
   ];
 
   return (
