@@ -15,11 +15,11 @@ interface EmailJSConfig {
   publicKey: string;
 }
 
-// These will be provided by the user after EmailJS setup
+// EmailJS configuration with provided credentials
 const EMAILJS_CONFIG: EmailJSConfig = {
-  serviceId: 'YOUR_SERVICE_ID', // User will provide this
-  templateId: 'YOUR_TEMPLATE_ID', // User will provide this
-  publicKey: 'YOUR_PUBLIC_KEY', // User will provide this
+  serviceId: 'service_ikep40a',
+  templateId: 'template_laz0oeo', 
+  publicKey: 'GyG5-H2MORCvnt97Z',
 };
 
 export const useEmailJSContactForm = () => {
@@ -31,10 +31,12 @@ export const useEmailJSContactForm = () => {
     try {
       console.log('Submitting contact form via EmailJS:', data);
 
-      // Check if EmailJS is configured
-      if (EMAILJS_CONFIG.serviceId === 'YOUR_SERVICE_ID') {
-        throw new Error('EmailJS not configured yet. Please provide your EmailJS credentials.');
-      }
+      // Check if EmailJS is configured (should now be ready)
+      console.log('Using EmailJS configuration:', {
+        serviceId: EMAILJS_CONFIG.serviceId,
+        templateId: EMAILJS_CONFIG.templateId,
+        publicKeyLength: EMAILJS_CONFIG.publicKey.length
+      });
 
       // Prepare template parameters for EmailJS
       const templateParams = {
