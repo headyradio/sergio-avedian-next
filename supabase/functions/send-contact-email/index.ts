@@ -28,11 +28,12 @@ serve(async (req) => {
     // Get environment variables
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
     console.log('RESEND_API_KEY available:', !!resendApiKey);
+    console.log('RESEND_API_KEY length:', resendApiKey?.length || 0);
 
     if (!resendApiKey) {
-      console.error('RESEND_API_KEY not found');
+      console.error('RESEND_API_KEY not found in environment variables');
       return new Response(
-        JSON.stringify({ error: 'Email service not configured' }), 
+        JSON.stringify({ error: 'Email service not configured - missing API key' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -95,10 +96,10 @@ serve(async (req) => {
       console.error('Confirmation email failed:', errorText);
     }
 
-    // Try to send notification to Sergio (may fail in testing mode)
+    // Send notification emails to both Sergio and Johan
     const notificationPayload = {
       from: 'Contact Form <onboarding@resend.dev>',
-      to: ['sergio@sergioavedian.com'],
+      to: ['sergio@sergioavedian.com', 'johanmore@gmail.com'],
       subject: `New Contact Form Submission: ${subject}`,
       html: `
         <h2>New Contact Form Submission</h2>
@@ -108,10 +109,12 @@ serve(async (req) => {
         <p><strong>Subject:</strong> ${subject}</p>
         <p><strong>Message:</strong></p>
         <p>${message}</p>
+        <hr>
+        <p><small>Sent via contact form</small></p>
       `
     };
 
-    console.log('Attempting to send notification email to Sergio...');
+    console.log('Attempting to send notification emails to:', notificationPayload.to);
     
     const notificationResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -123,21 +126,39 @@ serve(async (req) => {
     });
 
     console.log('Notification email response status:', notificationResponse.status);
+    const notificationResult = notificationResponse.ok ? await notificationResponse.json() : null;
     
     if (!notificationResponse.ok) {
       const errorText = await notificationResponse.text();
-      console.log('Notification email failed (expected in testing mode):', errorText);
+      console.error('Notification email failed:', {
+        status: notificationResponse.status,
+        statusText: notificationResponse.statusText,
+        error: errorText,
+        recipients: notificationPayload.to
+      });
+    } else {
+      console.log('Notification emails sent successfully:', notificationResult);
     }
 
-    // Always return success if confirmation email was sent
+    // Return success with detailed information
     const confirmationResult = confirmationResponse.ok ? await confirmationResponse.json() : null;
-    console.log('Contact form processed successfully');
+    console.log('Contact form processing complete:', {
+      confirmationSent: confirmationResponse.ok,
+      notificationSent: notificationResponse.ok,
+      confirmationId: confirmationResult?.id,
+      notificationId: notificationResult?.id
+    });
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: 'Message sent successfully!',
-        emailId: confirmationResult?.id || 'unknown'
+        details: {
+          confirmationSent: confirmationResponse.ok,
+          notificationSent: notificationResponse.ok,
+          confirmationEmailId: confirmationResult?.id || 'failed',
+          notificationEmailId: notificationResult?.id || 'failed'
+        }
       }), 
       { 
         status: 200, 
