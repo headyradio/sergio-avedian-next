@@ -43,7 +43,7 @@ export const useEmailJSContactForm = () => {
         phone: data.phone || 'Not provided',
         subject: data.subject,
         message: data.message,
-        to_email: 'sergio@sergioavedian.com', // Primary recipient
+        to_email: 'johanmore@gmail.com', // Primary recipient
         reply_to: data.email,
       };
 
