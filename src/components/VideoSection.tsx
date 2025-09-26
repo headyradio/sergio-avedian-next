@@ -185,10 +185,6 @@ const VideoSection = () => {
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cta/10 text-cta">
                   {video.category_name}
                 </span>
-                <div className="flex items-center text-text-secondary text-sm">
-                  <Eye className="h-3 w-3 mr-1" />
-                  {formatViews(video.view_count)}
-                </div>
               </div>
 
               <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors line-clamp-2">

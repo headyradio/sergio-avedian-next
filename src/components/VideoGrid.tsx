@@ -196,10 +196,6 @@ const VideoGrid = () => {
                     >
                       {video.category_name}
                     </span>
-                    <div className="flex items-center text-text-secondary text-sm">
-                      <Eye className="h-3 w-3 mr-1" />
-                      {formatViews(video.view_count)}
-                    </div>
                   </div>
 
                   <h3 className="text-lg font-semibold text-text-primary mb-3 group-hover:text-primary transition-colors line-clamp-2">

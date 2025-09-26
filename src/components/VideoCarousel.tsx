@@ -121,11 +121,7 @@ const VideoCarousel = ({ videos, title, variant = 'horizontal', onVideoClick }: 
                   {video.title}
                 </h4>
                 
-                <div className="flex items-center justify-between mt-2 text-xs text-text-secondary">
-                  <div className="flex items-center">
-                    <Eye className="h-3 w-3 mr-1" />
-                    {formatViews(video.view_count)}
-                  </div>
+                <div className="flex items-center justify-end mt-2 text-xs text-text-secondary">
                   <span>{formatDate(video.published_at)}</span>
                 </div>
               </div>

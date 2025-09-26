@@ -20,6 +20,7 @@ const Navigation = () => {
   };
 
   const navItems = [
+    { label: "Home", href: "/", isExternal: true },
     { label: "Videos", href: getVideosHref(), isExternal: false, isVideos: true },
     { label: "Blog", href: "/blog", isExternal: true },
     { label: "Coaching", href: "/coaching", isExternal: true },
