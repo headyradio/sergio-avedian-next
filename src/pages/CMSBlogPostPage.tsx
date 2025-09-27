@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Calendar, Clock, User, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
@@ -195,9 +196,11 @@ const CMSBlogPostPage = () => {
           <div className="mt-12">
             <div className="p-6 bg-surface/50 rounded-xl border border-border">
               <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-cta rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  SA
-                </div>
+                <Avatar className="w-16 h-16 flex-shrink-0">
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-cta text-white font-bold text-xl">
+                    SA
+                  </AvatarFallback>
+                </Avatar>
                 <div>
                   <h4 className="font-bold text-text-primary mb-2">Sergio Avedian</h4>
                   <p className="text-text-secondary leading-relaxed">
