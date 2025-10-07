@@ -110,7 +110,7 @@ const PersonalCoachingSection = () => {
         {/* Enhanced Call to Action */}
         <div className="text-center mt-16">
           <Card className="card-premium max-w-3xl mx-auto">
-            <CardContent className="p-10">
+            <CardContent className="p-6 sm:p-8 lg:p-10">
               <h3 className="text-3xl font-bold text-foreground mb-6">
                 Ready to Take Your Trading to the Next Level?
               </h3>
@@ -119,28 +119,29 @@ const PersonalCoachingSection = () => {
                 In just 15 minutes, you'll get personalized insights and see if working together makes sense.
               </p>
               
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center justify-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span className="text-text-secondary">No sales pitch - just valuable insights</span>
+              <div className="space-y-3 sm:space-y-4 mb-8">
+                <div className="flex items-center justify-center sm:justify-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-text-secondary">No sales pitch - just valuable insights</span>
                 </div>
-                <div className="flex items-center justify-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span className="text-text-secondary">Personalized advice for your situation</span>
+                <div className="flex items-center justify-center sm:justify-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-text-secondary">Personalized advice for your situation</span>
                 </div>
-                <div className="flex items-center justify-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <span className="text-text-secondary">Zero commitment required</span>
+                <div className="flex items-center justify-center sm:justify-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-text-secondary">Zero commitment required</span>
                 </div>
               </div>
               
               <Button 
                 size="lg" 
-                className="cta-electric text-lg px-10 py-4"
+                className="w-full sm:w-auto min-h-[48px] cta-electric text-base sm:text-lg px-6 sm:px-10 py-4"
                 onClick={() => setIsModalOpen(true)}
               >
-                <Phone className="w-5 h-5 mr-2" />
-                Schedule Your Free 15-Minute Call
+                <Phone className="w-5 h-5 mr-2 flex-shrink-0" />
+                <span className="hidden sm:inline">Schedule Your Free 15-Minute Call</span>
+                <span className="sm:hidden">Schedule Free Call</span>
               </Button>
               
               <p className="text-sm text-text-muted mt-4">

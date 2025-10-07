@@ -358,4 +358,27 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+  
+  /* Mobile Touch Target Utilities */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .touch-target-lg {
+    @apply min-h-[48px] min-w-[48px];
+  }
+  
+  /* Mobile-Friendly Button Utilities */
+  .mobile-cta {
+    @apply w-full sm:w-auto min-h-[48px] px-6 sm:px-8 text-base sm:text-lg;
+  }
+  
+  /* Responsive Spacing Utilities */
+  .mobile-padding {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  
+  .mobile-gap {
+    @apply gap-3 sm:gap-4 lg:gap-6;
+  }
 }

@@ -43,11 +43,11 @@ const CoachingPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-12">
               <Button 
                 size="lg" 
-                className="cta-electric text-lg px-8 py-4"
+                className="w-full sm:w-auto min-h-[48px] cta-electric text-base sm:text-lg px-6 sm:px-8 py-4"
                 onClick={() => setIsModalOpen(true)}
               >
-                <Phone className="w-5 h-5 mr-2" />
-                Book Free Consultation
+                <Phone className="w-5 h-5 mr-2 flex-shrink-0" />
+                <span>Book Free Consultation</span>
               </Button>
             </div>
           </div>
