@@ -15,6 +15,7 @@ import { useScrollTrigger } from "@/hooks/useScrollTrigger";
 import { useExitIntent } from "@/hooks/useExitIntent";
 import { convertMarkdownToHTML } from "@/utils/markdownHelpers";
 import { OptimizedImage } from "@/components/OptimizedImage";
+import { CommentSection } from "@/components/blog/CommentSection";
 
 const CMSBlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -211,6 +212,11 @@ const CMSBlogPostPage = () => {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Comments Section */}
+          <div className="mt-16">
+            <CommentSection postId={post.id} />
           </div>
         </div>
       </article>
