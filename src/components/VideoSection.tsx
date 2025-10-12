@@ -102,6 +102,9 @@ const VideoSection = () => {
 
   const getShortsVideos = () => {
     return videos.filter(video => {
+      // Explicitly exclude live videos from shorts section
+      if (video.video_type === 'live') return false;
+      
       if (video.video_type === 'short') return true;
       
       // Additional check for videos under 2 minutes that might be shorts
