@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import CoachingPage from "./pages/CoachingPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import NewsletterPage from "./pages/NewsletterPage";
 import NotFound from "./pages/NotFound";
 import CMSDemo from "./pages/CMSDemo";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -48,6 +49,7 @@ const App = () => {
               <Route path="/coaching" element={<CoachingPage />} />
               <Route path="/about-sergio" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/newsletter" element={<NewsletterPage />} />
               <Route path="/blog" element={<CMSBlogListPage />} />
               <Route path="/blog/:slug" element={<CMSBlogPostPage />} />
               <Route path="/test-blog" element={<TestBlogPost />} />
