@@ -39,7 +39,7 @@ const CTAPopup = ({ isOpen, onClose }: CTAPopupProps) => {
               </h3>
               
               <p className="text-sm text-text-secondary leading-relaxed">
-                New to investing or already an active trader, get practical, no‑hype guidance from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor. Proven long‑term strategies and compounding made simple. Trusted by 2,580+ subscribers. Join the community now.
+                New to investing or already an active trader, get practical, no‑hype guidance from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor. Proven long‑term strategies and compounding made simple. Trusted by thousands of subscribers. Join the community now.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 pt-2">

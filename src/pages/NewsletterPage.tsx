@@ -11,10 +11,10 @@ const NewsletterPage = () => {
         <title>Subscribe to Sergio Avedian's Newsletter | Investment Insights & Trading Psychology</title>
         <meta 
           name="description" 
-          content="Get practical, no-hype investment guidance from Sergio Avedian. 35+ years Wall Street experience. Proven long-term strategies and trading psychology tips. Trusted by 2,580+ subscribers." 
+          content="Get practical, no-hype investment guidance from Sergio Avedian. 35+ years Wall Street experience. Proven long-term strategies and trading psychology tips. Trusted by thousands of subscribers." 
         />
         <meta property="og:title" content="Subscribe to Sergio Avedian's Newsletter" />
-        <meta property="og:description" content="Join 2,580+ investors building wealth without a financial advisor. Get Sergio's proven long-term strategies delivered to your inbox." />
+        <meta property="og:description" content="Join thousands of investors building wealth without a financial advisor. Get Sergio's proven long-term strategies delivered to your inbox." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://sergioavedian.com/newsletter" />
         <link rel="canonical" href="https://sergioavedian.com/newsletter" />
@@ -34,7 +34,7 @@ const NewsletterPage = () => {
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-border">
                   <Users className="w-4 h-4 text-primary" />
                   <span className="text-sm font-medium text-text-secondary">
-                    Join <span className="text-primary font-bold">2,580+</span> Active Subscribers
+                    Join <span className="text-primary font-bold">thousands of</span> Active Subscribers
                   </span>
                 </div>
 

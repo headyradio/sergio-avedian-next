@@ -83,7 +83,7 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
             Get Sergio's Latest Insights Delivered to Your Inbox
           </DialogTitle>
           <DialogDescription>
-            New to investing or already an active trader, get practical, no‑hype guidance from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor. Proven long‑term strategies and compounding made simple. Trusted by 2,580+ subscribers. Join the community now.
+            New to investing or already an active trader, get practical, no‑hype guidance from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor. Proven long‑term strategies and compounding made simple. Trusted by thousands of subscribers. Join the community now.
           </DialogDescription>
         </DialogHeader>
         
