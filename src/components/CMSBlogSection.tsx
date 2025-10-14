@@ -205,7 +205,7 @@ const CMSBlogSection = () => {
             Need More Guidance?
           </h3>
           <p className="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-            Book a free 15-minute consultation to discuss your trading goals and see how personalized coaching 
+            Reach out to discuss your trading goals and see how personalized coaching 
             can accelerate your path to consistent profits.
           </p>
           
@@ -216,7 +216,7 @@ const CMSBlogSection = () => {
                 className="cta-electric text-lg px-8 py-4 font-semibold"
               >
                 <Phone className="w-5 h-5 mr-2" />
-                Book Free 15-Minute Consultation
+                Contact Me to Learn More
               </Button>
             </Link>
           </div>

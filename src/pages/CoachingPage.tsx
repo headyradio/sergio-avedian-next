@@ -47,7 +47,7 @@ const CoachingPage = () => {
                 onClick={() => setIsModalOpen(true)}
               >
                 <Phone className="w-5 h-5 mr-2 flex-shrink-0" />
-                <span>Book Free Consultation</span>
+                <span>Contact Me to Learn More</span>
               </Button>
             </div>
           </div>
@@ -61,7 +61,7 @@ const CoachingPage = () => {
       <ContactFormModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
-        defaultSubject="Free 15-Minute Consultation Request"
+        defaultSubject="Coaching Inquiry"
       />
 
       <Footer />

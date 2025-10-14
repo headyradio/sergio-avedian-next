@@ -116,7 +116,7 @@ const PersonalCoachingSection = () => {
               </h3>
               <p className="text-xl text-text-secondary mb-8 max-w-2xl mx-auto leading-relaxed">
                 Let's have a no-pressure conversation about your trading goals and challenges. 
-                In just 15 minutes, you'll get personalized insights and see if working together makes sense.
+                Reach out to get personalized insights and see if working together makes sense.
               </p>
               
               <div className="space-y-3 sm:space-y-4 mb-8">
@@ -140,12 +140,11 @@ const PersonalCoachingSection = () => {
                 onClick={() => setIsModalOpen(true)}
               >
                 <Phone className="w-5 h-5 mr-2 flex-shrink-0" />
-                <span className="hidden sm:inline">Schedule Your Free 15-Minute Call</span>
-                <span className="sm:hidden">Schedule Free Call</span>
+                <span>Contact Me to Learn More</span>
               </Button>
               
               <p className="text-sm text-text-muted mt-4">
-                Usually books up 2-3 weeks in advance
+                Typically responds within 24-48 hours
               </p>
             </CardContent>
           </Card>
@@ -155,7 +154,7 @@ const PersonalCoachingSection = () => {
       <ContactFormModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
-        defaultSubject="Free 15-Minute Consultation Request"
+        defaultSubject="Coaching Inquiry"
       />
     </section>
   );
