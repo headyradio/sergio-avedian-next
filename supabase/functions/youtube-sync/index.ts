@@ -151,7 +151,21 @@ serve(async (req) => {
       const title = video.snippet.title.toLowerCase();
       const description = video.snippet.description?.toLowerCase() || '';
       
-      // Primary detection: Use YouTube's liveBroadcastContent field
+      // PRIORITY 1: Check if it's a short based on duration - Enhanced detection (must be under 2 minutes)
+      // This must come FIRST to prevent short videos from being miscategorized as live
+      const isShort = totalSeconds <= 120 || 
+                      title.includes('#shorts') || 
+                      title.includes('#short') ||
+                      description.includes('#shorts') ||
+                      description.includes('#short');
+      
+      // If it's a short, return early
+      if (isShort) {
+        console.log(`Video: "${video.snippet.title}" | Duration: ${totalSeconds}s | Type: short`);
+        return 'short';
+      }
+      
+      // PRIORITY 2: Check if it's a live stream
       const liveBroadcastContent = video.snippet.liveBroadcastContent;
       
       // Exact title matching for specific live stream types
@@ -168,14 +182,7 @@ serve(async (req) => {
                      description.includes('live stream') ||
                      (title.includes('live') && totalSeconds > 900); // Live videos tend to be longer than 15 minutes
       
-      // Check if it's a short - Enhanced detection (must be under 2 minutes)
-      const isShort = totalSeconds <= 120 || 
-                      title.includes('#shorts') || 
-                      title.includes('#short') ||
-                      description.includes('#shorts') ||
-                      description.includes('#short');
-      
-      const videoType = isLive ? 'live' : (isShort ? 'short' : 'regular');
+      const videoType = isLive ? 'live' : 'regular';
       
       // Debug logging
       console.log(`Video: "${video.snippet.title}" | Duration: ${totalSeconds}s | liveBroadcastContent: ${liveBroadcastContent} | Type: ${videoType}`);
