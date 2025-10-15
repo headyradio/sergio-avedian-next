@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { EmailPreviewDialog } from './EmailPreviewDialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -8,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Edit, Plus, Eye } from 'lucide-react';
+import { Trash2, Edit, Plus, Eye, Mail } from 'lucide-react';
 import { useBlogPosts, useCategories, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost, CMSBlogPost } from '@/hooks/useSupabaseCMS';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 
@@ -17,6 +18,7 @@ const BlogPostManager = () => {
   const [editingPost, setEditingPost] = useState<CMSBlogPost | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showPublishedOnly, setShowPublishedOnly] = useState(false);
+  const [emailPreviewPost, setEmailPreviewPost] = useState<CMSBlogPost | null>(null);
 
   const { data: blogPosts, isLoading } = useBlogPosts(50, 0, false); // Get all posts for admin
   const { data: categories } = useCategories();
@@ -293,6 +295,9 @@ const BlogPostManager = () => {
                   <Button variant="ghost" size="sm" onClick={() => handleEdit(post)}>
                     <Edit className="w-4 h-4" />
                   </Button>
+                  <Button variant="ghost" size="sm" onClick={() => setEmailPreviewPost(post)}>
+                    <Mail className="w-4 h-4" />
+                  </Button>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -319,6 +324,14 @@ const BlogPostManager = () => {
           </Card>
         ))}
       </div>
+
+      {emailPreviewPost && (
+        <EmailPreviewDialog
+          open={!!emailPreviewPost}
+          onOpenChange={(open) => !open && setEmailPreviewPost(null)}
+          blogPost={emailPreviewPost}
+        />
+      )}
     </div>
   );
 };
