@@ -58,3 +58,6 @@ verify_jwt = false
 
 [functions.submit-blog-comment]
 verify_jwt = false
+
+[functions.send-blog-newsletter]
+verify_jwt = false
