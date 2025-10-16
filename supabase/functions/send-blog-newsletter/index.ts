@@ -63,7 +63,7 @@ serve(async (req) => {
       const broadcastData = {
         api_secret: CONVERTKIT_API_SECRET,
         subject: `[TEST] ${post.title}`,
-        content: emailContent,
+        description: emailContent,
         email_template_id: TEMPLATE_ID,
         public: false,
         subscriber_filter: {
@@ -85,6 +85,25 @@ serve(async (req) => {
       }
 
       console.log('Test broadcast created:', result.broadcast.id);
+
+      // Publish the test broadcast immediately so it actually sends
+      const publishResponse = await fetch(
+        `https://api.convertkit.com/v3/broadcasts/${result.broadcast.id}/publish`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_secret: CONVERTKIT_API_SECRET }),
+        }
+      );
+
+      const publishResult = await publishResponse.json();
+      
+      if (!publishResponse.ok) {
+        console.error('Failed to publish test broadcast:', publishResult);
+        throw new Error('Test broadcast created but failed to publish');
+      }
+
+      console.log('Test broadcast published and sent to:', to);
 
       return new Response(
         JSON.stringify({
@@ -111,7 +130,7 @@ serve(async (req) => {
     const broadcastData: any = {
       api_secret: CONVERTKIT_API_SECRET,
       subject: post.title,
-      content: emailContent,
+      description: emailContent,
       email_template_id: TEMPLATE_ID,
       public: true,
     };
@@ -149,6 +168,31 @@ serve(async (req) => {
     }
 
     console.log('Broadcast created:', result.broadcast.id);
+
+    // Auto-publish if sending immediately (no schedule)
+    if (!broadcastData.send_at) {
+      console.log('Publishing broadcast immediately...');
+      
+      const publishResponse = await fetch(
+        `https://api.convertkit.com/v3/broadcasts/${result.broadcast.id}/publish`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_secret: CONVERTKIT_API_SECRET }),
+        }
+      );
+
+      const publishResult = await publishResponse.json();
+      
+      if (!publishResponse.ok) {
+        console.error('Failed to publish broadcast:', publishResult);
+        throw new Error('Broadcast created but failed to publish');
+      }
+
+      console.log('Broadcast published and sent!');
+    } else {
+      console.log('Broadcast scheduled for:', broadcastData.send_at);
+    }
 
     if (queue_id) {
       const updateData: any = {
