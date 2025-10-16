@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { 
   Bold, 
   Italic, 
-  Underline, 
   List, 
   ListOrdered, 
   Quote, 
@@ -12,7 +11,8 @@ import {
   Heading2, 
   Heading3,
   Undo,
-  Redo
+  Redo,
+  Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -185,8 +185,9 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
           className="min-h-[200px] [&_.ProseMirror]:outline-none [&_.ProseMirror]:border-none [&_.ProseMirror]:ring-0 [&_.ProseMirror]:focus:ring-0 [&_.ProseMirror]:focus:outline-none [&_.ProseMirror.ProseMirror-focused]:ring-0 [&_.ProseMirror.ProseMirror-focused]:outline-none"
         />
         {editor.isEmpty && (
-          <div className="absolute top-6 left-6 text-muted-foreground pointer-events-none">
-            {placeholder || 'Start writing...'}
+          <div className="absolute top-6 left-6 text-muted-foreground pointer-events-none flex items-center gap-2">
+            <Sparkles className="h-4 w-4" />
+            <span>{placeholder || 'Start writing...'}</span>
           </div>
         )}
       </div>

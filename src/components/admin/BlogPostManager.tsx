@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmailPreviewDialog } from './EmailPreviewDialog';
 import { PublishScheduleDialog } from './PublishScheduleDialog';
+import EmailTestDialog from './EmailTestDialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -32,6 +33,7 @@ const BlogPostManager = () => {
   const [emailPreviewPost, setEmailPreviewPost] = useState<CMSBlogPost | null>(null);
   const [scheduleDialogPost, setScheduleDialogPost] = useState<CMSBlogPost | null>(null);
   const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set());
+  const [emailTestDialogPost, setEmailTestDialogPost] = useState<CMSBlogPost | null>(null);
 
   const { data: blogPosts, isLoading } = useBlogPosts(50, 0, false);
   const { data: categories } = useCategories();
@@ -135,6 +137,15 @@ const BlogPostManager = () => {
       // In a real implementation, you'd handle multiple posts
       setScheduleDialogPost(selectedPostsList[0]);
     }
+  };
+
+  const handleSendNewsletter = (post: CMSBlogPost) => {
+    setEmailTestDialogPost(post);
+  };
+
+  const handleConfirmSendNewsletter = async () => {
+    if (!emailTestDialogPost) return;
+    await sendNewsletterNow.mutateAsync(emailTestDialogPost.id);
   };
 
   const NewsletterBadge = ({ postId }: { postId: string }) => {
@@ -382,11 +393,10 @@ const BlogPostManager = () => {
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      onClick={() => sendNewsletterNow.mutate(post.id)}
-                      disabled={sendNewsletterNow.isPending}
+                      onClick={() => handleSendNewsletter(post)}
                       title="Send newsletter now"
                     >
-                      <Mail className="w-4 h-4" />
+                      <Mail className="w-4 w-4" />
                     </Button>
                   )}
                   <Button variant="ghost" size="sm" onClick={() => handleEdit(post)}>
@@ -458,6 +468,15 @@ const BlogPostManager = () => {
             console.log('Schedule data:', data);
             setScheduleDialogPost(null);
           }}
+        />
+      )}
+
+      {emailTestDialogPost && (
+        <EmailTestDialog
+          open={!!emailTestDialogPost}
+          onOpenChange={(open) => !open && setEmailTestDialogPost(null)}
+          post={emailTestDialogPost}
+          onConfirmSend={handleConfirmSendNewsletter}
         />
       )}
     </div>

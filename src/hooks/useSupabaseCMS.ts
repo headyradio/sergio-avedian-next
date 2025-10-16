@@ -449,3 +449,82 @@ export const useCancelNewsletter = () => {
     },
   });
 };
+
+// Global Settings Hooks
+export interface CMSGlobalSettings {
+  id: string;
+  site_name: string;
+  site_description: string;
+  logo_url?: string;
+  favicon_url?: string;
+  primary_color?: string;
+  secondary_color?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export const useGlobalSettings = () => {
+  return useQuery({
+    queryKey: ['global-settings'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cms_global_settings')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+};
+
+export const useUpdateGlobalSettings = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (settings: Partial<CMSGlobalSettings>) => {
+      const { data, error } = await supabase
+        .from('cms_global_settings')
+        .update(settings)
+        .eq('id', settings.id!)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['global-settings'] });
+      toast.success('Settings updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error('Failed to update settings: ' + error.message);
+    },
+  });
+};
+
+export const useUpdateFooterContent = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (content: Partial<CMSFooterContent>) => {
+      const { data, error } = await supabase
+        .from('cms_footer_content')
+        .update(content)
+        .eq('id', content.id!)
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['footer-content'] });
+      toast.success('Footer content updated successfully');
+    },
+    onError: (error: any) => {
+      toast.error('Failed to update footer content: ' + error.message);
+    },
+  });
+};
