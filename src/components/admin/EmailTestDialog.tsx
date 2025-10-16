@@ -37,14 +37,30 @@ const EmailTestDialog = ({ open, onOpenChange, post, onConfirmSend }: EmailTestD
 
     setIsSendingTest(true);
     try {
-      const { error } = await supabase.functions.invoke('send-blog-newsletter', {
+      console.log('Sending test email to:', testEmail, 'for post:', post.title);
+      
+      const { data, error } = await supabase.functions.invoke('send-blog-newsletter', {
         body: {
-          post_id: post.id,
+          blogPost: {
+            id: post.id,
+            title: post.title,
+            content: post.content,
+            excerpt: post.excerpt,
+            author: post.author,
+            cover_image_url: post.cover_image_url,
+            slug: post.slug,
+            published_at: post.published_at,
+          },
           to: testEmail,
         },
       });
 
-      if (error) throw error;
+      console.log('Test email response:', data);
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
 
       setTestSent(true);
       toast({
@@ -55,7 +71,7 @@ const EmailTestDialog = ({ open, onOpenChange, post, onConfirmSend }: EmailTestD
       console.error('Error sending test email:', error);
       toast({
         title: 'Failed to Send Test',
-        description: error.message || 'Could not send test email',
+        description: error.message || 'Could not send test email. Check console for details.',
         variant: 'destructive',
       });
     } finally {
