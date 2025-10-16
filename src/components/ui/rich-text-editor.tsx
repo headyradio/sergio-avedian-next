@@ -1,5 +1,6 @@
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import Placeholder from '@tiptap/extension-placeholder';
 import { Button } from '@/components/ui/button';
 import { 
   Bold, 
@@ -10,9 +11,6 @@ import {
   Code, 
   Heading2, 
   Heading3,
-  Undo,
-  Redo,
-  Sparkles
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -36,6 +34,16 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
           keepAttributes: false,
         },
       }),
+      Placeholder.configure({
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return 'Heading';
+          }
+          return placeholder || "Type '/' for commands, or just start writing...";
+        },
+        showOnlyWhenEditable: true,
+        showOnlyCurrent: true,
+      }),
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -43,8 +51,7 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-neutral dark:prose-invert max-w-none focus:outline-none min-h-[200px] p-6 text-foreground',
-        'data-placeholder': placeholder || 'Start writing...',
+        class: 'notion-editor focus:outline-none',
       },
     },
   });
@@ -71,10 +78,10 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
       onClick={onClick}
       title={title}
       className={cn(
-        "h-9 w-9 p-0 transition-all duration-200",
+        "h-8 w-8 p-0 transition-all duration-200 rounded-lg",
         isActive 
           ? "bg-primary text-primary-foreground shadow-sm" 
-          : "hover:bg-surface/80 text-muted-foreground hover:text-foreground"
+          : "hover:bg-surface text-muted-foreground hover:text-foreground"
       )}
     >
       {children}
@@ -82,10 +89,18 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
   );
 
   return (
-    <div className={cn("border border-border/50 rounded-xl overflow-hidden bg-card shadow-sm", className)}>
-      {/* Toolbar */}
-      <div className="flex items-center gap-0.5 p-3 border-b border-border/30 bg-surface/30 backdrop-blur-sm">
-        <div className="flex items-center gap-0.5">
+    <div className={cn("relative w-full", className)}>
+      {/* Floating BubbleMenu - appears on text selection */}
+      {editor && (
+        <BubbleMenu
+          editor={editor}
+          tippyOptions={{ 
+            duration: 150,
+            placement: 'top',
+            animation: 'shift-toward-subtle',
+          }}
+          className="flex items-center gap-1 p-2 rounded-xl bg-surface/95 backdrop-blur-lg border border-border/50 shadow-large"
+        >
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleBold().run()}
             isActive={editor.isActive('bold')}
@@ -101,11 +116,9 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
           >
             <Italic className="h-4 w-4" />
           </ToolbarButton>
-        </div>
 
-        <div className="w-px h-5 bg-border/50 mx-2" />
+          <div className="w-px h-5 bg-border/50 mx-1" />
 
-        <div className="flex items-center gap-0.5">
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
             isActive={editor.isActive('heading', { level: 2 })}
@@ -121,11 +134,9 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
           >
             <Heading3 className="h-4 w-4" />
           </ToolbarButton>
-        </div>
 
-        <div className="w-px h-5 bg-border/50 mx-2" />
+          <div className="w-px h-5 bg-border/50 mx-1" />
 
-        <div className="flex items-center gap-0.5">
           <ToolbarButton
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             isActive={editor.isActive('bulletList')}
@@ -157,39 +168,15 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
           >
             <Code className="h-4 w-4" />
           </ToolbarButton>
-        </div>
+        </BubbleMenu>
+      )}
 
-        <div className="flex-1" />
-
-        <div className="flex items-center gap-0.5">
-          <ToolbarButton
-            onClick={() => editor.chain().focus().undo().run()}
-            title="Undo (⌘Z)"
-          >
-            <Undo className="h-4 w-4" />
-          </ToolbarButton>
-
-          <ToolbarButton
-            onClick={() => editor.chain().focus().redo().run()}
-            title="Redo (⌘⇧Z)"
-          >
-            <Redo className="h-4 w-4" />
-          </ToolbarButton>
-        </div>
-      </div>
-
-      {/* Editor Content */}
-      <div className="bg-card/50 relative">
+      {/* Editor Content - Notion-style canvas */}
+      <div className="bg-background">
         <EditorContent 
           editor={editor} 
-          className="min-h-[200px] [&_.ProseMirror]:outline-none [&_.ProseMirror]:border-none [&_.ProseMirror]:ring-0 [&_.ProseMirror]:focus:ring-0 [&_.ProseMirror]:focus:outline-none [&_.ProseMirror.ProseMirror-focused]:ring-0 [&_.ProseMirror.ProseMirror-focused]:outline-none"
+          className="min-h-[60vh] px-24 py-16 max-w-[900px] mx-auto [&_.ProseMirror]:outline-none [&_.ProseMirror]:border-none [&_.ProseMirror]:ring-0 [&_.ProseMirror]:focus:ring-0 [&_.ProseMirror]:focus:outline-none"
         />
-        {editor.isEmpty && (
-          <div className="absolute top-6 left-6 text-muted-foreground pointer-events-none flex items-center gap-2">
-            <Sparkles className="h-4 w-4" />
-            <span>{placeholder || 'Start writing...'}</span>
-          </div>
-        )}
       </div>
     </div>
   );

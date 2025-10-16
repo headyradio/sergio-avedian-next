@@ -381,4 +381,108 @@
   .mobile-gap {
     @apply gap-3 sm:gap-4 lg:gap-6;
   }
+
+  /* Notion-Style Editor Canvas */
+  .notion-editor {
+    font-size: 18px;
+    line-height: 1.7;
+    color: hsl(var(--foreground));
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .notion-editor h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 40px 0 8px;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor h2 {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 32px 0 8px;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor h3 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 24px 0 8px;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor p {
+    margin: 8px 0;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor ul,
+  .notion-editor ol {
+    margin: 12px 0;
+    padding-left: 28px;
+  }
+
+  .notion-editor li {
+    margin: 6px 0;
+  }
+
+  .notion-editor blockquote {
+    border-left: 3px solid hsl(var(--primary));
+    padding-left: 20px;
+    margin: 20px 0;
+    font-style: italic;
+    color: hsl(var(--text-secondary));
+  }
+
+  .notion-editor pre {
+    background: hsl(var(--surface));
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .notion-editor code {
+    background: hsl(var(--surface));
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  .notion-editor pre code {
+    background: transparent;
+    padding: 0;
+  }
+
+  /* Placeholder styling */
+  .notion-editor .is-empty::before,
+  .notion-editor .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--text-muted));
+    float: left;
+    height: 0;
+    pointer-events: none;
+    font-size: 18px;
+  }
+
+  .notion-editor .ProseMirror-focused .is-empty::before {
+    color: hsl(var(--text-muted));
+  }
+
+  /* Custom cursor styling for better visibility */
+  .notion-editor .ProseMirror {
+    caret-color: hsl(var(--primary));
+  }
+
+  /* Smooth scrolling for the editor */
+  .notion-editor {
+    scroll-behavior: smooth;
+  }
 }

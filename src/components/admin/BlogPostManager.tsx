@@ -225,7 +225,7 @@ const BlogPostManager = () => {
               New Post
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
                 {editingPost ? 'Edit Blog Post' : 'Create New Blog Post'}
@@ -305,7 +305,6 @@ const BlogPostManager = () => {
                   content={formData.content}
                   onChange={(content) => setFormData({ ...formData, content })}
                   placeholder="Write your blog post content..."
-                  className="min-h-[300px]"
                 />
               </div>
 
