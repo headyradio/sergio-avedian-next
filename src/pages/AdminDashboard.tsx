@@ -4,11 +4,12 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, LogOut, Home, FileText, Navigation, Settings, Users } from 'lucide-react';
+import { Plus, LogOut, Home, FileText, Navigation, Settings, Mail } from 'lucide-react';
 import BlogPostManager from '@/components/admin/BlogPostManager';
 import HomepageManager from '@/components/admin/HomepageManager';
 import NavigationManager from '@/components/admin/NavigationManager';
 import SettingsManager from '@/components/admin/SettingsManager';
+import NewsletterManager from '@/components/admin/NewsletterManager';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -45,10 +46,14 @@ const AdminDashboard = () => {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="blog" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="blog" className="flex items-center space-x-2">
               <FileText className="w-4 h-4" />
               <span>Blog Posts</span>
+            </TabsTrigger>
+            <TabsTrigger value="newsletters" className="flex items-center space-x-2">
+              <Mail className="w-4 h-4" />
+              <span>Newsletters</span>
             </TabsTrigger>
             <TabsTrigger value="homepage" className="flex items-center space-x-2">
               <Home className="w-4 h-4" />
@@ -74,6 +79,20 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <BlogPostManager />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="newsletters" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Newsletter Queue</CardTitle>
+                <CardDescription>
+                  Manage scheduled and sent newsletters
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <NewsletterManager />
               </CardContent>
             </Card>
           </TabsContent>

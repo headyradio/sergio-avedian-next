@@ -334,27 +334,7 @@ export const useUpdateHomepageContent = () => {
   });
 };
 
-// Newsletter hooks
-export const useSubscribersCount = () => {
-  return useQuery({
-    queryKey: ['subscribers-count'],
-    queryFn: async () => {
-      const { data, error } = await supabase.functions.invoke(
-        'get-subscriber-count'
-      );
-
-      if (error) {
-        console.error('Failed to fetch subscriber count:', error);
-        return 0;
-      }
-
-      return data?.count || 0;
-    },
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-  });
-};
-
+// Newsletter Management Hooks
 export const useQueueNewsletter = () => {
   const queryClient = useQueryClient();
 

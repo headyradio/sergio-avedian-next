@@ -1,13 +1,12 @@
-import { useAllNewsletterQueue, useSubscribersCount, useCancelNewsletter } from '@/hooks/useSupabaseCMS';
+import { useAllNewsletterQueue, useCancelNewsletter } from '@/hooks/useSupabaseCMS';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Mail, Clock, CheckCircle, Users, XCircle, AlertCircle } from 'lucide-react';
+import { Mail, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const NewsletterManager = () => {
   const { data: queue, isLoading } = useAllNewsletterQueue();
-  const { data: subscribersCount } = useSubscribersCount();
   const cancelNewsletter = useCancelNewsletter();
 
   const pendingQueue = queue?.filter(q => q.status === 'pending') || [];
@@ -30,16 +29,12 @@ const NewsletterManager = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Users className="w-5 h-5" />
+            <Mail className="w-5 h-5" />
             Newsletter Statistics
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-muted/50 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Active Subscribers</p>
-              <p className="text-3xl font-bold">{subscribersCount || 0}</p>
-            </div>
+          <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
               <p className="text-sm text-muted-foreground mb-1">Pending</p>
               <p className="text-3xl font-bold text-blue-600">{pendingQueue.length}</p>

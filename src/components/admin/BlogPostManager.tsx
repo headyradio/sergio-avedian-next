@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmailPreviewDialog } from './EmailPreviewDialog';
+import { PublishScheduleDialog } from './PublishScheduleDialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -9,8 +10,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Edit, Plus, Eye, Mail } from 'lucide-react';
-import { useBlogPosts, useCategories, useCreateBlogPost, useUpdateBlogPost, useDeleteBlogPost, CMSBlogPost } from '@/hooks/useSupabaseCMS';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Trash2, Edit, Plus, Mail, Calendar, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { 
+  useBlogPosts, 
+  useCategories, 
+  useCreateBlogPost, 
+  useUpdateBlogPost, 
+  useDeleteBlogPost, 
+  useNewsletterQueue,
+  useSendNewsletterNow,
+  CMSBlogPost 
+} from '@/hooks/useSupabaseCMS';
 import RichTextEditor from '@/components/ui/rich-text-editor';
 
 const BlogPostManager = () => {
@@ -19,12 +30,15 @@ const BlogPostManager = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showPublishedOnly, setShowPublishedOnly] = useState(false);
   const [emailPreviewPost, setEmailPreviewPost] = useState<CMSBlogPost | null>(null);
+  const [scheduleDialogPost, setScheduleDialogPost] = useState<CMSBlogPost | null>(null);
+  const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set());
 
-  const { data: blogPosts, isLoading } = useBlogPosts(50, 0, false); // Get all posts for admin
+  const { data: blogPosts, isLoading } = useBlogPosts(50, 0, false);
   const { data: categories } = useCategories();
   const createBlogPost = useCreateBlogPost();
   const updateBlogPost = useUpdateBlogPost();
   const deleteBlogPost = useDeleteBlogPost();
+  const sendNewsletterNow = useSendNewsletterNow();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -102,6 +116,71 @@ const BlogPostManager = () => {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .trim();
+  };
+
+  const togglePostSelection = (postId: string) => {
+    const newSelected = new Set(selectedPosts);
+    if (newSelected.has(postId)) {
+      newSelected.delete(postId);
+    } else {
+      newSelected.add(postId);
+    }
+    setSelectedPosts(newSelected);
+  };
+
+  const handleBulkSendNewsletter = () => {
+    const selectedPostsList = blogPosts?.filter(p => selectedPosts.has(p.id));
+    if (selectedPostsList && selectedPostsList.length > 0) {
+      // For bulk, we'll send the first one through schedule dialog
+      // In a real implementation, you'd handle multiple posts
+      setScheduleDialogPost(selectedPostsList[0]);
+    }
+  };
+
+  const NewsletterBadge = ({ postId }: { postId: string }) => {
+    const { data: queue } = useNewsletterQueue(postId);
+    
+    if (!queue || !Array.isArray(queue) || queue.length === 0) return null;
+    
+    const latestQueue = queue[0];
+    
+    if (latestQueue.status === 'pending') {
+      return (
+        <Badge variant="secondary" className="flex items-center gap-1">
+          <Clock className="w-3 h-3" />
+          Scheduled {new Date(latestQueue.scheduled_for).toLocaleDateString()}
+        </Badge>
+      );
+    }
+    
+    if (latestQueue.status === 'sending') {
+      return (
+        <Badge variant="default" className="flex items-center gap-1 animate-pulse">
+          <Mail className="w-3 h-3" />
+          Sending
+        </Badge>
+      );
+    }
+    
+    if (latestQueue.status === 'sent') {
+      return (
+        <Badge variant="default" className="flex items-center gap-1 bg-green-600">
+          <CheckCircle2 className="w-3 h-3" />
+          Sent
+        </Badge>
+      );
+    }
+    
+    if (latestQueue.status === 'failed') {
+      return (
+        <Badge variant="destructive" className="flex items-center gap-1">
+          <AlertCircle className="w-3 h-3" />
+          Failed
+        </Badge>
+      );
+    }
+    
+    return null;
   };
 
   if (isLoading) {
@@ -258,14 +337,6 @@ const BlogPostManager = () => {
                   />
                   <Label htmlFor="featured">Featured Post</Label>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="published"
-                    checked={formData.published}
-                    onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
-                  />
-                  <Label htmlFor="published">Published</Label>
-                </div>
               </div>
 
               <div className="flex justify-end space-x-2">
@@ -286,17 +357,40 @@ const BlogPostManager = () => {
           <Card key={post.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">{post.title}</CardTitle>
+                <div className="flex items-center space-x-3">
+                  <Checkbox
+                    checked={selectedPosts.has(post.id)}
+                    onCheckedChange={() => togglePostSelection(post.id)}
+                  />
+                  <CardTitle className="text-lg">{post.title}</CardTitle>
+                </div>
                 <div className="flex items-center space-x-2">
                   {post.featured && <Badge variant="secondary">Featured</Badge>}
                   <Badge variant={post.published ? "default" : "outline"}>
                     {post.published ? 'Published' : 'Draft'}
                   </Badge>
+                  <NewsletterBadge postId={post.id} />
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setScheduleDialogPost(post)}
+                    title="Schedule or send newsletter"
+                  >
+                    <Calendar className="w-4 h-4" />
+                  </Button>
+                  {post.published && (
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => sendNewsletterNow.mutate(post.id)}
+                      disabled={sendNewsletterNow.isPending}
+                      title="Send newsletter now"
+                    >
+                      <Mail className="w-4 h-4" />
+                    </Button>
+                  )}
                   <Button variant="ghost" size="sm" onClick={() => handleEdit(post)}>
                     <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => setEmailPreviewPost(post)}>
-                    <Mail className="w-4 h-4" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -314,7 +408,7 @@ const BlogPostManager = () => {
                   By {post.author} • {post.category?.name} • {post.read_time || 'Unknown read time'}
                 </div>
                 <div>
-                  Created: {new Date(post.created_at).toLocaleDateString()}
+                  {post.published_at ? `Published: ${new Date(post.published_at).toLocaleDateString()}` : `Created: ${new Date(post.created_at).toLocaleDateString()}`}
                 </div>
               </div>
               {post.excerpt && (
@@ -325,11 +419,45 @@ const BlogPostManager = () => {
         ))}
       </div>
 
+      {selectedPosts.size > 0 && (
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground rounded-lg shadow-lg p-4 flex items-center space-x-4">
+          <span>{selectedPosts.size} posts selected</span>
+          <Button 
+            variant="secondary" 
+            size="sm"
+            onClick={handleBulkSendNewsletter}
+          >
+            <Mail className="w-4 h-4 mr-2" />
+            Send Newsletter
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => setSelectedPosts(new Set())}
+          >
+            Cancel
+          </Button>
+        </div>
+      )}
+
       {emailPreviewPost && (
         <EmailPreviewDialog
           open={!!emailPreviewPost}
           onOpenChange={(open) => !open && setEmailPreviewPost(null)}
           blogPost={emailPreviewPost}
+        />
+      )}
+
+      {scheduleDialogPost && (
+        <PublishScheduleDialog
+          open={!!scheduleDialogPost}
+          onOpenChange={(open) => !open && setScheduleDialogPost(null)}
+          post={scheduleDialogPost}
+          onSchedule={async (data) => {
+            // Handle scheduling logic here
+            console.log('Schedule data:', data);
+            setScheduleDialogPost(null);
+          }}
         />
       )}
     </div>

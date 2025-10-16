@@ -17,7 +17,6 @@ import {
   CheckCircle,
   Link2,
 } from "lucide-react";
-import { useSubscribersCount } from "@/hooks/useSupabaseCMS";
 
 interface ScheduleData {
   publishNow: boolean;
@@ -45,8 +44,6 @@ export const PublishScheduleDialog = ({
   post,
   onSchedule,
 }: PublishScheduleDialogProps) => {
-  const { data: subscribersCount } = useSubscribersCount();
-  
   const [scheduleData, setScheduleData] = useState<ScheduleData>({
     publishNow: post.published,
     publishAt: post.published_at || null,
@@ -198,7 +195,7 @@ export const PublishScheduleDialog = ({
                 <Alert>
                   <Mail className="h-4 w-4" />
                   <AlertDescription>
-                    Newsletter will be sent to <strong>~{subscribersCount || 0} active subscribers</strong> using your ConvertKit template.
+                    Newsletter will be sent to your active subscribers using your ConvertKit template.
                   </AlertDescription>
                 </Alert>
               </div>
