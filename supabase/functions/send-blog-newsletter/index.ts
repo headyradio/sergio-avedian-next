@@ -1,191 +1,242 @@
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
-
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+import { serve } from 'https://deno.land/std@0.190.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface BlogPost {
-  title: string;
-  excerpt?: string;
-  content?: string;
-  cover_image_url?: string;
-  slug: string;
-  author: string;
-  published_at?: string;
-}
-
 interface NewsletterRequest {
-  to: string;
-  blogPost: BlogPost;
+  post_id?: string;
+  queue_id?: string;
+  to?: string;
+  blogPost?: any;
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    console.log('Blog newsletter function called');
+    const { post_id, queue_id, to, blogPost: directBlogPost } = await req.json() as NewsletterRequest;
     
-    const { to, blogPost }: NewsletterRequest = await req.json();
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
 
-    if (!to || !blogPost) {
+    let post: any;
+    let isTestEmail = !!to;
+
+    if (directBlogPost) {
+      post = directBlogPost;
+    } else if (post_id) {
+      const { data: fetchedPost, error: postError } = await supabaseClient
+        .from('cms_blog_posts')
+        .select('*')
+        .eq('id', post_id)
+        .single();
+
+      if (postError || !fetchedPost) {
+        throw new Error('Post not found');
+      }
+      post = fetchedPost;
+    } else {
+      throw new Error('Either post_id or blogPost must be provided');
+    }
+
+    console.log('Processing newsletter for post:', post.title);
+
+    const emailContent = generateEmailContent(post);
+
+    const CONVERTKIT_API_SECRET = Deno.env.get('CONVERTKIT_API_SECRET');
+    const TEMPLATE_ID = '4692916';
+
+    if (!CONVERTKIT_API_SECRET) {
+      throw new Error('ConvertKit API Secret not configured');
+    }
+
+    if (isTestEmail && to) {
+      console.log('Sending test email to:', to);
+      
+      const broadcastData = {
+        api_secret: CONVERTKIT_API_SECRET,
+        subject: `[TEST] ${post.title}`,
+        content: emailContent,
+        email_template_id: TEMPLATE_ID,
+        public: false,
+        subscriber_filter: {
+          email_address: to,
+        },
+      };
+
+      const response = await fetch('https://api.convertkit.com/v3/broadcasts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(broadcastData),
+      });
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        console.error('ConvertKit API error:', result);
+        throw new Error(result.message || 'Failed to create broadcast');
+      }
+
+      console.log('Test broadcast created:', result.broadcast.id);
+
       return new Response(
-        JSON.stringify({ error: 'Email address and blog post data are required' }), 
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
+        JSON.stringify({
+          success: true,
+          message: 'Test email sent successfully',
+          broadcast_id: result.broadcast.id,
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(`Sending blog newsletter to: ${to}`);
+    console.log('Creating broadcast for all subscribers');
 
-    // Create HTML email content
-    const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <style>
-            body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-              line-height: 1.6;
-              color: #333;
-              max-width: 600px;
-              margin: 0 auto;
-              padding: 0;
-            }
-            .header {
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-              padding: 40px 20px;
-              text-align: center;
-            }
-            .header h1 {
-              margin: 0;
-              font-size: 28px;
-              font-weight: bold;
-            }
-            .content {
-              padding: 30px 20px;
-            }
-            .cover-image {
-              width: 100%;
-              height: auto;
-              border-radius: 8px;
-              margin-bottom: 20px;
-            }
-            h2 {
-              color: #1a202c;
-              font-size: 24px;
-              margin-top: 0;
-            }
-            .excerpt {
-              color: #4a5568;
-              font-size: 16px;
-              margin: 15px 0;
-            }
-            .meta {
-              color: #718096;
-              font-size: 14px;
-              margin: 10px 0 20px;
-            }
-            .cta-button {
-              display: inline-block;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-              text-decoration: none;
-              padding: 14px 32px;
-              border-radius: 6px;
-              font-weight: 600;
-              font-size: 16px;
-              margin: 20px 0;
-            }
-            .footer {
-              background: #f7fafc;
-              padding: 30px 20px;
-              text-align: center;
-              font-size: 12px;
-              color: #718096;
-            }
-            .footer a {
-              color: #667eea;
-              text-decoration: none;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>New Blog Post from Sergio Avedian</h1>
-          </div>
-          
-          <div class="content">
-            ${blogPost.cover_image_url ? `<img src="${blogPost.cover_image_url}" alt="${blogPost.title}" class="cover-image">` : ''}
-            
-            <h2>${blogPost.title}</h2>
-            
-            ${blogPost.excerpt ? `<p class="excerpt">${blogPost.excerpt}</p>` : ''}
-            
-            <p class="meta">
-              By ${blogPost.author} • ${new Date(blogPost.published_at || new Date()).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </p>
-            
-            <a href="https://yourdomain.com/blog/${blogPost.slug}" class="cta-button">
-              Read Full Article
-            </a>
-          </div>
-          
-          <div class="footer">
-            <p>You're receiving this because you subscribed to Sergio Avedian's newsletter</p>
-            <p>
-              <a href="https://yourdomain.com">Visit our website</a> • 
-              <a href="#">Unsubscribe</a>
-            </p>
-          </div>
-        </body>
-      </html>
-    `;
+    let queueRecord: any = null;
+    if (queue_id) {
+      const { data } = await supabaseClient
+        .from('cms_blog_email_queue')
+        .select('*')
+        .eq('id', queue_id)
+        .single();
+      queueRecord = data;
+    }
 
-    const emailResponse = await resend.emails.send({
-      from: "Sergio Avedian <onboarding@resend.dev>",
-      to: [to],
-      subject: `New Post: ${blogPost.title}`,
-      html: emailHtml,
+    const broadcastData: any = {
+      api_secret: CONVERTKIT_API_SECRET,
+      subject: post.title,
+      content: emailContent,
+      email_template_id: TEMPLATE_ID,
+      public: true,
+    };
+
+    if (queueRecord && queueRecord.scheduled_for) {
+      const scheduledTime = new Date(queueRecord.scheduled_for);
+      if (scheduledTime > new Date()) {
+        broadcastData.send_at = scheduledTime.toISOString();
+        console.log('Scheduling broadcast for:', scheduledTime.toISOString());
+      }
+    }
+
+    const response = await fetch('https://api.convertkit.com/v3/broadcasts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(broadcastData),
     });
 
-    console.log('Email sent successfully:', emailResponse);
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error('ConvertKit API error:', result);
+      
+      if (queue_id) {
+        await supabaseClient
+          .from('cms_blog_email_queue')
+          .update({
+            status: 'failed',
+            error_message: result.message || 'Failed to create broadcast',
+          })
+          .eq('id', queue_id);
+      }
+
+      throw new Error(result.message || 'Failed to create broadcast');
+    }
+
+    console.log('Broadcast created:', result.broadcast.id);
+
+    if (queue_id) {
+      const updateData: any = {
+        broadcast_id: result.broadcast.id,
+      };
+
+      if (broadcastData.send_at) {
+        updateData.status = 'pending';
+      } else {
+        updateData.status = 'sent';
+        updateData.sent_at = new Date().toISOString();
+      }
+
+      await supabaseClient
+        .from('cms_blog_email_queue')
+        .update(updateData)
+        .eq('id', queue_id);
+    }
 
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         success: true,
-        message: 'Email sent successfully',
-        data: emailResponse
-      }), 
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
+        message: 'Newsletter broadcast created successfully',
+        broadcast_id: result.broadcast.id,
+        scheduled: !!broadcastData.send_at,
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
-    console.error('Error in send-blog-newsletter function:', error);
+  } catch (error: any) {
+    console.error('Error in send-blog-newsletter:', error);
     return new Response(
       JSON.stringify({ 
-        error: 'Internal server error', 
-        details: error instanceof Error ? error.message : 'Unknown error' 
-      }), 
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        error: error.message,
+        success: false,
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
     );
   }
 });
+
+function generateEmailContent(post: any): string {
+  const domain = 'https://sergioavedian.com';
+  const postUrl = `${domain}/blog/${post.slug}`;
+  
+  const stripHtml = (html: string) => {
+    return html.replace(/<[^>]*>/g, '').substring(0, 300) + '...';
+  };
+
+  const excerpt = post.excerpt || (post.content ? stripHtml(post.content) : '');
+  const publishDate = new Date(post.published_at || new Date()).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return `
+    ${post.cover_image_url ? `
+    <div style="margin-bottom: 24px;">
+      <img src="${post.cover_image_url}" alt="${post.title}" style="width: 100%; max-width: 600px; height: auto; border-radius: 8px; display: block;" />
+    </div>
+    ` : ''}
+
+    <h2 style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 32px; color: #1a202c; font-weight: 700; margin: 0 0 16px 0; letter-spacing: -0.8px; line-height: 1.2;">
+      ${post.title}
+    </h2>
+
+    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; color: #718096; margin: 0 0 24px 0;">
+      By ${post.author} • ${publishDate}
+    </p>
+
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.7; color: #2d3748; margin: 0 0 28px 0;">
+      ${excerpt}
+    </p>
+
+    <div style="margin: 32px 0; text-align: center;">
+      <a href="${postUrl}" style="display: inline-block; background: #2c5282; color: #ffffff; padding: 16px 42px; text-decoration: none; border-radius: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 0.3px;">
+        Read Full Article →
+      </a>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 32px 0;" />
+
+    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 17px; line-height: 1.7; color: #4a5568; margin: 0; font-style: italic;">
+      As always, remember: <strong>Patience. Position. Planning.</strong>
+    </p>
+  `;
+}

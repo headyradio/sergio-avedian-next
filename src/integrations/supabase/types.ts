@@ -312,6 +312,56 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_blog_email_queue: {
+        Row: {
+          broadcast_id: string | null
+          created_at: string | null
+          created_by: string | null
+          error_message: string | null
+          id: string
+          post_id: string
+          recipients_count: number | null
+          scheduled_for: string
+          sent_at: string | null
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          broadcast_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          post_id: string
+          recipients_count?: number | null
+          scheduled_for: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          broadcast_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          error_message?: string | null
+          id?: string
+          post_id?: string
+          recipients_count?: number | null
+          scheduled_for?: string
+          sent_at?: string | null
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_blog_email_queue_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "cms_blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cms_blog_posts: {
         Row: {
           author: string

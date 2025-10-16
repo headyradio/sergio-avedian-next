@@ -333,3 +333,139 @@ export const useUpdateHomepageContent = () => {
     },
   });
 };
+
+// Newsletter hooks
+export const useSubscribersCount = () => {
+  return useQuery({
+    queryKey: ['subscribers-count'],
+    queryFn: async () => {
+      const { data, error } = await supabase.functions.invoke(
+        'get-subscriber-count'
+      );
+
+      if (error) {
+        console.error('Failed to fetch subscriber count:', error);
+        return 0;
+      }
+
+      return data?.count || 0;
+    },
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+};
+
+export const useQueueNewsletter = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ 
+      postId, 
+      scheduledFor 
+    }: { 
+      postId: string; 
+      scheduledFor: string;
+    }) => {
+      const { data, error } = await supabase
+        .from('cms_blog_email_queue')
+        .insert({
+          post_id: postId,
+          scheduled_for: scheduledFor,
+          status: 'pending',
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['newsletter-queue'] });
+      toast.success('Newsletter scheduled successfully');
+    },
+    onError: (error) => {
+      toast.error('Failed to schedule newsletter: ' + error.message);
+    },
+  });
+};
+
+export const useSendNewsletterNow = () => {
+  return useMutation({
+    mutationFn: async (postId: string) => {
+      const { data, error } = await supabase.functions.invoke(
+        'send-blog-newsletter',
+        {
+          body: { post_id: postId },
+        }
+      );
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      toast.success('Newsletter sent successfully!');
+    },
+    onError: (error) => {
+      toast.error('Failed to send newsletter: ' + error.message);
+    },
+  });
+};
+
+export const useNewsletterQueue = (postId: string) => {
+  return useQuery({
+    queryKey: ['newsletter-queue', postId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cms_blog_email_queue')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!postId,
+  });
+};
+
+export const useAllNewsletterQueue = () => {
+  return useQuery({
+    queryKey: ['all-newsletter-queue'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cms_blog_email_queue')
+        .select(`
+          *,
+          post:cms_blog_posts(title, slug, author)
+        `)
+        .order('scheduled_for', { ascending: false });
+
+      if (error) throw error;
+      return data;
+    },
+  });
+};
+
+export const useCancelNewsletter = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (queueId: string) => {
+      const { error } = await supabase
+        .from('cms_blog_email_queue')
+        .update({ status: 'cancelled' })
+        .eq('id', queueId);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['newsletter-queue'] });
+      toast.success('Newsletter cancelled');
+    },
+    onError: (error) => {
+      toast.error('Failed to cancel newsletter: ' + error.message);
+    },
+  });
+};

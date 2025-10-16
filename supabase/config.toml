@@ -61,3 +61,12 @@ verify_jwt = false
 
 [functions.send-blog-newsletter]
 verify_jwt = false
+
+[functions.get-subscriber-count]
+verify_jwt = false
+
+[functions.process-blog-email-queue]
+verify_jwt = false
+
+[functions.auto-publish-scheduled-posts]
+verify_jwt = false
