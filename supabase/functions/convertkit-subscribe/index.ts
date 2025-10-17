@@ -21,13 +21,13 @@ serve(async (req) => {
   try {
     console.log('ConvertKit Subscribe function called');
     
-    // Get environment variables
-    const convertKitApiKey = Deno.env.get('CONVERTKIT_API_KEY');
+    // Get environment variables (API Secret is required for Subscribers API)
+    const convertKitApiSecret = Deno.env.get('CONVERTKIT_API_SECRET');
 
-    if (!convertKitApiKey) {
-      console.error('ConvertKit API key not found');
+    if (!convertKitApiSecret) {
+      console.error('ConvertKit API Secret not found');
       return new Response(
-        JSON.stringify({ error: 'ConvertKit API key not configured' }), 
+        JSON.stringify({ error: 'ConvertKit API Secret not configured' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -52,7 +52,7 @@ serve(async (req) => {
 
     // Subscribe using ConvertKit Subscribers API
     const convertKitData = {
-      api_key: convertKitApiKey,
+      api_secret: convertKitApiSecret,
       email: email.toLowerCase(),
       ...(firstName && { first_name: firstName }),
       ...(lastName && { last_name: lastName }),
