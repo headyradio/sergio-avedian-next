@@ -62,7 +62,7 @@ serve(async (req) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${convertKitApiKey}`,
+        'X-Kit-Api-Key': convertKitApiKey,
       },
       body: JSON.stringify(convertKitData),
     });
