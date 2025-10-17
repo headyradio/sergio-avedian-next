@@ -21,13 +21,13 @@ serve(async (req) => {
   try {
     console.log('ConvertKit Subscribe function called');
     
-    // Get environment variables (API Secret is required for Subscribers API)
-    const convertKitApiSecret = Deno.env.get('CONVERTKIT_API_SECRET');
+    // Get environment variables (v4 API uses API Key for bearer token)
+    const convertKitApiKey = Deno.env.get('CONVERTKIT_API_KEY_V4');
 
-    if (!convertKitApiSecret) {
-      console.error('ConvertKit API Secret not found');
+    if (!convertKitApiKey) {
+      console.error('ConvertKit API Key V4 not found');
       return new Response(
-        JSON.stringify({ error: 'ConvertKit API Secret not configured' }), 
+        JSON.stringify({ error: 'ConvertKit API Key V4 not configured' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -50,19 +50,19 @@ serve(async (req) => {
 
     console.log(`Processing subscription for: ${email}`);
 
-    // Subscribe using ConvertKit Subscribers API
+    // Subscribe using ConvertKit v4 API
     const convertKitData = {
-      api_secret: convertKitApiSecret,
-      email: email.toLowerCase(),
+      email_address: email.toLowerCase(),
       ...(firstName && { first_name: firstName }),
       ...(lastName && { last_name: lastName }),
     };
 
-    console.log('Adding subscriber to ConvertKit...');
-    const convertKitResponse = await fetch('https://api.convertkit.com/v3/subscribers', {
+    console.log('Adding subscriber to ConvertKit v4...');
+    const convertKitResponse = await fetch('https://api.convertkit.com/v4/subscribers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${convertKitApiKey}`,
       },
       body: JSON.stringify(convertKitData),
     });
