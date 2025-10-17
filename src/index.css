@@ -485,4 +485,17 @@
   .notion-editor {
     scroll-behavior: smooth;
   }
+
+  /* Tippy.js slash command menu styling */
+  .tippy-box[data-theme~='light-border'] {
+    background-color: hsl(var(--popover));
+    color: hsl(var(--popover-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .tippy-box[data-theme~='light-border'] .tippy-content {
+    padding: 0;
+  }
 }

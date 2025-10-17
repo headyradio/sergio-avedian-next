@@ -1,6 +1,7 @@
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
+import Link from '@tiptap/extension-link';
 import { Button } from '@/components/ui/button';
 import { 
   Bold, 
@@ -9,10 +10,11 @@ import {
   ListOrdered, 
   Quote, 
   Code, 
-  Heading2, 
   Heading3,
+  Link as LinkIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { SlashCommandExtension } from '@/lib/slash-command-extension';
 
 interface RichTextEditorProps {
   content: string;
@@ -34,6 +36,12 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
           keepAttributes: false,
         },
       }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-primary underline',
+        },
+      }),
       Placeholder.configure({
         placeholder: ({ node }) => {
           if (node.type.name === 'heading') {
@@ -44,6 +52,7 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
         showOnlyWhenEditable: true,
         showOnlyCurrent: true,
       }),
+      SlashCommandExtension,
     ],
     content,
     onUpdate: ({ editor }) => {
@@ -120,19 +129,24 @@ const RichTextEditor = ({ content, onChange, placeholder, className }: RichTextE
           <div className="w-px h-5 bg-border/50 mx-1" />
 
           <ToolbarButton
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            isActive={editor.isActive('heading', { level: 2 })}
-            title="Heading 2"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+            isActive={editor.isActive('heading', { level: 3 })}
+            title="Heading"
           >
-            <Heading2 className="h-4 w-4" />
+            <Heading3 className="h-4 w-4" />
           </ToolbarButton>
 
           <ToolbarButton
-            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            isActive={editor.isActive('heading', { level: 3 })}
-            title="Heading 3"
+            onClick={() => {
+              const url = window.prompt('Enter URL:');
+              if (url) {
+                editor.chain().focus().setLink({ href: url }).run();
+              }
+            }}
+            isActive={editor.isActive('link')}
+            title="Add Link"
           >
-            <Heading3 className="h-4 w-4" />
+            <LinkIcon className="h-4 w-4" />
           </ToolbarButton>
 
           <div className="w-px h-5 bg-border/50 mx-1" />

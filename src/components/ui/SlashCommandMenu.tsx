@@ -4,7 +4,8 @@ import { cn } from '@/lib/utils';
 
 export interface SlashCommandMenuProps {
   items: SlashCommand[];
-  command: (command: SlashCommand) => void;
+  command: (item: SlashCommand) => void;
+  editor?: any;
 }
 
 export interface SlashCommandMenuRef {

@@ -9,24 +9,24 @@ export interface SlashCommand {
 
 export const slashCommands: SlashCommand[] = [
   {
-    title: 'Heading 1',
-    description: 'Large section heading',
-    icon: '📝',
+    title: 'Bold',
+    description: 'Make text bold',
+    icon: '𝐁',
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).setHeading({ level: 1 }).run();
+      editor.chain().focus().deleteRange(range).setMark('bold').run();
     },
   },
   {
-    title: 'Heading 2',
-    description: 'Medium section heading',
-    icon: '📄',
+    title: 'Italic',
+    description: 'Make text italic',
+    icon: '𝐼',
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run();
+      editor.chain().focus().deleteRange(range).setMark('italic').run();
     },
   },
   {
-    title: 'Heading 3',
-    description: 'Small section heading',
+    title: 'Heading',
+    description: 'Section heading (H3)',
     icon: '📋',
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run();
@@ -57,6 +57,17 @@ export const slashCommands: SlashCommand[] = [
     },
   },
   {
+    title: 'Link',
+    description: 'Add a link',
+    icon: '🔗',
+    command: ({ editor, range }) => {
+      const url = window.prompt('Enter URL:');
+      if (url) {
+        editor.chain().focus().deleteRange(range).setLink({ href: url }).run();
+      }
+    },
+  },
+  {
     title: 'Code Block',
     description: 'Insert a code block',
     icon: '</>',
@@ -70,14 +81,6 @@ export const slashCommands: SlashCommand[] = [
     icon: '―',
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).setHorizontalRule().run();
-    },
-  },
-  {
-    title: 'Paragraph',
-    description: 'Regular text paragraph',
-    icon: '¶',
-    command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).setParagraph().run();
     },
   },
 ];
