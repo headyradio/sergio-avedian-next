@@ -23,23 +23,11 @@ serve(async (req) => {
     
     // Get environment variables
     const convertKitApiKey = Deno.env.get('CONVERTKIT_API_KEY');
-    const formId = Deno.env.get('CONVERTKIT_FORM_ID');
 
     if (!convertKitApiKey) {
       console.error('ConvertKit API key not found');
       return new Response(
         JSON.stringify({ error: 'ConvertKit API key not configured' }), 
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
-    if (!formId) {
-      console.error('ConvertKit Form ID not found');
-      return new Response(
-        JSON.stringify({ error: 'ConvertKit Form ID not configured' }), 
         { 
           status: 500, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -62,17 +50,16 @@ serve(async (req) => {
 
     console.log(`Processing subscription for: ${email}`);
 
-    // Subscribe to ConvertKit form using V3 API (will trigger template 4692916)
+    // Subscribe using ConvertKit Subscribers API
     const convertKitData = {
       api_key: convertKitApiKey,
       email: email.toLowerCase(),
       ...(firstName && { first_name: firstName }),
       ...(lastName && { last_name: lastName }),
-      tags: [4692916] // Template ID as tag to trigger the sequence
     };
 
-    console.log('Subscribing to ConvertKit form...');
-    const convertKitResponse = await fetch(`https://api.convertkit.com/v3/forms/${formId}/subscribe`, {
+    console.log('Adding subscriber to ConvertKit...');
+    const convertKitResponse = await fetch('https://api.convertkit.com/v3/subscribers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -84,12 +71,12 @@ serve(async (req) => {
     console.log('ConvertKit response:', convertKitResponse.status, convertKitResult);
 
     if (convertKitResponse.ok) {
-      console.log(`Successfully subscribed to ConvertKit form`);
+      console.log(`Successfully added subscriber to ConvertKit`);
       return new Response(
         JSON.stringify({ 
           success: true, 
           message: 'Successfully subscribed!',
-          subscriber: convertKitResult.subscription || convertKitResult
+          subscriber: convertKitResult.subscriber || convertKitResult
         }), 
         { 
           status: 200, 
