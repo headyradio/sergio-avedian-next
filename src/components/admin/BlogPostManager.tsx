@@ -525,6 +525,26 @@ const BlogPostManager = () => {
                       </p>
                     </div>
                   </div>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setEmailPreviewPost({
+                        title: formData.title,
+                        excerpt: formData.excerpt,
+                        content: formData.content,
+                        cover_image_url: formData.cover_image_url,
+                        slug: formData.slug,
+                        author: formData.author,
+                        published_at: formData.published ? new Date().toISOString() : undefined,
+                      } as CMSBlogPost);
+                    }}
+                    className="w-full"
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Preview & Test Email
+                  </Button>
                 </CollapsibleContent>
               </Collapsible>
 
