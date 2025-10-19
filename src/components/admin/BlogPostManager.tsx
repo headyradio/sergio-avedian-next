@@ -12,7 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, Edit, Plus, Mail, Calendar, CheckCircle2, Clock, AlertCircle } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Trash2, Edit, Plus, Mail, Calendar, CheckCircle2, Clock, AlertCircle, ChevronDown } from 'lucide-react';
 import { 
   useBlogPosts, 
   useCategories, 
