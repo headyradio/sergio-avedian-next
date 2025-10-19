@@ -61,7 +61,7 @@ export const PublishScheduleDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Publish & Schedule Newsletter</DialogTitle>
+          <DialogTitle>Scheduling</DialogTitle>
           <DialogDescription>
             Configure when to publish "{post.title}" and send newsletter
           </DialogDescription>

@@ -21,6 +21,7 @@ import {
   useDeleteBlogPost, 
   useNewsletterQueue,
   useSendNewsletterNow,
+  useQueueNewsletter,
   CMSBlogPost 
 } from '@/hooks/useSupabaseCMS';
 import RichTextEditor from '@/components/ui/rich-text-editor';
@@ -41,6 +42,7 @@ const BlogPostManager = () => {
   const updateBlogPost = useUpdateBlogPost();
   const deleteBlogPost = useDeleteBlogPost();
   const sendNewsletterNow = useSendNewsletterNow();
+  const queueNewsletter = useQueueNewsletter();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -54,6 +56,8 @@ const BlogPostManager = () => {
     read_time: '',
     seo_title: '',
     seo_description: '',
+    cover_image_url: '',
+    cover_image_alt: '',
   });
 
   const filteredPosts = blogPosts?.filter(post => {
@@ -89,6 +93,8 @@ const BlogPostManager = () => {
       read_time: post.read_time || '',
       seo_title: post.seo_title || '',
       seo_description: post.seo_description || '',
+      cover_image_url: post.cover_image_url || '',
+      cover_image_alt: post.cover_image_alt || '',
     });
     setIsDialogOpen(true);
   };
@@ -108,6 +114,8 @@ const BlogPostManager = () => {
       read_time: '',
       seo_title: '',
       seo_description: '',
+      cover_image_url: '',
+      cover_image_alt: '',
     });
   };
 
@@ -299,6 +307,27 @@ const BlogPostManager = () => {
                 />
               </div>
 
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="cover-image-url">Cover Image URL</Label>
+                  <Input
+                    id="cover-image-url"
+                    value={formData.cover_image_url}
+                    onChange={(e) => setFormData({ ...formData, cover_image_url: e.target.value })}
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="cover-image-alt">Cover Image Alt Text</Label>
+                  <Input
+                    id="cover-image-alt"
+                    value={formData.cover_image_alt}
+                    onChange={(e) => setFormData({ ...formData, cover_image_alt: e.target.value })}
+                    placeholder="Description of the image"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="content">Content</Label>
                 <RichTextEditor
@@ -463,9 +492,43 @@ const BlogPostManager = () => {
           onOpenChange={(open) => !open && setScheduleDialogPost(null)}
           post={scheduleDialogPost}
           onSchedule={async (data) => {
-            // Handle scheduling logic here
-            console.log('Schedule data:', data);
-            setScheduleDialogPost(null);
+            try {
+              // Determine publish date
+              const publishDate = data.publishNow 
+                ? new Date().toISOString() 
+                : data.publishAt;
+
+              // Update post with published status and date
+              await updateBlogPost.mutateAsync({
+                id: scheduleDialogPost.id,
+                published: data.publishNow,
+                published_at: publishDate,
+              });
+
+              // Handle newsletter if enabled
+              if (data.sendNewsletter) {
+                if (data.sendTiming === 'immediately') {
+                  // Send newsletter now
+                  await sendNewsletterNow.mutateAsync(scheduleDialogPost.id);
+                } else {
+                  // Queue newsletter for later
+                  const newsletterDate = data.sendTiming === 'with_post' 
+                    ? publishDate 
+                    : data.sendAt;
+                  
+                  if (newsletterDate) {
+                    await queueNewsletter.mutateAsync({
+                      postId: scheduleDialogPost.id,
+                      scheduledFor: newsletterDate,
+                    });
+                  }
+                }
+              }
+
+              setScheduleDialogPost(null);
+            } catch (error) {
+              console.error('Failed to schedule post:', error);
+            }
           }}
         />
       )}
