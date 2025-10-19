@@ -60,6 +60,11 @@ const BlogPostManager = () => {
     seo_description: '',
     cover_image_url: '',
     cover_image_alt: '',
+    // Newsletter fields
+    newsletter_subject: '',
+    newsletter_content: '',
+    newsletter_preview_text: '',
+    email_template_id: '4692916',
   });
 
   const filteredPosts = blogPosts?.filter(post => {
@@ -97,6 +102,11 @@ const BlogPostManager = () => {
       seo_description: post.seo_description || '',
       cover_image_url: post.cover_image_url || '',
       cover_image_alt: post.cover_image_alt || '',
+      // Newsletter fields
+      newsletter_subject: post.newsletter_subject || '',
+      newsletter_content: post.newsletter_content || '',
+      newsletter_preview_text: post.newsletter_preview_text || '',
+      email_template_id: post.email_template_id || '4692916',
     });
     setIsDialogOpen(true);
   };
@@ -118,6 +128,11 @@ const BlogPostManager = () => {
       seo_description: '',
       cover_image_url: '',
       cover_image_alt: '',
+      // Newsletter fields
+      newsletter_subject: '',
+      newsletter_content: '',
+      newsletter_preview_text: '',
+      email_template_id: '4692916',
     });
   };
 
@@ -155,7 +170,11 @@ const BlogPostManager = () => {
 
   const handleConfirmSendNewsletter = async () => {
     if (!emailTestDialogPost) return;
-    await sendNewsletterNow.mutateAsync(emailTestDialogPost.id);
+    await sendNewsletterNow.mutateAsync({
+      postId: emailTestDialogPost.id,
+      mode: 'send_now',
+      sendAt: new Date().toISOString(),
+    });
   };
 
   const NewsletterBadge = ({ postId }: { postId: string }) => {
@@ -424,6 +443,90 @@ const BlogPostManager = () => {
                 </div>
               </div>
 
+              {/* Newsletter Composer Section */}
+              <Collapsible className="border rounded-lg p-4 space-y-4">
+                <CollapsibleTrigger className="flex items-center justify-between w-full text-left">
+                  <h3 className="font-semibold text-lg flex items-center gap-2">
+                    📧 Newsletter Composer (Optional)
+                  </h3>
+                  <ChevronDown className="h-4 w-4 transition-transform" />
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-4 pt-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="newsletter-subject">Email Subject Line</Label>
+                      <Input
+                        id="newsletter-subject"
+                        value={formData.newsletter_subject || ''}
+                        onChange={(e) => setFormData({ ...formData, newsletter_subject: e.target.value })}
+                        placeholder={formData.title || 'Subject line (defaults to post title)'}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Leave blank to use post title
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="newsletter-preview">Email Preview Text</Label>
+                      <Input
+                        id="newsletter-preview"
+                        value={formData.newsletter_preview_text || ''}
+                        onChange={(e) => setFormData({ ...formData, newsletter_preview_text: e.target.value })}
+                        placeholder="Shows in inbox preview..."
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Optional preview text shown in email clients
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="newsletter-content">Email Content (HTML)</Label>
+                    <Textarea
+                      id="newsletter-content"
+                      value={formData.newsletter_content || ''}
+                      onChange={(e) => setFormData({ ...formData, newsletter_content: e.target.value })}
+                      placeholder="Leave blank to auto-generate from blog post content..."
+                      rows={8}
+                      className="font-mono text-sm"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Custom HTML for email. Leave blank to auto-generate from post content.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email-template-id">ConvertKit Template ID</Label>
+                      <Input
+                        id="email-template-id"
+                        value={formData.email_template_id || '4692916'}
+                        onChange={(e) => setFormData({ ...formData, email_template_id: e.target.value })}
+                        placeholder="4692916"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Your ConvertKit email template ID
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Subscriber Filter</Label>
+                      <div className="flex items-center space-x-2 pt-2">
+                        <Switch
+                          id="all-subscribers"
+                          checked={true}
+                          disabled
+                        />
+                        <Label htmlFor="all-subscribers" className="text-sm">
+                          Send to all subscribers
+                        </Label>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Currently sends to all subscribers
+                      </p>
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
               <div className="flex justify-end space-x-2">
                 <Button type="button" variant="outline" onClick={handleCloseDialog}>
                   Cancel
@@ -553,22 +656,19 @@ const BlogPostManager = () => {
 
               // Handle newsletter if enabled
               if (data.sendNewsletter) {
-                if (data.sendTiming === 'immediately') {
-                  // Send newsletter now
-                  await sendNewsletterNow.mutateAsync(scheduleDialogPost.id);
-                } else {
-                  // Queue newsletter for later
-                  const newsletterDate = data.sendTiming === 'with_post' 
-                    ? publishDate 
-                    : data.sendAt;
-                  
-                  if (newsletterDate) {
-                    await queueNewsletter.mutateAsync({
-                      postId: scheduleDialogPost.id,
-                      scheduledFor: newsletterDate,
-                    });
-                  }
+                let sendAt: string | null = null;
+                
+                if (data.newsletterMode === 'send_now') {
+                  sendAt = new Date().toISOString();
+                } else if (data.newsletterMode === 'schedule' && data.sendAt) {
+                  sendAt = data.sendAt;
                 }
+                
+                await sendNewsletterNow.mutateAsync({
+                  postId: scheduleDialogPost.id,
+                  mode: data.newsletterMode,
+                  sendAt: sendAt,
+                });
               }
 
               setScheduleDialogPost(null);

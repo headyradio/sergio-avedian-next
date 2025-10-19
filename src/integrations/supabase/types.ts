@@ -370,16 +370,25 @@ export type Database = {
           cover_image_alt: string | null
           cover_image_url: string | null
           created_at: string
+          email_template_id: string | null
           excerpt: string | null
           featured: boolean | null
           id: string
+          kit_broadcast_id: string | null
+          kit_send_at: string | null
+          kit_status: string | null
+          newsletter_content: string | null
+          newsletter_preview_text: string | null
+          newsletter_subject: string | null
           published: boolean | null
           published_at: string | null
           read_time: string | null
+          sent_to_kit: boolean | null
           seo_description: string | null
           seo_keywords: string[] | null
           seo_title: string | null
           slug: string
+          subscriber_filter: Json | null
           title: string
           updated_at: string
         }
@@ -390,16 +399,25 @@ export type Database = {
           cover_image_alt?: string | null
           cover_image_url?: string | null
           created_at?: string
+          email_template_id?: string | null
           excerpt?: string | null
           featured?: boolean | null
           id?: string
+          kit_broadcast_id?: string | null
+          kit_send_at?: string | null
+          kit_status?: string | null
+          newsletter_content?: string | null
+          newsletter_preview_text?: string | null
+          newsletter_subject?: string | null
           published?: boolean | null
           published_at?: string | null
           read_time?: string | null
+          sent_to_kit?: boolean | null
           seo_description?: string | null
           seo_keywords?: string[] | null
           seo_title?: string | null
           slug: string
+          subscriber_filter?: Json | null
           title: string
           updated_at?: string
         }
@@ -410,16 +428,25 @@ export type Database = {
           cover_image_alt?: string | null
           cover_image_url?: string | null
           created_at?: string
+          email_template_id?: string | null
           excerpt?: string | null
           featured?: boolean | null
           id?: string
+          kit_broadcast_id?: string | null
+          kit_send_at?: string | null
+          kit_status?: string | null
+          newsletter_content?: string | null
+          newsletter_preview_text?: string | null
+          newsletter_subject?: string | null
           published?: boolean | null
           published_at?: string | null
           read_time?: string | null
+          sent_to_kit?: boolean | null
           seo_description?: string | null
           seo_keywords?: string[] | null
           seo_title?: string | null
           slug?: string
+          subscriber_filter?: Json | null
           title?: string
           updated_at?: string
         }

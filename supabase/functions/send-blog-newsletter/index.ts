@@ -8,9 +8,9 @@ const corsHeaders = {
 
 interface NewsletterRequest {
   post_id?: string;
-  queue_id?: string;
-  to?: string;
-  blogPost?: any;
+  mode?: 'draft' | 'schedule' | 'send_now';
+  send_at?: string | null;
+  to?: string; // For test emails
 }
 
 serve(async (req) => {
@@ -19,205 +19,178 @@ serve(async (req) => {
   }
 
   try {
-    const { post_id, queue_id, to, blogPost: directBlogPost } = await req.json() as NewsletterRequest;
+    const { post_id, mode = 'draft', send_at, to } = await req.json() as NewsletterRequest;
     
+    if (!post_id) {
+      throw new Error('post_id is required');
+    }
+
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     );
 
-    let post: any;
-    let isTestEmail = !!to;
+    // Fetch post with all newsletter fields
+    const { data: post, error: postError } = await supabaseClient
+      .from('cms_blog_posts')
+      .select('*')
+      .eq('id', post_id)
+      .single();
 
-    if (directBlogPost) {
-      post = directBlogPost;
-    } else if (post_id) {
-      const { data: fetchedPost, error: postError } = await supabaseClient
-        .from('cms_blog_posts')
-        .select('*')
-        .eq('id', post_id)
-        .single();
-
-      if (postError || !fetchedPost) {
-        throw new Error('Post not found');
-      }
-      post = fetchedPost;
-    } else {
-      throw new Error('Either post_id or blogPost must be provided');
+    if (postError || !post) {
+      throw new Error('Post not found');
     }
 
-    console.log('Processing newsletter for post:', post.title);
+    console.log('Processing newsletter for post:', post.title, 'Mode:', mode);
 
-    const emailContent = generateEmailContent(post);
-
-    const CONVERTKIT_API_SECRET = Deno.env.get('CONVERTKIT_API_SECRET');
-    const TEMPLATE_ID = '4692916';
-
-    if (!CONVERTKIT_API_SECRET) {
-      throw new Error('ConvertKit API Secret not configured');
+    const CONVERTKIT_API_KEY = Deno.env.get('CONVERTKIT_API_KEY_V4');
+    
+    if (!CONVERTKIT_API_KEY) {
+      throw new Error('ConvertKit API Key (V4) not configured. Please add CONVERTKIT_API_KEY_V4 secret.');
     }
 
-    if (isTestEmail && to) {
+    // Determine email content - use custom or auto-generated
+    const emailContent = post.newsletter_content || generateEmailContent(post);
+    const emailSubject = post.newsletter_subject || post.title;
+    const previewText = post.newsletter_preview_text || post.excerpt || '';
+    const emailTemplateId = post.email_template_id || '4692916';
+    const subscriberFilter = post.subscriber_filter || { all: true };
+
+    // Handle test emails
+    if (to) {
       console.log('Sending test email to:', to);
       
-      const broadcastData = {
-        api_secret: CONVERTKIT_API_SECRET,
-        subject: `[TEST] ${post.title}`,
-        description: emailContent,
-        email_template_id: TEMPLATE_ID,
-        public: false,
+      const testBroadcastData = {
+        subject: `[TEST] ${emailSubject}`,
+        content: emailContent,
+        description: `Test email for: ${post.title}`,
+        preview_text: previewText,
+        email_template_id: emailTemplateId,
+        send_at: new Date().toISOString(), // Send immediately
         subscriber_filter: {
           email_address: to,
         },
       };
 
-      const response = await fetch('https://api.convertkit.com/v3/broadcasts', {
+      const response = await fetch('https://api.kit.com/v4/broadcasts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(broadcastData),
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Kit-Api-Key': CONVERTKIT_API_KEY,
+        },
+        body: JSON.stringify(testBroadcastData),
       });
 
       const result = await response.json();
       
       if (!response.ok) {
-        console.error('ConvertKit API error:', result);
-        throw new Error(result.message || 'Failed to create broadcast');
+        console.error('ConvertKit V4 API error:', result);
+        throw new Error(result.message || 'Failed to send test email');
       }
 
-      console.log('Test broadcast created:', result.broadcast.id);
-
-      // Publish the test broadcast immediately so it actually sends
-      const publishResponse = await fetch(
-        `https://api.convertkit.com/v3/broadcasts/${result.broadcast.id}/publish`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ api_secret: CONVERTKIT_API_SECRET }),
-        }
-      );
-
-      const publishResult = await publishResponse.json();
-      
-      if (!publishResponse.ok) {
-        console.error('Failed to publish test broadcast:', publishResult);
-        throw new Error('Test broadcast created but failed to publish');
-      }
-
-      console.log('Test broadcast published and sent to:', to);
+      console.log('Test broadcast sent:', result.id);
 
       return new Response(
         JSON.stringify({
           success: true,
           message: 'Test email sent successfully',
-          broadcast_id: result.broadcast.id,
+          broadcast_id: result.id,
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log('Creating broadcast for all subscribers');
-
-    let queueRecord: any = null;
-    if (queue_id) {
-      const { data } = await supabaseClient
-        .from('cms_blog_email_queue')
-        .select('*')
-        .eq('id', queue_id)
-        .single();
-      queueRecord = data;
-    }
-
+    // Build broadcast data for V4 API
     const broadcastData: any = {
-      api_secret: CONVERTKIT_API_SECRET,
-      subject: post.title,
-      description: emailContent,
-      email_template_id: TEMPLATE_ID,
-      public: true,
+      subject: emailSubject,
+      content: emailContent,
+      description: `Blog post: ${post.title}`,
+      preview_text: previewText,
+      email_template_id: emailTemplateId,
+      subscriber_filter: subscriberFilter,
     };
 
-    if (queueRecord && queueRecord.scheduled_for) {
-      const scheduledTime = new Date(queueRecord.scheduled_for);
-      if (scheduledTime > new Date()) {
-        broadcastData.send_at = scheduledTime.toISOString();
-        console.log('Scheduling broadcast for:', scheduledTime.toISOString());
-      }
+    // Handle send_at based on mode
+    if (mode === 'draft') {
+      // Don't set send_at - creates draft in ConvertKit
+      broadcastData.send_at = null;
+      console.log('Creating draft broadcast (no send_at)');
+    } else if (mode === 'schedule' && send_at) {
+      // Schedule for specific time
+      broadcastData.send_at = send_at;
+      console.log('Scheduling broadcast for:', send_at);
+    } else if (mode === 'send_now') {
+      // Send immediately
+      broadcastData.send_at = new Date().toISOString();
+      console.log('Sending broadcast immediately');
+    } else {
+      // Fallback to draft
+      broadcastData.send_at = null;
+      console.log('No valid mode/time, creating draft');
     }
 
-    const response = await fetch('https://api.convertkit.com/v3/broadcasts', {
+    // Create broadcast using ConvertKit V4 API
+    const response = await fetch('https://api.kit.com/v4/broadcasts', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-Kit-Api-Key': CONVERTKIT_API_KEY,
+      },
       body: JSON.stringify(broadcastData),
     });
 
     const result = await response.json();
 
     if (!response.ok) {
-      console.error('ConvertKit API error:', result);
+      console.error('ConvertKit V4 API error:', result);
       
-      if (queue_id) {
-        await supabaseClient
-          .from('cms_blog_email_queue')
-          .update({
-            status: 'failed',
-            error_message: result.message || 'Failed to create broadcast',
-          })
-          .eq('id', queue_id);
-      }
-
-      throw new Error(result.message || 'Failed to create broadcast');
-    }
-
-    console.log('Broadcast created:', result.broadcast.id);
-
-    // Auto-publish if sending immediately (no schedule)
-    if (!broadcastData.send_at) {
-      console.log('Publishing broadcast immediately...');
-      
-      const publishResponse = await fetch(
-        `https://api.convertkit.com/v3/broadcasts/${result.broadcast.id}/publish`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ api_secret: CONVERTKIT_API_SECRET }),
-        }
-      );
-
-      const publishResult = await publishResponse.json();
-      
-      if (!publishResponse.ok) {
-        console.error('Failed to publish broadcast:', publishResult);
-        throw new Error('Broadcast created but failed to publish');
-      }
-
-      console.log('Broadcast published and sent!');
-    } else {
-      console.log('Broadcast scheduled for:', broadcastData.send_at);
-    }
-
-    if (queue_id) {
-      const updateData: any = {
-        broadcast_id: result.broadcast.id,
+      // Map common error codes to friendly messages
+      const errorMessages: Record<string, string> = {
+        'invalid_template': 'Email template not found. Please check template ID in post settings.',
+        'invalid_api_key': 'ConvertKit API key is invalid. Please update CONVERTKIT_API_KEY_V4.',
+        'rate_limited': 'Too many requests to ConvertKit. Please wait a moment and try again.',
       };
+      
+      const friendlyMessage = errorMessages[result.error] || result.message || 'Failed to create broadcast';
+      throw new Error(friendlyMessage);
+    }
 
-      if (broadcastData.send_at) {
-        updateData.status = 'pending';
-      } else {
-        updateData.status = 'sent';
-        updateData.sent_at = new Date().toISOString();
-      }
+    console.log('Broadcast created successfully:', result.id);
 
-      await supabaseClient
-        .from('cms_blog_email_queue')
-        .update(updateData)
-        .eq('id', queue_id);
+    // Determine Kit status
+    let kitStatus = 'draft';
+    if (mode === 'send_now') {
+      kitStatus = 'sent';
+    } else if (mode === 'schedule' && send_at) {
+      kitStatus = 'scheduled';
+    }
+
+    // Update post with ConvertKit broadcast data
+    const { error: updateError } = await supabaseClient
+      .from('cms_blog_posts')
+      .update({
+        kit_broadcast_id: result.id,
+        kit_send_at: broadcastData.send_at,
+        kit_status: kitStatus,
+        sent_to_kit: true,
+      })
+      .eq('id', post_id);
+
+    if (updateError) {
+      console.error('Failed to update post with Kit data:', updateError);
     }
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: 'Newsletter broadcast created successfully',
-        broadcast_id: result.broadcast.id,
-        scheduled: !!broadcastData.send_at,
+        message: mode === 'draft' 
+          ? 'Draft saved to ConvertKit' 
+          : mode === 'schedule' 
+          ? 'Newsletter scheduled in ConvertKit' 
+          : 'Newsletter sent successfully!',
+        broadcast_id: result.id,
+        kit_status: kitStatus,
+        send_at: broadcastData.send_at,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

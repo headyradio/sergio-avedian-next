@@ -23,6 +23,17 @@ export interface CMSBlogPost {
   created_at: string;
   updated_at: string;
   category?: CMSCategory;
+  // ConvertKit V4 tracking fields
+  kit_broadcast_id?: string;
+  kit_send_at?: string;
+  kit_status?: string;
+  sent_to_kit?: boolean;
+  // Newsletter composer fields
+  newsletter_subject?: string;
+  newsletter_content?: string;
+  newsletter_preview_text?: string;
+  email_template_id?: string;
+  subscriber_filter?: any; // JSONB field - can be { all: boolean } or { segment_id: string }
 }
 
 export interface CMSCategory {
@@ -370,20 +381,42 @@ export const useQueueNewsletter = () => {
 };
 
 export const useSendNewsletterNow = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async (postId: string) => {
+    mutationFn: async ({ 
+      postId,
+      mode = 'draft',
+      sendAt = null,
+    }: { 
+      postId: string; 
+      mode?: 'draft' | 'schedule' | 'send_now';
+      sendAt?: string | null;
+    }) => {
       const { data, error } = await supabase.functions.invoke(
         'send-blog-newsletter',
         {
-          body: { post_id: postId },
+          body: { 
+            post_id: postId,
+            mode: mode,
+            send_at: sendAt,
+          },
         }
       );
 
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
-      toast.success('Newsletter sent successfully!');
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['cms-blog-posts'] });
+      
+      if (variables.mode === 'draft') {
+        toast.success('Draft saved to ConvertKit');
+      } else if (variables.mode === 'schedule') {
+        toast.success('Newsletter scheduled in ConvertKit');
+      } else {
+        toast.success('Newsletter sent successfully!');
+      }
     },
     onError: (error) => {
       toast.error('Failed to send newsletter: ' + error.message);

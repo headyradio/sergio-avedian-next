@@ -16,13 +16,15 @@ import {
   CalendarClock, 
   CheckCircle,
   Link2,
+  FileText,
+  ExternalLink,
 } from "lucide-react";
 
 interface ScheduleData {
   publishNow: boolean;
   publishAt: string | null;
   sendNewsletter: boolean;
-  sendTiming: 'immediately' | 'with_post' | 'custom';
+  newsletterMode: 'draft' | 'schedule' | 'send_now';
   sendAt: string | null;
 }
 
@@ -34,6 +36,9 @@ interface PublishScheduleDialogProps {
     title: string;
     published: boolean;
     published_at?: string;
+    sent_to_kit?: boolean;
+    kit_status?: string;
+    kit_broadcast_id?: string;
   };
   onSchedule: (data: ScheduleData) => void;
 }
@@ -48,7 +53,7 @@ export const PublishScheduleDialog = ({
     publishNow: post.published,
     publishAt: post.published_at || null,
     sendNewsletter: false,
-    sendTiming: 'with_post',
+    newsletterMode: 'draft',
     sendAt: null,
   });
 
@@ -61,9 +66,9 @@ export const PublishScheduleDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Scheduling</DialogTitle>
+          <DialogTitle>Publish & Newsletter</DialogTitle>
           <DialogDescription>
-            Configure when to publish "{post.title}" and send newsletter
+            Configure when to publish "{post.title}" and send to ConvertKit
           </DialogDescription>
         </DialogHeader>
 
@@ -122,7 +127,7 @@ export const PublishScheduleDialog = ({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-lg flex items-center gap-2">
-                📧 Newsletter
+                📧 Newsletter (ConvertKit V4)
               </h3>
               <Switch
                 checked={scheduleData.sendNewsletter}
@@ -132,51 +137,86 @@ export const PublishScheduleDialog = ({
               />
             </div>
 
+            {/* Show Kit Status if already sent */}
+            {post.sent_to_kit && (
+              <Alert className="border-blue-200 bg-blue-50">
+                <CheckCircle className="h-4 w-4 text-blue-600" />
+                <AlertDescription className="flex items-center justify-between">
+                  <div>
+                    <strong>ConvertKit Status:</strong>{' '}
+                    <Badge variant="outline" className="ml-2">
+                      {post.kit_status || 'sent'}
+                    </Badge>
+                  </div>
+                  {post.kit_broadcast_id && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => window.open(`https://app.convertkit.com/broadcasts/${post.kit_broadcast_id}`, '_blank')}
+                    >
+                      View in Kit <ExternalLink className="ml-1 h-3 w-3" />
+                    </Button>
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
+
             {scheduleData.sendNewsletter && (
               <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
                 <RadioGroup 
-                  value={scheduleData.sendTiming}
+                  value={scheduleData.newsletterMode}
                   onValueChange={(v) => setScheduleData({
                     ...scheduleData,
-                    sendTiming: v as any
+                    newsletterMode: v as any
                   })}
                 >
                   <div className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-accent/50 transition-colors">
-                    <RadioGroupItem value="immediately" id="send-now" />
-                    <Label htmlFor="send-now" className="flex items-center gap-2 cursor-pointer flex-1">
-                      <Send className="w-4 h-4 text-green-600" />
-                      <span>Send immediately</span>
-                      {!scheduleData.publishNow && (
-                        <Badge variant="outline" className="ml-2 text-xs">
-                          Before post publishes
-                        </Badge>
-                      )}
+                    <RadioGroupItem value="draft" id="kit-draft" />
+                    <Label htmlFor="kit-draft" className="cursor-pointer flex-1">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-gray-600" />
+                        <div>
+                          <div className="font-medium">Save as Draft in Kit</div>
+                          <div className="text-xs text-muted-foreground">
+                            Creates draft broadcast, won't send
+                          </div>
+                        </div>
+                      </div>
                     </Label>
                   </div>
 
                   <div className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-accent/50 transition-colors">
-                    <RadioGroupItem value="with_post" id="send-with-post" />
-                    <Label htmlFor="send-with-post" className="flex items-center gap-2 cursor-pointer flex-1">
-                      <Link2 className="w-4 h-4 text-blue-600" />
-                      <span>Send when post publishes</span>
-                      {scheduleData.publishAt && (
-                        <span className="text-xs text-muted-foreground ml-2">
-                          ({new Date(scheduleData.publishAt).toLocaleString()})
-                        </span>
-                      )}
+                    <RadioGroupItem value="schedule" id="kit-schedule" />
+                    <Label htmlFor="kit-schedule" className="cursor-pointer flex-1">
+                      <div className="flex items-center gap-2">
+                        <CalendarClock className="w-4 h-4 text-purple-600" />
+                        <div>
+                          <div className="font-medium">Schedule Send</div>
+                          <div className="text-xs text-muted-foreground">
+                            Set specific date/time to send
+                          </div>
+                        </div>
+                      </div>
                     </Label>
                   </div>
 
                   <div className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-accent/50 transition-colors">
-                    <RadioGroupItem value="custom" id="send-custom" />
-                    <Label htmlFor="send-custom" className="flex items-center gap-2 cursor-pointer flex-1">
-                      <CalendarClock className="w-4 h-4 text-purple-600" />
-                      <span>Custom schedule</span>
+                    <RadioGroupItem value="send_now" id="kit-send-now" />
+                    <Label htmlFor="kit-send-now" className="cursor-pointer flex-1">
+                      <div className="flex items-center gap-2">
+                        <Send className="w-4 h-4 text-green-600" />
+                        <div>
+                          <div className="font-medium">Send Immediately</div>
+                          <div className="text-xs text-muted-foreground">
+                            Creates and sends right away
+                          </div>
+                        </div>
+                      </div>
                     </Label>
                   </div>
                 </RadioGroup>
 
-                {scheduleData.sendTiming === 'custom' && (
+                {scheduleData.newsletterMode === 'schedule' && (
                   <div className="ml-6 space-y-2 animate-in fade-in slide-in-from-top-2">
                     <Label htmlFor="send-date">Newsletter Send Date & Time</Label>
                     <Input
@@ -195,7 +235,15 @@ export const PublishScheduleDialog = ({
                 <Alert>
                   <Mail className="h-4 w-4" />
                   <AlertDescription>
-                    Newsletter will be sent to your active subscribers using your ConvertKit template.
+                    {scheduleData.newsletterMode === 'draft' && (
+                      'Draft will be created in ConvertKit but not published.'
+                    )}
+                    {scheduleData.newsletterMode === 'schedule' && (
+                      'Broadcast will be scheduled in ConvertKit for the selected time.'
+                    )}
+                    {scheduleData.newsletterMode === 'send_now' && (
+                      'Broadcast will be created and sent immediately to all subscribers.'
+                    )}
                   </AlertDescription>
                 </Alert>
               </div>
@@ -209,7 +257,7 @@ export const PublishScheduleDialog = ({
           </Button>
           <Button onClick={handleConfirm}>
             <CheckCircle className="w-4 h-4 mr-2" />
-            Confirm Schedule
+            Confirm
           </Button>
         </DialogFooter>
       </DialogContent>
