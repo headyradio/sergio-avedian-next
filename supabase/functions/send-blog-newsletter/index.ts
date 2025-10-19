@@ -54,7 +54,17 @@ serve(async (req) => {
     const emailSubject = post.newsletter_subject || post.title;
     const previewText = post.newsletter_preview_text || post.excerpt || '';
     const emailTemplateId = post.email_template_id || '4692916';
-    const subscriberFilter = post.subscriber_filter || { all: true };
+    
+    // Convert subscriber_filter to array format for ConvertKit V4 API
+    let subscriberFilter: any[] = [];
+    if (post.subscriber_filter && typeof post.subscriber_filter === 'object') {
+      // If it's {all: true}, send empty array (means all subscribers in ConvertKit)
+      if (!post.subscriber_filter.all) {
+        // If specific filters exist, convert to array format
+        // For now, we only support "all subscribers"
+        subscriberFilter = [];
+      }
+    }
 
     // Handle test emails
     if (to) {
@@ -67,9 +77,9 @@ serve(async (req) => {
         preview_text: previewText,
         email_template_id: emailTemplateId,
         send_at: new Date().toISOString(), // Send immediately
-        subscriber_filter: {
-          email_address: to,
-        },
+        subscriber_filter: [
+          { email_address: to }
+        ],
       };
 
       const response = await fetch('https://api.kit.com/v4/broadcasts', {
@@ -107,8 +117,12 @@ serve(async (req) => {
       description: `Blog post: ${post.title}`,
       preview_text: previewText,
       email_template_id: emailTemplateId,
-      subscriber_filter: subscriberFilter,
     };
+
+    // Only add subscriber_filter if not empty (empty = all subscribers)
+    if (subscriberFilter.length > 0) {
+      broadcastData.subscriber_filter = subscriberFilter;
+    }
 
     // Handle send_at based on mode
     if (mode === 'draft') {
