@@ -25,6 +25,8 @@ import {
   CMSBlogPost 
 } from '@/hooks/useSupabaseCMS';
 import RichTextEditor from '@/components/ui/rich-text-editor';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const BlogPostManager = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -307,15 +309,59 @@ const BlogPostManager = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="cover-image-url">Cover Image URL</Label>
-                  <Input
-                    id="cover-image-url"
-                    value={formData.cover_image_url}
-                    onChange={(e) => setFormData({ ...formData, cover_image_url: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <Label>Cover Image</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        try {
+                          const fileExt = file.name.split('.').pop();
+                          const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+                          const filePath = `blog-covers/${fileName}`;
+
+                          const { error: uploadError } = await supabase.storage
+                            .from('cms-media')
+                            .upload(filePath, file);
+
+                          if (uploadError) throw uploadError;
+
+                          const { data: { publicUrl } } = supabase.storage
+                            .from('cms-media')
+                            .getPublicUrl(filePath);
+
+                          setFormData({ ...formData, cover_image_url: publicUrl });
+                          toast.success('Image uploaded successfully');
+                        } catch (error) {
+                          console.error('Upload error:', error);
+                          toast.error('Failed to upload image');
+                        }
+                      }}
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setFormData({ ...formData, cover_image_url: '' })}
+                      disabled={!formData.cover_image_url}
+                    >
+                      Clear
+                    </Button>
+                  </div>
+                  {formData.cover_image_url && (
+                    <div className="mt-2">
+                      <img 
+                        src={formData.cover_image_url} 
+                        alt="Cover preview" 
+                        className="max-h-40 rounded-md object-cover"
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="cover-image-alt">Cover Image Alt Text</Label>
