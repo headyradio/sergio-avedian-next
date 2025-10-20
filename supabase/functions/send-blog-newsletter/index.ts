@@ -228,16 +228,40 @@ function generateEmailContent(post: any): string {
   const domain = 'https://sergioavedian.com';
   const postUrl = `${domain}/blog/${post.slug}`;
   
-  const stripHtml = (html: string) => {
-    return html.replace(/<[^>]*>/g, '').substring(0, 300) + '...';
-  };
-
-  const excerpt = post.excerpt || (post.content ? stripHtml(post.content) : '');
   const publishDate = new Date(post.published_at || new Date()).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+
+  // Convert content to email-safe HTML with inline styles
+  const processContentForEmail = (content: string): string => {
+    if (!content) return '';
+    
+    // Apply email-safe inline styles to HTML elements
+    let emailHtml = content
+      // Headers
+      .replace(/<h1[^>]*>/g, '<h1 style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Helvetica, Arial, sans-serif; font-size: 28px; color: #1a202c; font-weight: 700; margin: 32px 0 16px 0; line-height: 1.3;">')
+      .replace(/<h2[^>]*>/g, '<h2 style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Helvetica, Arial, sans-serif; font-size: 24px; color: #1a202c; font-weight: 700; margin: 28px 0 14px 0; line-height: 1.3;">')
+      .replace(/<h3[^>]*>/g, '<h3 style="font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Helvetica, Arial, sans-serif; font-size: 20px; color: #1a202c; font-weight: 600; margin: 24px 0 12px 0; line-height: 1.4;">')
+      // Paragraphs
+      .replace(/<p[^>]*>/g, '<p style="font-family: Georgia, \'Times New Roman\', serif; font-size: 17px; line-height: 1.7; color: #2d3748; margin: 0 0 18px 0;">')
+      // Lists
+      .replace(/<ul[^>]*>/g, '<ul style="font-family: Georgia, \'Times New Roman\', serif; font-size: 17px; line-height: 1.7; color: #2d3748; margin: 16px 0; padding-left: 24px;">')
+      .replace(/<ol[^>]*>/g, '<ol style="font-family: Georgia, \'Times New Roman\', serif; font-size: 17px; line-height: 1.7; color: #2d3748; margin: 16px 0; padding-left: 24px;">')
+      .replace(/<li[^>]*>/g, '<li style="margin-bottom: 8px;">')
+      // Bold and italic
+      .replace(/<strong[^>]*>/g, '<strong style="font-weight: 600;">')
+      .replace(/<em[^>]*>/g, '<em style="font-style: italic;">')
+      // Links
+      .replace(/<a\s+([^>]*href="[^"]*"[^>]*)>/g, '<a $1 style="color: #2c5282; text-decoration: underline;">')
+      // Images
+      .replace(/<img\s+([^>]*)>/g, '<img $1 style="max-width: 100%; height: auto; margin: 20px 0; border-radius: 6px; display: block;">');
+    
+    return emailHtml;
+  };
+
+  const fullContent = post.content ? processContentForEmail(post.content) : '';
 
   return `
     ${post.cover_image_url ? `
@@ -250,17 +274,19 @@ function generateEmailContent(post: any): string {
       ${post.title}
     </h2>
 
-    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; color: #718096; margin: 0 0 24px 0;">
+    <p style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; color: #718096; margin: 0 0 32px 0;">
       By ${post.author} • ${publishDate}
     </p>
 
-    <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.7; color: #2d3748; margin: 0 0 28px 0;">
-      ${excerpt}
-    </p>
+    <div style="font-family: Georgia, 'Times New Roman', serif; font-size: 17px; line-height: 1.7; color: #2d3748;">
+      ${fullContent}
+    </div>
 
-    <div style="margin: 32px 0; text-align: center;">
-      <a href="${postUrl}" style="display: inline-block; background: #2c5282; color: #ffffff; padding: 16px 42px; text-decoration: none; border-radius: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-weight: 600; font-size: 16px; letter-spacing: 0.3px;">
-        Read Full Article →
+    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 40px 0 32px 0;" />
+
+    <div style="margin: 24px 0; text-align: center;">
+      <a href="${postUrl}" style="display: inline-block; background: #2c5282; color: #ffffff; padding: 14px 36px; text-decoration: none; border-radius: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.3px;">
+        Read on Website →
       </a>
     </div>
 
