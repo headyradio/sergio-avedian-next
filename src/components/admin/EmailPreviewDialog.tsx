@@ -40,9 +40,13 @@ export const EmailPreviewDialog = ({ open, onOpenChange, blogPost }: EmailPrevie
 
     setIsSending(true);
     try {
+      if (!blogPost.id) {
+        throw new Error('Post ID is required');
+      }
+
       const { error } = await supabase.functions.invoke("send-kit-test-email", {
         body: {
-          post_id: (blogPost as any).id,
+          post_id: blogPost.id,
           test_email: testEmail,
         },
       });

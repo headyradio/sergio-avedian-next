@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmailPreviewDialog } from './EmailPreviewDialog';
 import { PublishScheduleDialog } from './PublishScheduleDialog';
-import { BlogPostPreview } from './BlogPostPreview';
+import { PublishOptionsDialog } from './PublishOptionsDialog';
 import EmailTestDialog from './EmailTestDialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -560,15 +560,31 @@ const BlogPostManager = () => {
                 <Button 
                   type="button" 
                   variant="outline" 
-                  onClick={() => setShowBlogPreview(true)}
-                  disabled={!formData.title}
+                  onClick={() => {
+                    if (!editingPost?.id) {
+                      toast.error('Please save the post first before previewing');
+                      return;
+                    }
+                    const previewUrl = `/admin/blog-preview/${editingPost.id}`;
+                    window.open(previewUrl, '_blank', 'width=1200,height=900');
+                  }}
+                  disabled={!formData.title || !editingPost}
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
                 </Button>
-                <Button type="submit" disabled={createBlogPost.isPending || updateBlogPost.isPending}>
-                  {editingPost ? 'Update' : 'Save'} Draft
+                <Button type="submit" disabled={createBlogPost.isPending || updateBlogPost.isPending} variant="outline">
+                  {editingPost ? 'Save' : 'Save'} Draft
                 </Button>
+                {editingPost && (
+                  <Button 
+                    type="button"
+                    onClick={() => setScheduleDialogPost(editingPost)}
+                    disabled={createBlogPost.isPending || updateBlogPost.isPending}
+                  >
+                    Publish
+                  </Button>
+                )}
               </div>
             </form>
           </DialogContent>
@@ -681,7 +697,7 @@ const BlogPostManager = () => {
         />
       )}
 
-      {scheduleDialogPost && (
+      {false && scheduleDialogPost && (
         <PublishScheduleDialog
           open={!!scheduleDialogPost}
           onOpenChange={(open) => !open && setScheduleDialogPost(null)}
@@ -734,21 +750,68 @@ const BlogPostManager = () => {
         />
       )}
 
-      {/* Blog Post Preview Dialog */}
-      <BlogPostPreview
-        open={showBlogPreview}
-        onOpenChange={setShowBlogPreview}
-        post={{
-          title: formData.title,
-          content: formData.content,
-          cover_image_url: formData.cover_image_url,
-          cover_image_alt: formData.cover_image_alt,
-          author: formData.author,
-          published_at: formData.published_at || new Date().toISOString(),
-          category: categories?.find(c => c.id === formData.category_id),
-          read_time: formData.read_time,
-        }}
-      />
+      {/* Publish Options Dialog */}
+      {scheduleDialogPost && (
+        <PublishOptionsDialog
+          open={!!scheduleDialogPost}
+          onOpenChange={(open) => !open && setScheduleDialogPost(null)}
+          post={{
+            id: scheduleDialogPost.id,
+            title: scheduleDialogPost.title,
+            published: scheduleDialogPost.published,
+            published_at: scheduleDialogPost.published_at,
+            sent_to_kit: scheduleDialogPost.sent_to_kit,
+            kit_status: scheduleDialogPost.kit_status,
+            kit_broadcast_id: scheduleDialogPost.kit_broadcast_id,
+          }}
+          onPublish={async (data) => {
+            try {
+              if (data.target === 'web' || data.target === 'both') {
+                const updateData: any = {
+                  published: data.webAction === 'now',
+                  published_at: data.webAction === 'schedule' ? data.webScheduleTime : new Date().toISOString(),
+                };
+
+                const { error } = await supabase
+                  .from('cms_blog_posts')
+                  .update(updateData)
+                  .eq('id', scheduleDialogPost.id);
+
+                if (error) throw error;
+              }
+
+              if (data.target === 'newsletter' || data.target === 'both') {
+                const newsletterData = {
+                  post_id: scheduleDialogPost.id,
+                  mode: data.newsletterAction,
+                  scheduled_for: data.newsletterAction === 'schedule' ? data.newsletterScheduleTime : undefined,
+                };
+
+                const { error: newsletterError } = await supabase.functions.invoke('send-blog-newsletter', {
+                  body: newsletterData,
+                });
+
+                if (newsletterError) throw newsletterError;
+              }
+
+              toast.success(
+                data.target === 'both' 
+                  ? "Post published to web and newsletter queued"
+                  : data.target === 'web'
+                  ? data.webAction === 'now' ? "Post published" : "Post scheduled"
+                  : "Newsletter queued"
+              );
+
+              setScheduleDialogPost(null);
+              setIsDialogOpen(false);
+              setEditingPost(null);
+            } catch (error: any) {
+              console.error('Publish error:', error);
+              toast.error(`Failed to publish: ${error.message}`);
+            }
+          }}
+        />
+      )}
     </div>
   );
 };

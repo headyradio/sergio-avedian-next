@@ -21,6 +21,7 @@ import TestBlogPost from "./pages/TestBlogPost";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import CookiePolicyPage from "./pages/CookiePolicyPage";
+import CMSBlogPreviewPage from "./pages/CMSBlogPreviewPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -63,6 +64,14 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <AdminDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin/blog-preview/:id" 
+                element={
+                  <ProtectedRoute>
+                    <CMSBlogPreviewPage />
                   </ProtectedRoute>
                 } 
               />
