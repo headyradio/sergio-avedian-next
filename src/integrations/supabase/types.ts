@@ -312,6 +312,45 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_authors: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          position: string | null
+          slug: string
+          social_links: Json | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          position?: string | null
+          slug: string
+          social_links?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          position?: string | null
+          slug?: string
+          social_links?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       cms_blog_email_queue: {
         Row: {
           broadcast_id: string | null
@@ -397,6 +436,7 @@ export type Database = {
       cms_blog_posts: {
         Row: {
           author: string
+          author_id: string | null
           category_id: string | null
           content: string | null
           cover_image_alt: string | null
@@ -426,6 +466,7 @@ export type Database = {
         }
         Insert: {
           author: string
+          author_id?: string | null
           category_id?: string | null
           content?: string | null
           cover_image_alt?: string | null
@@ -455,6 +496,7 @@ export type Database = {
         }
         Update: {
           author?: string
+          author_id?: string | null
           category_id?: string | null
           content?: string | null
           cover_image_alt?: string | null
@@ -483,6 +525,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "cms_blog_posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "cms_authors"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "cms_blog_posts_category_id_fkey"
             columns: ["category_id"]
@@ -698,6 +747,68 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      cms_newsletters: {
+        Row: {
+          blog_post_id: string | null
+          click_rate: number | null
+          created_at: string
+          created_by: string | null
+          id: string
+          kit_broadcast_id: string
+          open_rate: number | null
+          preview_text: string | null
+          recipient_count: number | null
+          scheduled_for: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          synced_at: string
+          updated_at: string
+        }
+        Insert: {
+          blog_post_id?: string | null
+          click_rate?: number | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kit_broadcast_id: string
+          open_rate?: number | null
+          preview_text?: string | null
+          recipient_count?: number | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status: string
+          subject: string
+          synced_at?: string
+          updated_at?: string
+        }
+        Update: {
+          blog_post_id?: string | null
+          click_rate?: number | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kit_broadcast_id?: string
+          open_rate?: number | null
+          preview_text?: string | null
+          recipient_count?: number | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          synced_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_newsletters_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "cms_blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_submissions: {
         Row: {

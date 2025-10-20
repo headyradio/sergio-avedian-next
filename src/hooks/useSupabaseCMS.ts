@@ -235,6 +235,188 @@ export const useCategories = () => {
   });
 };
 
+// Authors Types and Hooks
+export interface CMSAuthor {
+  id: string;
+  name: string;
+  slug: string;
+  email?: string;
+  bio?: string;
+  avatar_url?: string;
+  social_links?: {
+    twitter?: string;
+    linkedin?: string;
+    youtube?: string;
+    website?: string;
+  };
+  position?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export const useAuthors = () => {
+  return useQuery({
+    queryKey: ['cms-authors'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cms_authors')
+        .select('*')
+        .order('name', { ascending: true });
+
+      if (error) throw error;
+      return data as CMSAuthor[];
+    },
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useAuthor = (id: string) => {
+  return useQuery({
+    queryKey: ['cms-author', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cms_authors')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data as CMSAuthor;
+    },
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useCreateAuthor = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (author: Omit<CMSAuthor, 'id' | 'created_at' | 'updated_at'>) => {
+      const { data, error } = await supabase
+        .from('cms_authors')
+        .insert(author)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cms-authors'] });
+      toast.success('Author created successfully');
+    },
+    onError: (error) => {
+      toast.error('Failed to create author: ' + error.message);
+    },
+  });
+};
+
+export const useUpdateAuthor = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, ...author }: Partial<CMSAuthor> & { id: string }) => {
+      const { data, error } = await supabase
+        .from('cms_authors')
+        .update(author)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cms-authors'] });
+      toast.success('Author updated successfully');
+    },
+    onError: (error) => {
+      toast.error('Failed to update author: ' + error.message);
+    },
+  });
+};
+
+export const useDeleteAuthor = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('cms_authors')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cms-authors'] });
+      toast.success('Author deleted successfully');
+    },
+    onError: (error) => {
+      toast.error('Failed to delete author: ' + error.message);
+    },
+  });
+};
+
+// Newsletter Sync Hooks
+export interface CMSNewsletter {
+  id: string;
+  kit_broadcast_id: string;
+  subject: string;
+  preview_text?: string;
+  status: 'draft' | 'scheduled' | 'sending' | 'sent';
+  scheduled_for?: string;
+  sent_at?: string;
+  recipient_count: number;
+  open_rate?: number;
+  click_rate?: number;
+  blog_post_id?: string;
+  created_by?: string;
+  created_at: string;
+  updated_at: string;
+  synced_at: string;
+}
+
+export const useNewsletters = () => {
+  return useQuery({
+    queryKey: ['cms-newsletters'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('cms_newsletters')
+        .select(`
+          *,
+          blog_post:cms_blog_posts(title, slug)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data as CMSNewsletter[];
+    },
+    staleTime: 1000 * 60 * 2, // 2 minutes
+  });
+};
+
+export const useSyncKitBroadcasts = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.functions.invoke('sync-kit-broadcasts');
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['cms-newsletters'] });
+      toast.success(`Synced ${data.synced} broadcasts from ConvertKit`);
+    },
+    onError: (error) => {
+      toast.error('Failed to sync broadcasts: ' + error.message);
+    },
+  });
+};
+
 // Mutations for Admin Interface
 export const useCreateBlogPost = () => {
   const queryClient = useQueryClient();

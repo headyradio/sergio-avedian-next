@@ -1,13 +1,19 @@
-import { useAllNewsletterQueue, useCancelNewsletter } from '@/hooks/useSupabaseCMS';
+import { useAllNewsletterQueue, useCancelNewsletter, useNewsletters, useSyncKitBroadcasts } from '@/hooks/useSupabaseCMS';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Mail, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Mail, Clock, CheckCircle, XCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { format } from 'date-fns';
 
 const NewsletterManager = () => {
-  const { data: queue, isLoading } = useAllNewsletterQueue();
+  const { data: queue, isLoading: queueLoading } = useAllNewsletterQueue();
+  const { data: newsletters, isLoading: newslettersLoading } = useNewsletters();
   const cancelNewsletter = useCancelNewsletter();
+  const { mutate: syncBroadcasts, isPending: isSyncing } = useSyncKitBroadcasts();
+
+  const isLoading = queueLoading || newslettersLoading;
 
   const pendingQueue = queue?.filter(q => q.status === 'pending') || [];
   const sendingQueue = queue?.filter(q => q.status === 'sending') || [];
@@ -25,13 +31,19 @@ const NewsletterManager = () => {
 
   return (
     <div className="space-y-6">
-      {/* Stats Card */}
+      {/* Stats Card with Sync Button */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Mail className="w-5 h-5" />
-            Newsletter Statistics
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Mail className="w-5 h-5" />
+              Newsletter Statistics
+            </CardTitle>
+            <Button onClick={() => syncBroadcasts()} disabled={isSyncing}>
+              <RefreshCw className={`w-4 h-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+              {isSyncing ? 'Syncing...' : 'Sync from ConvertKit'}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
@@ -50,6 +62,51 @@ const NewsletterManager = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* ConvertKit Broadcasts */}
+      {newsletters && newsletters.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>ConvertKit Broadcasts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Subject</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Recipients</TableHead>
+                  <TableHead>Open Rate</TableHead>
+                  <TableHead>Date</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {newsletters.slice(0, 20).map((newsletter) => (
+                  <TableRow key={newsletter.id}>
+                    <TableCell className="font-medium">{newsletter.subject}</TableCell>
+                    <TableCell>
+                      <Badge variant={newsletter.status === 'sent' ? 'default' : 'secondary'}>
+                        {newsletter.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{newsletter.recipient_count?.toLocaleString() || 0}</TableCell>
+                    <TableCell>
+                      {newsletter.open_rate ? `${newsletter.open_rate.toFixed(1)}%` : '—'}
+                    </TableCell>
+                    <TableCell>
+                      {newsletter.sent_at
+                        ? format(new Date(newsletter.sent_at), 'MMM d, yyyy')
+                        : newsletter.scheduled_for
+                        ? format(new Date(newsletter.scheduled_for), 'MMM d, yyyy')
+                        : '—'}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Pending Queue */}
       {pendingQueue.length > 0 && (
