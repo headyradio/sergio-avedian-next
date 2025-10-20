@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
       `https://api.kit.com/v4/broadcasts`,
       {
         headers: {
-          Authorization: `Bearer ${convertKitApiKey}`,
+          'X-Kit-Api-Key': convertKitApiKey,
           'Content-Type': 'application/json',
         },
       }
@@ -116,7 +116,7 @@ Deno.serve(async (req) => {
               `https://api.kit.com/v4/broadcasts/${broadcast.id}/stats`,
               {
                 headers: {
-                  Authorization: `Bearer ${convertKitApiKey}`,
+                  'X-Kit-Api-Key': convertKitApiKey,
                   'Content-Type': 'application/json',
                 },
               }
