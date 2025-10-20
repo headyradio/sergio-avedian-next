@@ -105,19 +105,22 @@ export const PublishOptionsDialog = ({
 
         <div className="space-y-6 mt-6">
           {/* Toggle Checkboxes */}
-          <div className="space-y-4 pb-4 border-b">
-            <div className="flex items-start space-x-3 p-4 border-2 rounded-lg hover:border-primary/50 transition-all cursor-pointer" onClick={() => setWebEnabled(!webEnabled)}>
+          <div className="space-y-3">
+            <div 
+              className="flex items-start space-x-3 p-4 rounded-lg border-2 bg-card hover:bg-accent/5 transition-colors cursor-pointer" 
+              onClick={() => setWebEnabled(!webEnabled)}
+            >
               <Checkbox 
                 id="web-toggle" 
                 checked={webEnabled} 
                 onCheckedChange={(checked) => setWebEnabled(checked === true)}
-                className="mt-0.5"
+                className="mt-1"
               />
               <Label htmlFor="web-toggle" className="flex-1 cursor-pointer">
-                <div className="flex items-start gap-3">
-                  <Globe className="w-5 h-5 text-primary mt-0.5" />
+                <div className="flex items-center gap-3">
+                  <Globe className="w-5 h-5 text-primary" />
                   <div>
-                    <div className="font-semibold text-base">Publish to web</div>
+                    <div className="font-semibold">Publish to web</div>
                     <div className="text-sm text-muted-foreground">
                       Make your post live on the website
                     </div>
@@ -126,18 +129,21 @@ export const PublishOptionsDialog = ({
               </Label>
             </div>
 
-            <div className="flex items-start space-x-3 p-4 border-2 rounded-lg hover:border-primary/50 transition-all cursor-pointer" onClick={() => setNewsletterEnabled(!newsletterEnabled)}>
+            <div 
+              className="flex items-start space-x-3 p-4 rounded-lg border-2 bg-card hover:bg-accent/5 transition-colors cursor-pointer" 
+              onClick={() => setNewsletterEnabled(!newsletterEnabled)}
+            >
               <Checkbox 
                 id="newsletter-toggle" 
                 checked={newsletterEnabled} 
                 onCheckedChange={(checked) => setNewsletterEnabled(checked === true)}
-                className="mt-0.5"
+                className="mt-1"
               />
               <Label htmlFor="newsletter-toggle" className="flex-1 cursor-pointer">
-                <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-primary mt-0.5" />
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-primary" />
                   <div>
-                    <div className="font-semibold text-base">Send email</div>
+                    <div className="font-semibold">Send email</div>
                     <div className="text-sm text-muted-foreground">
                       Send to subscribers via newsletter
                     </div>
@@ -149,89 +155,93 @@ export const PublishOptionsDialog = ({
 
           {/* WEB SECTION */}
           {webEnabled && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
-              <div className="flex items-center gap-2">
+            <div className="space-y-4 p-5 rounded-lg border bg-card animate-in fade-in slide-in-from-top-2">
+              <div className="flex items-center gap-2 pb-3 border-b">
                 <Globe className="h-5 w-5 text-primary" />
                 <h3 className="font-semibold text-lg">Web Publishing</h3>
               </div>
 
-              <Alert>
+              <Alert className="bg-muted/50 border-muted">
                 <Info className="h-4 w-4" />
                 <AlertDescription>
                   Publish to your website to make it publicly visible
                 </AlertDescription>
               </Alert>
 
-              <RadioGroup value={webAction} onValueChange={(v) => setWebAction(v as any)}>
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:border-primary/50 transition-all cursor-pointer">
-                  <RadioGroupItem value="now" id="web-now" />
-                  <Label htmlFor="web-now" className="flex-1 cursor-pointer">
-                    <div className="flex items-start gap-3">
+              <div className="space-y-3">
+                <RadioGroup value={webAction} onValueChange={(v) => setWebAction(v as any)}>
+                  <div className="relative">
+                    <RadioGroupItem value="now" id="web-now" className="peer sr-only" />
+                    <Label 
+                      htmlFor="web-now" 
+                      className="flex items-start gap-3 p-4 rounded-lg border-2 bg-background cursor-pointer peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 hover:bg-accent/10 transition-colors"
+                    >
                       <Zap className="w-5 h-5 text-green-600 mt-0.5" />
-                      <div>
-                        <div className="font-semibold text-base">Publish Now</div>
+                      <div className="flex-1">
+                        <div className="font-semibold">Publish Now</div>
                         <div className="text-sm text-muted-foreground">
                           Make live on website immediately
                         </div>
                       </div>
-                    </div>
-                  </Label>
-                </div>
+                    </Label>
+                  </div>
 
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:border-primary/50 transition-all cursor-pointer">
-                  <RadioGroupItem value="schedule" id="web-schedule" />
-                  <Label htmlFor="web-schedule" className="flex-1 cursor-pointer">
-                    <div className="flex items-start gap-3">
+                  <div className="relative">
+                    <RadioGroupItem value="schedule" id="web-schedule" className="peer sr-only" />
+                    <Label 
+                      htmlFor="web-schedule" 
+                      className="flex items-start gap-3 p-4 rounded-lg border-2 bg-background cursor-pointer peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 hover:bg-accent/10 transition-colors"
+                    >
                       <Clock className="w-5 h-5 text-blue-600 mt-0.5" />
-                      <div>
-                        <div className="font-semibold text-base">Schedule</div>
+                      <div className="flex-1">
+                        <div className="font-semibold">Schedule</div>
                         <div className="text-sm text-muted-foreground">
                           Set a specific date and time to publish
                         </div>
                       </div>
-                    </div>
-                  </Label>
-                </div>
-              </RadioGroup>
+                    </Label>
+                  </div>
+                </RadioGroup>
 
-              {webAction === 'schedule' && (
-                <div className="space-y-2 pl-4 animate-in fade-in slide-in-from-top-2">
-                  <Label htmlFor="web-schedule-time" className="text-base">
-                    Select Date & Time
-                  </Label>
-                  <Input
-                    id="web-schedule-time"
-                    type="datetime-local"
-                    value={webScheduleTime}
-                    onChange={(e) => setWebScheduleTime(e.target.value)}
-                    min={new Date().toISOString().slice(0, 16)}
-                    className="text-base"
-                  />
-                  {webScheduleTime && (
-                    <p className="text-sm text-muted-foreground">
-                      Will publish on {new Date(webScheduleTime).toLocaleString()}
-                    </p>
-                  )}
-                </div>
-              )}
+                {webAction === 'schedule' && (
+                  <div className="space-y-3 pl-2 pt-2 animate-in fade-in slide-in-from-top-2">
+                    <Label htmlFor="web-schedule-time" className="text-sm font-medium">
+                      Select Date & Time
+                    </Label>
+                    <Input
+                      id="web-schedule-time"
+                      type="datetime-local"
+                      value={webScheduleTime}
+                      onChange={(e) => setWebScheduleTime(e.target.value)}
+                      min={new Date().toISOString().slice(0, 16)}
+                      className="max-w-sm"
+                    />
+                    {webScheduleTime && (
+                      <p className="text-sm text-muted-foreground">
+                        Will publish on {new Date(webScheduleTime).toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
           {/* NEWSLETTER SECTION */}
           {newsletterEnabled && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
-              <div className="flex items-center gap-2">
+            <div className="space-y-4 p-5 rounded-lg border bg-card animate-in fade-in slide-in-from-top-2">
+              <div className="flex items-center gap-2 pb-3 border-b">
                 <Mail className="h-5 w-5 text-primary" />
                 <h3 className="font-semibold text-lg">Newsletter</h3>
               </div>
 
               {post.sent_to_kit && (
-                <Alert className="border-blue-200 bg-blue-50">
-                  <CheckCircle className="h-4 w-4 text-blue-600" />
-                  <AlertDescription className="flex items-center justify-between">
-                    <div>
-                      <strong>ConvertKit Status:</strong>{' '}
-                      <Badge variant="outline" className="ml-2">
+                <Alert className="bg-blue-50 border-blue-200 dark:bg-blue-950/30 dark:border-blue-900">
+                  <CheckCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <AlertDescription className="flex items-center justify-between gap-2 text-foreground">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">ConvertKit Status:</span>
+                      <Badge variant="outline" className="bg-background">
                         {post.kit_status || 'sent'}
                       </Badge>
                     </div>
@@ -240,6 +250,7 @@ export const PublishOptionsDialog = ({
                         variant="ghost"
                         size="sm"
                         onClick={() => window.open(`https://app.convertkit.com/broadcasts/${post.kit_broadcast_id}`, '_blank')}
+                        className="shrink-0"
                       >
                         View in Kit <ExternalLink className="ml-1 h-3 w-3" />
                       </Button>
@@ -248,80 +259,85 @@ export const PublishOptionsDialog = ({
                 </Alert>
               )}
 
-              <Alert>
+              <Alert className="bg-muted/50 border-muted">
                 <Info className="h-4 w-4" />
                 <AlertDescription>
                   Send your blog post to subscribers via ConvertKit
                 </AlertDescription>
               </Alert>
 
-              <RadioGroup value={newsletterAction} onValueChange={(v) => setNewsletterAction(v as any)}>
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:border-primary/50 transition-all cursor-pointer">
-                  <RadioGroupItem value="draft" id="newsletter-draft" />
-                  <Label htmlFor="newsletter-draft" className="flex-1 cursor-pointer">
-                    <div className="flex items-start gap-3">
-                      <FileText className="w-5 h-5 text-gray-600 mt-0.5" />
-                      <div>
-                        <div className="font-semibold text-base">Save as Draft</div>
+              <div className="space-y-3">
+                <RadioGroup value={newsletterAction} onValueChange={(v) => setNewsletterAction(v as any)}>
+                  <div className="relative">
+                    <RadioGroupItem value="draft" id="newsletter-draft" className="peer sr-only" />
+                    <Label 
+                      htmlFor="newsletter-draft" 
+                      className="flex items-start gap-3 p-4 rounded-lg border-2 bg-background cursor-pointer peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 hover:bg-accent/10 transition-colors"
+                    >
+                      <FileText className="w-5 h-5 text-gray-600 dark:text-gray-400 mt-0.5" />
+                      <div className="flex-1">
+                        <div className="font-semibold">Save as Draft</div>
                         <div className="text-sm text-muted-foreground">
                           Creates draft in ConvertKit, won't send
                         </div>
                       </div>
-                    </div>
-                  </Label>
-                </div>
+                    </Label>
+                  </div>
 
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:border-primary/50 transition-all cursor-pointer">
-                  <RadioGroupItem value="schedule" id="newsletter-schedule" />
-                  <Label htmlFor="newsletter-schedule" className="flex-1 cursor-pointer">
-                    <div className="flex items-start gap-3">
-                      <CalendarClock className="w-5 h-5 text-purple-600 mt-0.5" />
-                      <div>
-                        <div className="font-semibold text-base">Schedule Send</div>
+                  <div className="relative">
+                    <RadioGroupItem value="schedule" id="newsletter-schedule" className="peer sr-only" />
+                    <Label 
+                      htmlFor="newsletter-schedule" 
+                      className="flex items-start gap-3 p-4 rounded-lg border-2 bg-background cursor-pointer peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 hover:bg-accent/10 transition-colors"
+                    >
+                      <CalendarClock className="w-5 h-5 text-purple-600 dark:text-purple-400 mt-0.5" />
+                      <div className="flex-1">
+                        <div className="font-semibold">Schedule Send</div>
                         <div className="text-sm text-muted-foreground">
                           Set specific date/time to send to subscribers
                         </div>
                       </div>
-                    </div>
-                  </Label>
-                </div>
+                    </Label>
+                  </div>
 
-                <div className="flex items-center space-x-3 p-4 border-2 rounded-lg hover:border-primary/50 transition-all cursor-pointer">
-                  <RadioGroupItem value="send_now" id="newsletter-send" />
-                  <Label htmlFor="newsletter-send" className="flex-1 cursor-pointer">
-                    <div className="flex items-start gap-3">
-                      <Send className="w-5 h-5 text-green-600 mt-0.5" />
-                      <div>
-                        <div className="font-semibold text-base">Send Now</div>
+                  <div className="relative">
+                    <RadioGroupItem value="send_now" id="newsletter-send" className="peer sr-only" />
+                    <Label 
+                      htmlFor="newsletter-send" 
+                      className="flex items-start gap-3 p-4 rounded-lg border-2 bg-background cursor-pointer peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 hover:bg-accent/10 transition-colors"
+                    >
+                      <Send className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+                      <div className="flex-1">
+                        <div className="font-semibold">Send Now</div>
                         <div className="text-sm text-muted-foreground">
                           Creates and sends newsletter immediately
                         </div>
                       </div>
-                    </div>
-                  </Label>
-                </div>
-              </RadioGroup>
+                    </Label>
+                  </div>
+                </RadioGroup>
 
-              {newsletterAction === 'schedule' && (
-                <div className="space-y-2 pl-4 animate-in fade-in slide-in-from-top-2">
-                  <Label htmlFor="newsletter-schedule-time" className="text-base">
-                    Select Date & Time
-                  </Label>
-                  <Input
-                    id="newsletter-schedule-time"
-                    type="datetime-local"
-                    value={newsletterScheduleTime}
-                    onChange={(e) => setNewsletterScheduleTime(e.target.value)}
-                    min={new Date().toISOString().slice(0, 16)}
-                    className="text-base"
-                  />
-                  {newsletterScheduleTime && (
-                    <p className="text-sm text-muted-foreground">
-                      Will send on {new Date(newsletterScheduleTime).toLocaleString()}
-                    </p>
-                  )}
-                </div>
-              )}
+                {newsletterAction === 'schedule' && (
+                  <div className="space-y-3 pl-2 pt-2 animate-in fade-in slide-in-from-top-2">
+                    <Label htmlFor="newsletter-schedule-time" className="text-sm font-medium">
+                      Select Date & Time
+                    </Label>
+                    <Input
+                      id="newsletter-schedule-time"
+                      type="datetime-local"
+                      value={newsletterScheduleTime}
+                      onChange={(e) => setNewsletterScheduleTime(e.target.value)}
+                      min={new Date().toISOString().slice(0, 16)}
+                      className="max-w-sm"
+                    />
+                    {newsletterScheduleTime && (
+                      <p className="text-sm text-muted-foreground">
+                        Will send on {new Date(newsletterScheduleTime).toLocaleString()}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
