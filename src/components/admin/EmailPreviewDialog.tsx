@@ -12,6 +12,7 @@ interface EmailPreviewDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   blogPost: {
+    id?: string;
     title: string;
     excerpt?: string;
     content?: string;
@@ -39,13 +40,10 @@ export const EmailPreviewDialog = ({ open, onOpenChange, blogPost }: EmailPrevie
 
     setIsSending(true);
     try {
-      const { error } = await supabase.functions.invoke("send-blog-newsletter", {
+      const { error } = await supabase.functions.invoke("send-kit-test-email", {
         body: {
-          to: testEmail,
-          blogPost: {
-            ...blogPost,
-            published_at: blogPost.published_at || new Date().toISOString(),
-          },
+          post_id: (blogPost as any).id,
+          test_email: testEmail,
         },
       });
 
@@ -53,7 +51,7 @@ export const EmailPreviewDialog = ({ open, onOpenChange, blogPost }: EmailPrevie
 
       toast({
         title: "Test Email Sent!",
-        description: `Preview email sent to ${testEmail}`,
+        description: `ConvertKit test email sent to ${testEmail}`,
       });
     } catch (error) {
       console.error("Error sending test email:", error);

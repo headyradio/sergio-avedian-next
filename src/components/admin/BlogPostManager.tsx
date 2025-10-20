@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmailPreviewDialog } from './EmailPreviewDialog';
 import { PublishScheduleDialog } from './PublishScheduleDialog';
+import { BlogPostPreview } from './BlogPostPreview';
 import EmailTestDialog from './EmailTestDialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,7 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Trash2, Edit, Plus, Mail, Calendar, CheckCircle2, Clock, AlertCircle, ChevronDown } from 'lucide-react';
+import { Trash2, Edit, Plus, Mail, Calendar, CheckCircle2, Clock, AlertCircle, ChevronDown, Eye } from 'lucide-react';
 import { 
   useBlogPosts, 
   useCategories, 
@@ -38,6 +39,7 @@ const BlogPostManager = () => {
   const [scheduleDialogPost, setScheduleDialogPost] = useState<CMSBlogPost | null>(null);
   const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set());
   const [emailTestDialogPost, setEmailTestDialogPost] = useState<CMSBlogPost | null>(null);
+  const [showBlogPreview, setShowBlogPreview] = useState(false);
 
   const { data: blogPosts, isLoading } = useBlogPosts(50, 0, false);
   const { data: categories } = useCategories();
@@ -56,6 +58,7 @@ const BlogPostManager = () => {
     category_id: '',
     featured: false,
     published: false,
+    published_at: '',
     read_time: '',
     seo_title: '',
     seo_description: '',
@@ -98,6 +101,7 @@ const BlogPostManager = () => {
       category_id: post.category_id || '',
       featured: post.featured,
       published: post.published,
+      published_at: post.published_at || '',
       read_time: post.read_time || '',
       seo_title: post.seo_title || '',
       seo_description: post.seo_description || '',
@@ -124,6 +128,7 @@ const BlogPostManager = () => {
       category_id: '',
       featured: false,
       published: false,
+      published_at: '',
       read_time: '',
       seo_title: '',
       seo_description: '',
@@ -552,8 +557,17 @@ const BlogPostManager = () => {
                 <Button type="button" variant="outline" onClick={handleCloseDialog}>
                   Cancel
                 </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowBlogPreview(true)}
+                  disabled={!formData.title}
+                >
+                  <Eye className="w-4 h-4 mr-2" />
+                  Preview
+                </Button>
                 <Button type="submit" disabled={createBlogPost.isPending || updateBlogPost.isPending}>
-                  {editingPost ? 'Update' : 'Create'} Post
+                  {editingPost ? 'Update' : 'Save'} Draft
                 </Button>
               </div>
             </form>
@@ -578,6 +592,17 @@ const BlogPostManager = () => {
                   <Badge variant={post.published ? "default" : "outline"}>
                     {post.published ? 'Published' : 'Draft'}
                   </Badge>
+                  {!post.published && post.published_at && (
+                    <Badge variant="outline" className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      Scheduled: {new Date(post.published_at).toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit',
+                      })}
+                    </Badge>
+                  )}
                   <NewsletterBadge postId={post.id} />
                   <Button 
                     variant="ghost" 
@@ -708,6 +733,22 @@ const BlogPostManager = () => {
           onConfirmSend={handleConfirmSendNewsletter}
         />
       )}
+
+      {/* Blog Post Preview Dialog */}
+      <BlogPostPreview
+        open={showBlogPreview}
+        onOpenChange={setShowBlogPreview}
+        post={{
+          title: formData.title,
+          content: formData.content,
+          cover_image_url: formData.cover_image_url,
+          cover_image_alt: formData.cover_image_alt,
+          author: formData.author,
+          published_at: formData.published_at || new Date().toISOString(),
+          category: categories?.find(c => c.id === formData.category_id),
+          read_time: formData.read_time,
+        }}
+      />
     </div>
   );
 };

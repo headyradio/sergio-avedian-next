@@ -362,6 +362,38 @@ export type Database = {
           },
         ]
       }
+      cms_blog_post_drafts: {
+        Row: {
+          content: Json
+          created_at: string
+          created_by: string | null
+          id: string
+          post_id: string | null
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          post_id?: string | null
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          post_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cms_blog_post_drafts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "cms_blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cms_blog_posts: {
         Row: {
           author: string
