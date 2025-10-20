@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { EmailPreviewDialog } from './EmailPreviewDialog';
-import { PublishScheduleDialog } from './PublishScheduleDialog';
 import { PublishOptionsDialog } from './PublishOptionsDialog';
 import EmailTestDialog from './EmailTestDialog';
 import { Input } from '@/components/ui/input';
@@ -31,6 +31,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 const BlogPostManager = () => {
+  const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<CMSBlogPost | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -39,7 +40,6 @@ const BlogPostManager = () => {
   const [scheduleDialogPost, setScheduleDialogPost] = useState<CMSBlogPost | null>(null);
   const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set());
   const [emailTestDialogPost, setEmailTestDialogPost] = useState<CMSBlogPost | null>(null);
-  const [showBlogPreview, setShowBlogPreview] = useState(false);
 
   const { data: blogPosts, isLoading } = useBlogPosts(50, 0, false);
   const { data: categories } = useCategories();
@@ -697,49 +697,6 @@ const BlogPostManager = () => {
         />
       )}
 
-      {false && scheduleDialogPost && (
-        <PublishScheduleDialog
-          open={!!scheduleDialogPost}
-          onOpenChange={(open) => !open && setScheduleDialogPost(null)}
-          post={scheduleDialogPost}
-          onSchedule={async (data) => {
-            try {
-              // Determine publish date
-              const publishDate = data.publishNow 
-                ? new Date().toISOString() 
-                : data.publishAt;
-
-              // Update post with published status and date
-              await updateBlogPost.mutateAsync({
-                id: scheduleDialogPost.id,
-                published: data.publishNow,
-                published_at: publishDate,
-              });
-
-              // Handle newsletter if enabled
-              if (data.sendNewsletter) {
-                let sendAt: string | null = null;
-                
-                if (data.newsletterMode === 'send_now') {
-                  sendAt = new Date().toISOString();
-                } else if (data.newsletterMode === 'schedule' && data.sendAt) {
-                  sendAt = data.sendAt;
-                }
-                
-                await sendNewsletterNow.mutateAsync({
-                  postId: scheduleDialogPost.id,
-                  mode: data.newsletterMode,
-                  sendAt: sendAt,
-                });
-              }
-
-              setScheduleDialogPost(null);
-            } catch (error) {
-              console.error('Failed to schedule post:', error);
-            }
-          }}
-        />
-      )}
 
       {emailTestDialogPost && (
         <EmailTestDialog
@@ -793,6 +750,10 @@ const BlogPostManager = () => {
 
                 if (newsletterError) throw newsletterError;
               }
+
+              // Invalidate queries to refresh the post list
+              await queryClient.invalidateQueries({ queryKey: ['cms-blog-posts'] });
+              await queryClient.invalidateQueries({ queryKey: ['newsletter-queue'] });
 
               toast.success(
                 data.target === 'both' 
