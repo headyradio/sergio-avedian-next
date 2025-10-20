@@ -47,10 +47,25 @@ export const PublishOptionsDialog = ({
   post,
   onPublish,
 }: PublishOptionsDialogProps) => {
+  // Format datetime for datetime-local input (YYYY-MM-DDTHH:mm)
+  const formatDateTimeLocal = (dateString?: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
+  const initialWebScheduleTime = formatDateTimeLocal(post.published_at);
+  const hasWebSchedule = post.published_at && !post.published;
+
   const [webEnabled, setWebEnabled] = useState(true);
   const [newsletterEnabled, setNewsletterEnabled] = useState(false);
-  const [webAction, setWebAction] = useState<'now' | 'schedule'>(post.published ? 'now' : 'now');
-  const [webScheduleTime, setWebScheduleTime] = useState(post.published_at || '');
+  const [webAction, setWebAction] = useState<'now' | 'schedule'>(hasWebSchedule ? 'schedule' : 'now');
+  const [webScheduleTime, setWebScheduleTime] = useState(initialWebScheduleTime);
   const [newsletterAction, setNewsletterAction] = useState<'draft' | 'schedule' | 'send_now'>('draft');
   const [newsletterScheduleTime, setNewsletterScheduleTime] = useState('');
 
