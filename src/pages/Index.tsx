@@ -14,8 +14,8 @@ const Index = () => {
       <Navigation />
       <MainHeroSection />
       <GoldSubscriptionSection />
-      <VideoSection />
       <CMSBlogSection />
+      <VideoSection />
       <Footer />
     </div>
   );
