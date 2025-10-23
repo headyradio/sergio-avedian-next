@@ -142,7 +142,7 @@ const VideoSection = () => {
         (video.video_type === 'live' && 
           !video.title.toLowerCase().includes('power hour') && 
           !video.title.toLowerCase().includes('trading with sergio'));
-    }).slice(0, 12);
+    }).slice(0, 9);
   };
 
   const handleVideoClick = (video: Video) => {
@@ -155,54 +155,6 @@ const VideoSection = () => {
       window.open(`https://youtube.com/watch?v=${video.video_id}`, '_blank');
     }
   };
-
-
-  const RegularVideosGrid = ({ videos }: { videos: Video[] }) => (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {videos.map((video) => (
-        <Card
-          key={video.id}
-          className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all duration-300"
-          onClick={() => handleVideoClick(video)}
-        >
-          <CardContent className="p-0">
-            <div className="relative aspect-video bg-surface overflow-hidden">
-              <img
-                src={video.thumbnail_high || video.thumbnail_medium || '/placeholder.svg'}
-                alt={video.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div className="bg-primary text-primary-foreground w-16 h-16 rounded-full flex items-center justify-center">
-                  <Play className="h-6 w-6 ml-1" />
-                </div>
-              </div>
-              <div className="absolute bottom-3 right-3 bg-black/75 text-white px-2 py-1 rounded text-sm font-medium flex items-center">
-                <Clock className="h-3 w-3 mr-1" />
-                {formatDuration(video.duration)}
-              </div>
-            </div>
-
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cta/10 text-cta">
-                  {video.category_name}
-                </span>
-              </div>
-
-              <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                {video.title}
-              </h3>
-
-              <div className="flex items-center justify-between text-sm text-text-muted">
-                <span>{formatDate(video.published_at)}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
 
   return (
     <section id="videos" className="pt-8 pb-20 lg:pt-12 lg:pb-32 relative -mt-16 z-10">
@@ -252,9 +204,13 @@ const VideoSection = () => {
 
             {/* LATEST VIDEOS Section */}
             {getRegularVideos().length > 0 && (
-              <div>
-                <h3 className="text-2xl font-bold text-text-primary mb-6">LATEST VIDEOS</h3>
-                <RegularVideosGrid videos={getRegularVideos()} />
+              <>
+                <VideoCarousel
+                  videos={getRegularVideos()}
+                  title="LATEST VIDEOS"
+                  variant="horizontal"
+                  onVideoClick={handleVideoClick}
+                />
                 <div className="flex justify-center mt-8">
                   <Button 
                     variant="secondary" 
@@ -265,7 +221,7 @@ const VideoSection = () => {
                     View More Videos
                   </Button>
                 </div>
-              </div>
+              </>
             )}
 
 
