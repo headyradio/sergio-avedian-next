@@ -99,13 +99,7 @@ const VideoCarousel = ({ videos, title, variant = 'horizontal', onVideoClick }: 
                   {formatDuration(video.duration)}
                 </div>
                 
-                {/* Video type indicator */}
-                {video.video_type === 'live' && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white px-1.5 py-0.5 rounded text-xs font-medium flex items-center">
-                    <Radio className="h-3 w-3 mr-1" />
-                    LIVE
-                  </div>
-                )}
+                {/* Video type indicator - only show SHORT badge */}
                 {video.video_type === 'short' && (
                   <div className="absolute top-2 left-2 bg-yellow-500 text-white px-1.5 py-0.5 rounded text-xs font-medium flex items-center">
                     <Zap className="h-3 w-3 mr-1" />
