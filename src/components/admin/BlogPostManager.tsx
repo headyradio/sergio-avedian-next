@@ -574,17 +574,29 @@ const BlogPostManager = () => {
                   Preview
                 </Button>
                 <Button type="submit" disabled={createBlogPost.isPending || updateBlogPost.isPending} variant="outline">
-                  {editingPost ? 'Save' : 'Save'} Draft
+                  Save Draft
                 </Button>
-                {editingPost && (
-                  <Button 
-                    type="button"
-                    onClick={() => setScheduleDialogPost(editingPost)}
-                    disabled={createBlogPost.isPending || updateBlogPost.isPending}
-                  >
-                    Publish
-                  </Button>
-                )}
+                <Button 
+                  type="button"
+                  onClick={async () => {
+                    if (editingPost) {
+                      setScheduleDialogPost(editingPost);
+                    } else {
+                      // For new posts, save first then open publish dialog
+                      try {
+                        const result = await createBlogPost.mutateAsync(formData);
+                        if (result) {
+                          setScheduleDialogPost(result as CMSBlogPost);
+                        }
+                      } catch (error) {
+                        toast.error('Please save the post before publishing');
+                      }
+                    }
+                  }}
+                  disabled={createBlogPost.isPending || updateBlogPost.isPending}
+                >
+                  Publish
+                </Button>
               </div>
             </form>
           </DialogContent>
