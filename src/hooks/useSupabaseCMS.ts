@@ -423,9 +423,27 @@ export const useCreateBlogPost = () => {
 
   return useMutation({
     mutationFn: async (blogPost: Omit<CMSBlogPost, 'id' | 'created_at' | 'updated_at'>) => {
+      // Clean up the data - convert empty strings to null for optional fields
+      const cleanedPost = {
+        ...blogPost,
+        category_id: blogPost.category_id || null,
+        excerpt: blogPost.excerpt || null,
+        content: blogPost.content || null,
+        cover_image_url: blogPost.cover_image_url || null,
+        cover_image_alt: blogPost.cover_image_alt || null,
+        seo_title: blogPost.seo_title || null,
+        seo_description: blogPost.seo_description || null,
+        read_time: blogPost.read_time || null,
+        newsletter_subject: blogPost.newsletter_subject || null,
+        newsletter_content: blogPost.newsletter_content || null,
+        newsletter_preview_text: blogPost.newsletter_preview_text || null,
+        email_template_id: blogPost.email_template_id || '4692916',
+        published_at: blogPost.published_at || null,
+      };
+
       const { data, error } = await supabase
         .from('cms_blog_posts')
-        .insert(blogPost)
+        .insert(cleanedPost)
         .select()
         .single();
 
@@ -447,9 +465,26 @@ export const useUpdateBlogPost = () => {
 
   return useMutation({
     mutationFn: async ({ id, ...blogPost }: Partial<CMSBlogPost> & { id: string }) => {
+      // Clean up the data - convert empty strings to null for optional fields
+      const cleanedPost = {
+        ...blogPost,
+        category_id: blogPost.category_id === '' ? null : blogPost.category_id,
+        excerpt: blogPost.excerpt === '' ? null : blogPost.excerpt,
+        content: blogPost.content === '' ? null : blogPost.content,
+        cover_image_url: blogPost.cover_image_url === '' ? null : blogPost.cover_image_url,
+        cover_image_alt: blogPost.cover_image_alt === '' ? null : blogPost.cover_image_alt,
+        seo_title: blogPost.seo_title === '' ? null : blogPost.seo_title,
+        seo_description: blogPost.seo_description === '' ? null : blogPost.seo_description,
+        read_time: blogPost.read_time === '' ? null : blogPost.read_time,
+        newsletter_subject: blogPost.newsletter_subject === '' ? null : blogPost.newsletter_subject,
+        newsletter_content: blogPost.newsletter_content === '' ? null : blogPost.newsletter_content,
+        newsletter_preview_text: blogPost.newsletter_preview_text === '' ? null : blogPost.newsletter_preview_text,
+        published_at: blogPost.published_at === '' ? null : blogPost.published_at,
+      };
+
       const { data, error } = await supabase
         .from('cms_blog_posts')
-        .update(blogPost)
+        .update(cleanedPost)
         .eq('id', id)
         .select()
         .single();

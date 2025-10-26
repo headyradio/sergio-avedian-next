@@ -585,15 +585,18 @@ const BlogPostManager = () => {
                       // For new posts, save first then open publish dialog
                       try {
                         const result = await createBlogPost.mutateAsync(formData);
-                        if (result) {
-                          setScheduleDialogPost(result as CMSBlogPost);
+                        // Refresh and set the newly created post
+                        if (result && result.id) {
+                          const fullPost: CMSBlogPost = result as any;
+                          setScheduleDialogPost(fullPost);
                         }
-                      } catch (error) {
-                        toast.error('Please save the post before publishing');
+                      } catch (error: any) {
+                        console.error('Create error:', error);
+                        toast.error('Please check all required fields');
                       }
                     }
                   }}
-                  disabled={createBlogPost.isPending || updateBlogPost.isPending}
+                  disabled={createBlogPost.isPending || updateBlogPost.isPending || !formData.title || !formData.slug || !formData.author}
                 >
                   Publish
                 </Button>
