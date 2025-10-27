@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { ArrowLeft, Calendar, Clock, User, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -80,8 +81,36 @@ const CMSBlogPostPage = () => {
     );
   }
 
+  const pageUrl = `https://sergioavedian.com/blog/${post.slug}`;
+  const imageUrl = post.cover_image_url || 'https://sergioavedian.com/favicon.png';
+  const description = post.seo_description || post.excerpt || `Read ${post.title} by Sergio Avedian`;
+
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{post.seo_title || post.title} | Sergio Avedian</title>
+        <meta name="description" content={description} />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="article:published_time" content={post.published_at || post.created_at} />
+        <meta property="article:author" content={post.author} />
+        {post.category && <meta property="article:section" content={post.category.name} />}
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={imageUrl} />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href={pageUrl} />
+      </Helmet>
+      
       <ScrollProgressIndicator />
       <Navigation />
       
