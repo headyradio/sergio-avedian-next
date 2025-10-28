@@ -70,3 +70,6 @@ verify_jwt = false
 
 [functions.send-kit-test-email]
 verify_jwt = false
+
+[functions.prerender-blog]
+verify_jwt = false
