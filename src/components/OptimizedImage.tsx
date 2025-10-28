@@ -1,6 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
+
+// Detect Safari browser
+const isSafari = () => {
+  if (typeof window === 'undefined') return false;
+  const ua = window.navigator.userAgent.toLowerCase();
+  return ua.indexOf('safari') > -1 && ua.indexOf('chrome') === -1;
+};
 
 interface OptimizedImageProps {
   src?: string;
@@ -39,10 +46,18 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState('');
   const [imageKey, setImageKey] = useState(0);
-
-  const transformedSrc = src ? transformImageUrl(src) : null;
+  
+  // Detect if Safari for special handling
+  const isSafariBrowser = useMemo(() => isSafari(), []);
+  
+  // Transform the URL immediately
+  const transformedSrc = useMemo(() => {
+    return src ? transformImageUrl(src) : null;
+  }, [src]);
+  
+  // Set initial src immediately
+  const [currentSrc, setCurrentSrc] = useState(() => transformedSrc || fallbackSrc);
 
   // Reset state when src prop changes
   useEffect(() => {
@@ -107,8 +122,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         )}
         onLoad={handleLoad}
         onError={handleError}
-        loading={priority ? 'eager' : 'lazy'}
-        decoding={priority ? 'sync' : 'async'}
+        loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
+        crossOrigin="anonymous"
       />
       {hasError && currentSrc === fallbackSrc && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
