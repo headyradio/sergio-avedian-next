@@ -1,0 +1,7 @@
+# Prerender blog posts for social media crawlers and SEO bots
+# This routes bot traffic to the Supabase Edge Function for server-side rendering
+/blog/*  https://fkafzarnschmdbxevicb.supabase.co/functions/v1/prerender-blog?path=/blog/:splat  200!  User-Agent: facebookexternalhit/* Facebot Twitterbot LinkedInBot WhatsApp Pinterest Slackbot TelegramBot DiscordBot
+/blog/*  https://fkafzarnschmdbxevicb.supabase.co/functions/v1/prerender-blog?path=/blog/:splat  200!  User-Agent: *bot* *crawl* *spider* *scraper*
+
+# Serve SPA for all other requests
+/*  /index.html  200
