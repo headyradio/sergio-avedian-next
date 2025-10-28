@@ -83,19 +83,20 @@ const CMSBlogPostPage = () => {
 
   const pageUrl = `https://sergioavedian.com/blog/${post.slug}`;
   
-  // Ensure absolute URL for social media sharing with proper OG image
+  // Ensure absolute URL for social media sharing
   const getAbsoluteImageUrl = (url: string | null | undefined): string => {
-    // Default OG image if no cover image (should be 1200x630px for optimal sharing)
-    const defaultOgImage = 'https://sergioavedian.com/favicon.png';
+    // Default OG image for homepage/fallback (use a proper default later)
+    const defaultOgImage = 'https://sergioavedian.com/sergio-hero-main.png';
     
     if (!url) return defaultOgImage;
     
-    // Already absolute URL (Supabase storage or external)
+    // Already absolute URL (Supabase storage or external) - most common for blog posts
     if (url.startsWith('http://') || url.startsWith('https://')) {
+      // For Supabase storage URLs, ensure they're public and accessible
       return url;
     }
     
-    // Handle old src/assets paths
+    // Handle old src/assets paths (convert to public assets)
     if (url.startsWith('/src/assets/') || url.startsWith('src/assets/')) {
       const filename = url.split('/').pop();
       return `https://sergioavedian.com/assets/blog/${filename}`;
@@ -111,14 +112,6 @@ const CMSBlogPostPage = () => {
   
   const imageUrl = getAbsoluteImageUrl(post.cover_image_url);
   const description = post.seo_description || post.excerpt || `Read ${post.title} by Sergio Avedian`;
-  
-  // Get image type from URL
-  const getImageType = (url: string): string => {
-    if (url.includes('.jpg') || url.includes('.jpeg')) return 'image/jpeg';
-    if (url.includes('.png')) return 'image/png';
-    if (url.includes('.webp')) return 'image/webp';
-    return 'image/jpeg'; // Default
-  };
   
   // Structured Data for SEO
   const structuredData = {
@@ -157,16 +150,13 @@ const CMSBlogPostPage = () => {
           <meta name="keywords" content={post.seo_keywords.join(', ')} />
         )}
         
-        {/* Open Graph - Enhanced for better social sharing */}
+        {/* Open Graph - Optimized for social sharing */}
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="Sergio Avedian" />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
         <meta property="og:image:secure_url" content={imageUrl} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:type" content={getImageType(imageUrl)} />
         <meta property="og:image:alt" content={post.cover_image_alt || post.title} />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:locale" content="en_US" />
