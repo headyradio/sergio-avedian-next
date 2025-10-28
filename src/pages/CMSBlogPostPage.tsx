@@ -83,9 +83,12 @@ const CMSBlogPostPage = () => {
 
   const pageUrl = `https://sergioavedian.com/blog/${post.slug}`;
   
-  // Ensure absolute URL for social media sharing
+  // Ensure absolute URL for social media sharing with proper OG image
   const getAbsoluteImageUrl = (url: string | null | undefined): string => {
-    if (!url) return 'https://sergioavedian.com/favicon.png';
+    // Default OG image if no cover image (should be 1200x630px for optimal sharing)
+    const defaultOgImage = 'https://sergioavedian.com/favicon.png';
+    
+    if (!url) return defaultOgImage;
     
     // Already absolute URL (Supabase storage or external)
     if (url.startsWith('http://') || url.startsWith('https://')) {
@@ -108,26 +111,74 @@ const CMSBlogPostPage = () => {
   
   const imageUrl = getAbsoluteImageUrl(post.cover_image_url);
   const description = post.seo_description || post.excerpt || `Read ${post.title} by Sergio Avedian`;
+  
+  // Get image type from URL
+  const getImageType = (url: string): string => {
+    if (url.includes('.jpg') || url.includes('.jpeg')) return 'image/jpeg';
+    if (url.includes('.png')) return 'image/png';
+    if (url.includes('.webp')) return 'image/webp';
+    return 'image/jpeg'; // Default
+  };
+  
+  // Structured Data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": description,
+    "image": imageUrl,
+    "datePublished": post.published_at || post.created_at,
+    "dateModified": post.updated_at || post.published_at || post.created_at,
+    "author": {
+      "@type": "Person",
+      "name": post.author || "Sergio Avedian",
+      "url": "https://sergioavedian.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Sergio Avedian",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://sergioavedian.com/favicon.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": pageUrl
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>{post.seo_title || post.title} | Sergio Avedian</title>
         <meta name="description" content={description} />
+        {post.seo_keywords && post.seo_keywords.length > 0 && (
+          <meta name="keywords" content={post.seo_keywords.join(', ')} />
+        )}
         
-        {/* Open Graph */}
+        {/* Open Graph - Enhanced for better social sharing */}
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="Sergio Avedian" />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:secure_url" content={imageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content={getImageType(imageUrl)} />
         <meta property="og:image:alt" content={post.cover_image_alt || post.title} />
         <meta property="og:url" content={pageUrl} />
+        <meta property="og:locale" content="en_US" />
         <meta property="article:published_time" content={post.published_at || post.created_at} />
-        <meta property="article:author" content={post.author} />
+        <meta property="article:modified_time" content={post.updated_at || post.published_at || post.created_at} />
+        <meta property="article:author" content={post.author || "Sergio Avedian"} />
         {post.category && <meta property="article:section" content={post.category.name} />}
+        {post.seo_keywords && post.seo_keywords.map((keyword: string, index: number) => (
+          <meta key={index} property="article:tag" content={keyword} />
+        ))}
         
-        {/* Twitter Card */}
+        {/* Twitter Card - Enhanced with additional metadata */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@sergioaved" />
         <meta name="twitter:creator" content="@sergioaved" />
@@ -135,9 +186,18 @@ const CMSBlogPostPage = () => {
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
         <meta name="twitter:image:alt" content={post.cover_image_alt || post.title} />
+        <meta name="twitter:label1" content="Written by" />
+        <meta name="twitter:data1" content={post.author || "Sergio Avedian"} />
+        <meta name="twitter:label2" content="Reading time" />
+        <meta name="twitter:data2" content={post.read_time || "5 min read"} />
         
         {/* Canonical URL */}
         <link rel="canonical" href={pageUrl} />
+        
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       </Helmet>
       
       <ScrollProgressIndicator />
