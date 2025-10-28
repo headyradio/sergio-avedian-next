@@ -82,7 +82,31 @@ const CMSBlogPostPage = () => {
   }
 
   const pageUrl = `https://sergioavedian.com/blog/${post.slug}`;
-  const imageUrl = post.cover_image_url || 'https://sergioavedian.com/favicon.png';
+  
+  // Ensure absolute URL for social media sharing
+  const getAbsoluteImageUrl = (url: string | null | undefined): string => {
+    if (!url) return 'https://sergioavedian.com/favicon.png';
+    
+    // Already absolute URL (Supabase storage or external)
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    
+    // Handle old src/assets paths
+    if (url.startsWith('/src/assets/') || url.startsWith('src/assets/')) {
+      const filename = url.split('/').pop();
+      return `https://sergioavedian.com/assets/blog/${filename}`;
+    }
+    
+    // Handle relative paths
+    if (url.startsWith('/')) {
+      return `https://sergioavedian.com${url}`;
+    }
+    
+    return `https://sergioavedian.com/${url}`;
+  };
+  
+  const imageUrl = getAbsoluteImageUrl(post.cover_image_url);
   const description = post.seo_description || post.excerpt || `Read ${post.title} by Sergio Avedian`;
 
   return (
@@ -93,9 +117,11 @@ const CMSBlogPostPage = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Sergio Avedian" />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:alt" content={post.cover_image_alt || post.title} />
         <meta property="og:url" content={pageUrl} />
         <meta property="article:published_time" content={post.published_at || post.created_at} />
         <meta property="article:author" content={post.author} />
@@ -103,9 +129,12 @@ const CMSBlogPostPage = () => {
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@sergioaved" />
+        <meta name="twitter:creator" content="@sergioaved" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={imageUrl} />
+        <meta name="twitter:image:alt" content={post.cover_image_alt || post.title} />
         
         {/* Canonical URL */}
         <link rel="canonical" href={pageUrl} />
