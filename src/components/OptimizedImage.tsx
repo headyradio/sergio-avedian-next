@@ -39,10 +39,9 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
   const [currentSrc, setCurrentSrc] = useState('');
+  const [imageKey, setImageKey] = useState(0);
 
-  const maxRetries = 2;
   const transformedSrc = src ? transformImageUrl(src) : null;
 
   // Reset state when src prop changes
@@ -51,7 +50,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       setCurrentSrc(transformedSrc);
       setIsLoading(true);
       setHasError(false);
-      setRetryCount(0);
+      setImageKey(prev => prev + 1);
     } else {
       setCurrentSrc(fallbackSrc);
       setIsLoading(false);
@@ -65,25 +64,16 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   };
 
   const handleError = () => {
-    console.log(`Image load failed for: ${currentSrc}, retry count: ${retryCount}`);
-    
-    if (retryCount < maxRetries && transformedSrc && currentSrc === transformedSrc) {
-      // Retry with a slight delay
-      setRetryCount(prev => prev + 1);
-      setTimeout(() => {
-        const retryUrl = `${transformedSrc}?retry=${retryCount + 1}`;
-        setCurrentSrc(retryUrl);
-      }, 500);
-      return;
-    }
+    console.log(`Image load failed for: ${currentSrc}`);
     
     setIsLoading(false);
     setHasError(true);
     
-    // If we haven't tried the fallback yet, try it
-    if (currentSrc !== fallbackSrc) {
+    // Try fallback if we haven't already
+    if (currentSrc !== fallbackSrc && transformedSrc) {
+      console.log(`Trying fallback: ${fallbackSrc}`);
       setCurrentSrc(fallbackSrc);
-      setRetryCount(0); // Reset retry count for fallback
+      setImageKey(prev => prev + 1);
     }
   };
 
@@ -108,6 +98,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         <Skeleton className="absolute inset-0 w-full h-full" />
       )}
       <img
+        key={imageKey}
         src={currentSrc}
         alt={alt}
         className={cn(
@@ -117,6 +108,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         onLoad={handleLoad}
         onError={handleError}
         loading={priority ? 'eager' : 'lazy'}
+        decoding={priority ? 'sync' : 'async'}
       />
       {hasError && currentSrc === fallbackSrc && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
