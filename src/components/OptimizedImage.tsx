@@ -79,7 +79,13 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   };
 
   const handleError = () => {
-    console.log(`Image load failed for: ${currentSrc}`);
+    console.error('OptimizedImage Error:', {
+      currentSrc,
+      originalSrc: src,
+      transformedSrc,
+      fallbackSrc,
+      isSafari: isSafariBrowser
+    });
     
     setIsLoading(false);
     setHasError(true);
@@ -123,7 +129,6 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         onLoad={handleLoad}
         onError={handleError}
         loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
-        crossOrigin="anonymous"
       />
       {hasError && currentSrc === fallbackSrc && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
