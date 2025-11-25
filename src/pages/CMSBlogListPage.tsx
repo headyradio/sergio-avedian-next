@@ -90,6 +90,27 @@ const CMSBlogListPage = () => {
           content="Expert trading insights, investment strategies, and market analysis from Sergio Avedian. 35+ years of Wall Street experience helping you build wealth without a financial advisor." 
         />
         <meta name="keywords" content="trading blog, investment strategies, market analysis, options trading, long-term investing, Wall Street insights, Sergio Avedian" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Sergio Avedian" />
+        <meta property="og:title" content="Trading & Investment Blog | Sergio Avedian" />
+        <meta property="og:description" content="Expert trading insights, investment strategies, and market analysis from Sergio Avedian. 35+ years of Wall Street experience helping you build wealth without a financial advisor." />
+        <meta property="og:url" content="https://sergioavedian.com/blog" />
+        <meta property="og:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:secure_url" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:alt" content="Sergio Avedian Blog - Trading & Investment Insights" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@sergioaved" />
+        <meta name="twitter:creator" content="@sergioaved" />
+        <meta name="twitter:title" content="Trading & Investment Blog | Sergio Avedian" />
+        <meta name="twitter:description" content="Expert trading insights, investment strategies, and market analysis from Sergio Avedian. 35+ years of Wall Street experience helping you build wealth without a financial advisor." />
+        <meta name="twitter:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta name="twitter:image:alt" content="Sergio Avedian Blog - Trading & Investment Insights" />
+        
         <link rel="canonical" href="https://sergioavedian.com/blog" />
       </Helmet>
       

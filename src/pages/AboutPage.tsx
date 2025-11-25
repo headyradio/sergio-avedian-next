@@ -14,6 +14,27 @@ const AboutPage = () => {
           content="Meet Sergio Avedian, a seasoned Wall Street professional with over 35 years of experience in finance, trading, and capital markets. Learn about his journey and expertise." 
         />
         <meta name="keywords" content="Sergio Avedian, Wall Street, finance, trading, investment, mentor, financial education" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Sergio Avedian" />
+        <meta property="og:title" content="About Sergio Avedian - 35+ Years Wall Street Experience" />
+        <meta property="og:description" content="Meet Sergio Avedian, a seasoned Wall Street professional with over 35 years of experience in finance, trading, and capital markets. Learn about his journey and expertise." />
+        <meta property="og:url" content="https://sergioavedian.com/about-sergio" />
+        <meta property="og:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:secure_url" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:alt" content="About Sergio Avedian" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@sergioaved" />
+        <meta name="twitter:creator" content="@sergioaved" />
+        <meta name="twitter:title" content="About Sergio Avedian - 35+ Years Wall Street Experience" />
+        <meta name="twitter:description" content="Meet Sergio Avedian, a seasoned Wall Street professional with over 35 years of experience in finance, trading, and capital markets. Learn about his journey and expertise." />
+        <meta name="twitter:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta name="twitter:image:alt" content="About Sergio Avedian" />
+        
         <link rel="canonical" href="https://sergioavedian.com/about-sergio" />
       </Helmet>
       

@@ -20,6 +20,27 @@ const CoachingPage = () => {
           content="Get personalized trading coaching from Sergio Avedian, a 35-year Wall Street veteran. Master strategies, risk management, and trading psychology for consistent success." 
         />
         <meta name="keywords" content="trading coaching, personal mentorship, Wall Street guidance, trading strategies, risk management, Sergio Avedian" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Sergio Avedian" />
+        <meta property="og:title" content="Personal Trading Coaching with Sergio Avedian" />
+        <meta property="og:description" content="Get personalized trading coaching from Sergio Avedian, a 35-year Wall Street veteran. Master strategies, risk management, and trading psychology for consistent success." />
+        <meta property="og:url" content="https://sergioavedian.com/coaching" />
+        <meta property="og:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:secure_url" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:alt" content="Personal Trading Coaching - Sergio Avedian" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@sergioaved" />
+        <meta name="twitter:creator" content="@sergioaved" />
+        <meta name="twitter:title" content="Personal Trading Coaching with Sergio Avedian" />
+        <meta name="twitter:description" content="Get personalized trading coaching from Sergio Avedian, a 35-year Wall Street veteran. Master strategies, risk management, and trading psychology for consistent success." />
+        <meta name="twitter:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta name="twitter:image:alt" content="Personal Trading Coaching - Sergio Avedian" />
+        
         <link rel="canonical" href="https://sergioavedian.com/coaching" />
       </Helmet>
       

@@ -15,8 +15,26 @@ const NewsletterPage = () => {
         />
         <meta property="og:title" content="Subscribe to Sergio Avedian's Newsletter" />
         <meta property="og:description" content="Join thousands of investors building wealth without a financial advisor. Get Sergio's proven long-term strategies delivered to your inbox." />
+        {/* Open Graph */}
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Sergio Avedian" />
+        <meta property="og:title" content="Newsletter - Exclusive Trading Insights | Sergio Avedian" />
+        <meta property="og:description" content="Subscribe to Sergio Avedian's newsletter for exclusive trading strategies, market analysis, and investment insights from a 35-year Wall Street veteran." />
         <meta property="og:url" content="https://sergioavedian.com/newsletter" />
+        <meta property="og:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:secure_url" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:alt" content="Sergio Avedian Newsletter" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@sergioaved" />
+        <meta name="twitter:creator" content="@sergioaved" />
+        <meta name="twitter:title" content="Newsletter - Exclusive Trading Insights | Sergio Avedian" />
+        <meta name="twitter:description" content="Subscribe to Sergio Avedian's newsletter for exclusive trading strategies, market analysis, and investment insights from a 35-year Wall Street veteran." />
+        <meta name="twitter:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta name="twitter:image:alt" content="Sergio Avedian Newsletter" />
+        
         <link rel="canonical" href="https://sergioavedian.com/newsletter" />
       </Helmet>
 

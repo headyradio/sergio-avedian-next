@@ -13,6 +13,27 @@ const ContactPage = () => {
           content="Contact Sergio Avedian for personalized trading mentorship, investment coaching, and market analysis. Get expert guidance from a Wall Street veteran with 35+ years experience." 
         />
         <meta name="keywords" content="contact Sergio Avedian, trading mentor, investment coaching, Wall Street guidance, financial consultation" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Sergio Avedian" />
+        <meta property="og:title" content="Contact Sergio Avedian - Get Trading & Investment Guidance" />
+        <meta property="og:description" content="Contact Sergio Avedian for personalized trading mentorship, investment coaching, and market analysis. Get expert guidance from a Wall Street veteran with 35+ years experience." />
+        <meta property="og:url" content="https://sergioavedian.com/contact" />
+        <meta property="og:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:secure_url" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta property="og:image:alt" content="Contact Sergio Avedian" />
+        <meta property="og:locale" content="en_US" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@sergioaved" />
+        <meta name="twitter:creator" content="@sergioaved" />
+        <meta name="twitter:title" content="Contact Sergio Avedian - Get Trading & Investment Guidance" />
+        <meta name="twitter:description" content="Contact Sergio Avedian for personalized trading mentorship, investment coaching, and market analysis. Get expert guidance from a Wall Street veteran with 35+ years experience." />
+        <meta name="twitter:image" content="https://sergioavedian.com/sergio-hero-main.png" />
+        <meta name="twitter:image:alt" content="Contact Sergio Avedian" />
+        
         <link rel="canonical" href="https://sergioavedian.com/contact" />
       </Helmet>
       
