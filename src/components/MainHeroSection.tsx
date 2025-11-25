@@ -100,11 +100,27 @@ const MainHeroSection = () => {
           {/* Image Column */}
           <div className="relative">
             <div className="relative z-10">
-              <img
-                src={sergioHeroMain}
-                alt="Sergio Avedian - Wall Street Veteran & Trading Mentor"
-                className="w-full h-auto rounded-3xl shadow-2xl"
-              />
+              {/* LCP Image - Optimized with priority loading */}
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet={sergioHeroMain.replace('.png', '.avif')}
+                />
+                <source
+                  type="image/webp"
+                  srcSet={sergioHeroMain.replace('.png', '.webp')}
+                />
+                <img
+                  src={sergioHeroMain}
+                  alt="Sergio Avedian - Wall Street Veteran & Trading Mentor"
+                  width={800}
+                  height={1000}
+                  className="w-full h-auto rounded-3xl shadow-2xl"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
+                />
+              </picture>
               
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -left-6 bg-background border border-border rounded-2xl p-6 shadow-lg">
@@ -142,7 +158,10 @@ const MainHeroSection = () => {
                 <img
                   src={nytLogo}
                   alt="The New York Times"
+                  width={120}
+                  height={32}
                   className="h-8 w-auto object-contain filter grayscale"
+                  loading="lazy"
                 />
               </a>
             </div>
@@ -158,7 +177,10 @@ const MainHeroSection = () => {
                 <img
                   src={bloombergLogo}
                   alt="Bloomberg"
+                  width={120}
+                  height={32}
                   className="h-8 w-auto object-contain filter grayscale"
+                  loading="lazy"
                 />
               </a>
             </div>
@@ -174,7 +196,10 @@ const MainHeroSection = () => {
                 <img
                   src={wsjLogo}
                   alt="The Wall Street Journal"
+                  width={120}
+                  height={32}
                   className="h-8 w-auto object-contain filter grayscale"
+                  loading="lazy"
                 />
               </a>
             </div>
@@ -190,7 +215,10 @@ const MainHeroSection = () => {
                 <img
                   src={forbesLogo}
                   alt="Forbes"
+                  width={120}
+                  height={32}
                   className="h-8 w-auto object-contain filter grayscale"
+                  loading="lazy"
                 />
               </a>
             </div>
@@ -206,7 +234,10 @@ const MainHeroSection = () => {
                 <img
                   src={businessInsiderLogo}
                   alt="Business Insider"
+                  width={120}
+                  height={32}
                   className="h-8 w-auto object-contain filter grayscale"
+                  loading="lazy"
                 />
               </a>
             </div>
