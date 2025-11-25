@@ -1,23 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { rafThrottle } from '@/lib/rafUtils';
 
 const ScrollProgressIndicator = () => {
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const cachedDocHeightRef = useRef(0);
+  const cachedInnerHeightRef = useRef(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      
-      setProgress(Math.min(Math.max(scrollPercent, 0), 100));
-      setIsVisible(scrollTop > 100);
+    // Batch layout reads together to prevent forced reflows
+    const updateCache = () => {
+      cachedDocHeightRef.current = document.documentElement.scrollHeight;
+      cachedInnerHeightRef.current = window.innerHeight;
     };
+    
+    // Update cache on mount and resize
+    updateCache();
+    window.addEventListener('resize', rafThrottle(updateCache), { passive: true });
 
-    window.addEventListener('scroll', handleScroll);
+    // Throttle scroll handler with RAF to batch reads per frame
+    const handleScroll = rafThrottle(() => {
+      // Batch all layout reads together
+      const scrollTop = window.scrollY;
+      const docHeight = cachedDocHeightRef.current - cachedInnerHeightRef.current;
+      
+      // All reads complete, now batch writes
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      const newProgress = Math.min(Math.max(scrollPercent, 0), 100);
+      const newIsVisible = scrollTop > 100;
+      
+      setProgress(newProgress);
+      setIsVisible(newIsVisible);
+    });
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Set initial state
     
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateCache);
+    };
   }, []);
 
   if (!isVisible) return null;
