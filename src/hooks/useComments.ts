@@ -7,7 +7,7 @@ export interface BlogComment {
   post_id: string;
   user_id: string | null;
   author_name: string;
-  author_email: string;
+  author_email?: string; // Optional - not exposed in public view
   content: string;
   parent_comment_id: string | null;
   status: 'pending' | 'approved' | 'spam' | 'rejected';
@@ -36,13 +36,12 @@ export const useComments = (postId: string) => {
     queryKey: ['blog-comments', postId],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('blog_comments')
+        .from('blog_comments_public')
         .select(`
           *,
           blog_comment_likes(count)
         `)
         .eq('post_id', postId)
-        .eq('status', 'approved')
         .is('parent_comment_id', null)
         .order('created_at', { ascending: false });
 
@@ -52,10 +51,9 @@ export const useComments = (postId: string) => {
       const commentsWithReplies = await Promise.all(
         (data || []).map(async (comment) => {
           const { data: replies } = await supabase
-            .from('blog_comments')
+            .from('blog_comments_public')
             .select('*')
             .eq('parent_comment_id', comment.id)
-            .eq('status', 'approved')
             .order('created_at', { ascending: true });
 
           return {
