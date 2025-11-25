@@ -44,8 +44,12 @@ const App = () => {
             <Toaster />
             <Sonner />
             <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
+              {/* Skip to main content link for keyboard users */}
+              <a href="#main-content" className="skip-to-content">
+                Skip to main content
+              </a>
+              <ScrollToTop />
+              <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/coaching" element={<CoachingPage />} />
               <Route path="/about-sergio" element={<AboutPage />} />

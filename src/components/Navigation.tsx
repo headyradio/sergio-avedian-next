@@ -29,14 +29,14 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 nav-floating">
+    <nav className="sticky top-0 z-50 nav-floating" aria-label="Main navigation">
       <div className="editorial-container">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center" aria-label="Sergio Avedian - Go to homepage">
             <img 
               src={logoImage} 
-              alt="Sergio Avedian" 
+              alt="Sergio Avedian logo" 
               className="h-20 w-auto py-2 transition-opacity duration-200 hover:opacity-80"
             />
           </Link>
@@ -57,6 +57,7 @@ const Navigation = () => {
                   key={item.label}
                   onClick={() => setIsNewsletterModalOpen(true)}
                   className="text-text-secondary hover:text-text-primary transition-colors duration-300 font-medium link-animated"
+                  aria-label="Open newsletter subscription"
                 >
                   {item.label}
                 </button>
@@ -87,8 +88,10 @@ const Navigation = () => {
               size="icon" 
               className="hover:glow-primary"
               onClick={() => setIsSearchModalOpen(true)}
+              aria-label="Open search"
             >
               <Search className="h-5 w-5" />
+              <span className="sr-only">Search</span>
             </Button>
             <SubscribeDropdown variant="cta" size="sm" className="cta-electric" />
           </div>
@@ -99,24 +102,30 @@ const Navigation = () => {
               variant="ghost"
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMenuOpen ? (
                 <X className="h-4 w-4" />
               ) : (
                 <Menu className="h-4 w-4" />
               )}
+              <span className="sr-only">{isMenuOpen ? "Close menu" : "Open menu"}</span>
             </Button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         <div
+          id="mobile-menu"
           className={cn(
             "md:hidden transition-all duration-300 ease-in-out",
             isMenuOpen
               ? "max-h-64 opacity-100 pb-4"
               : "max-h-0 opacity-0 overflow-hidden"
           )}
+          aria-hidden={!isMenuOpen}
         >
         <div className="space-y-3 pt-4 border-t border-nav-border">
             {navItems.map((item) => 
@@ -137,6 +146,7 @@ const Navigation = () => {
                     setIsNewsletterModalOpen(true);
                   }}
                   className="block text-text-secondary hover:text-text-primary transition-colors duration-200 font-medium py-2 text-left w-full"
+                  aria-label="Open newsletter subscription"
                 >
                   {item.label}
                 </button>
@@ -168,8 +178,10 @@ const Navigation = () => {
                   setIsMenuOpen(false);
                   setIsSearchModalOpen(true);
                 }}
+                aria-label="Open search"
               >
                 <Search className="h-4 w-4" />
+                <span className="sr-only">Search</span>
               </Button>
               <SubscribeDropdown variant="cta" size="sm" className="flex-1" />
             </div>
