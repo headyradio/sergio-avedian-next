@@ -12,6 +12,11 @@ import CMSDemo from "./pages/CMSDemo";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
 
+// Direct imports for critical pages to prevent loading issues
+import AboutPage from "./pages/AboutPage";
+import CoachingPage from "./pages/CoachingPage";
+import ContactPage from "./pages/ContactPage";
+
 // Lazy load routes for code splitting - reduces initial bundle size
 import {
   AdminDashboard,
@@ -19,9 +24,6 @@ import {
   CMSBlogListPage,
   CMSBlogPostPage,
   CMSBlogPreviewPage,
-  AboutPage,
-  CoachingPage,
-  ContactPage,
   NewsletterPage,
   PrivacyPolicyPage,
   TermsOfServicePage,
