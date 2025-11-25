@@ -11,9 +11,6 @@ import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 const MainHeroSection = () => {
   const { data: content, isLoading } = useHomepageContent();
-  
-  console.log('MainHeroSection - isLoading:', isLoading);
-  console.log('MainHeroSection - content:', content);
 
   if (isLoading) {
     return (
