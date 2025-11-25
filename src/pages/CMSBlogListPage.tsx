@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -81,8 +82,19 @@ const CMSBlogListPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <>
+      <Helmet>
+        <title>Trading & Investment Blog | Sergio Avedian</title>
+        <meta 
+          name="description" 
+          content="Expert trading insights, investment strategies, and market analysis from Sergio Avedian. 35+ years of Wall Street experience helping you build wealth without a financial advisor." 
+        />
+        <meta name="keywords" content="trading blog, investment strategies, market analysis, options trading, long-term investing, Wall Street insights, Sergio Avedian" />
+        <link rel="canonical" href="https://sergioavedian.com/blog" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background">
+        <Navigation />
       
       {/* Hero Section - Tightened and Modern */}
       <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 overflow-hidden">
@@ -374,7 +386,8 @@ const CMSBlogListPage = () => {
       </section>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 

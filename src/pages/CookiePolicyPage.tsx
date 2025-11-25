@@ -11,7 +11,7 @@ const CookiePolicyPage = () => {
           name="description" 
           content="Cookie Policy for SergioAvedian.com - How we use cookies and similar technologies on our website." 
         />
-        <link rel="canonical" href="/cookie-policy" />
+        <link rel="canonical" href="https://sergioavedian.com/cookie-policy" />
       </Helmet>
       
       <div className="min-h-screen bg-background">

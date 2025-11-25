@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,19 @@ const CoachingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <>
+      <Helmet>
+        <title>Personal Trading Coaching with Sergio Avedian | Wall Street Veteran</title>
+        <meta 
+          name="description" 
+          content="Get personalized trading coaching from Sergio Avedian, a 35-year Wall Street veteran. Master strategies, risk management, and trading psychology for consistent success." 
+        />
+        <meta name="keywords" content="trading coaching, personal mentorship, Wall Street guidance, trading strategies, risk management, Sergio Avedian" />
+        <link rel="canonical" href="https://sergioavedian.com/coaching" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background">
+        <Navigation />
       
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 overflow-hidden py-20 lg:py-32">
@@ -65,7 +77,8 @@ const CoachingPage = () => {
       />
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 
