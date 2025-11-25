@@ -57,7 +57,8 @@ const transformImageUrl = (url: string): string => {
 
 // Generate modern format URLs (WebP, AVIF)
 const getModernFormatUrl = (url: string, format: 'webp' | 'avif'): string => {
-  if (!url || url.startsWith('data:') || url.startsWith('http')) return url;
+  // Don't transform external URLs or data URLs
+  if (!url || url.startsWith('data:') || url.startsWith('http')) return '';
   return url.replace(/\.(jpg|jpeg|png)$/i, `.${format}`);
 };
 
@@ -173,8 +174,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       {/* Use picture element for modern format support with fallbacks */}
       {transformedSrc && !hasError ? (
         <picture>
-          {/* AVIF - best compression, modern browsers */}
-          {avifSupported && avifSrc && (
+          {/* AVIF - best compression, modern browsers (only for local images) */}
+          {avifSupported && avifSrc && !transformedSrc.startsWith('http') && (
             <source
               type="image/avif"
               srcSet={generateSrcSet(transformedSrc, 'avif')}
@@ -182,8 +183,8 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
             />
           )}
           
-          {/* WebP - good compression, wide support */}
-          {webpSrc && (
+          {/* WebP - good compression, wide support (only for local images) */}
+          {webpSrc && !transformedSrc.startsWith('http') && (
             <source
               type="image/webp"
               srcSet={generateSrcSet(transformedSrc, 'webp')}
