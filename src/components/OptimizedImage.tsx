@@ -56,10 +56,10 @@ const transformImageUrl = (url: string): string => {
 };
 
 // Generate modern format URLs (WebP, AVIF)
+// DISABLED: Return empty string to prevent loading non-existent format files
 const getModernFormatUrl = (url: string, format: 'webp' | 'avif'): string => {
-  // Don't transform external URLs or data URLs
-  if (!url || url.startsWith('data:') || url.startsWith('http')) return '';
-  return url.replace(/\.(jpg|jpeg|png)$/i, `.${format}`);
+  // Disabled until actual WebP/AVIF files are generated
+  return '';
 };
 
 // Generate srcset for responsive images
@@ -171,45 +171,24 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         <Skeleton className="absolute inset-0 w-full h-full" />
       )}
       
-      {/* Use picture element for modern format support with fallbacks */}
+      {/* Simplified: Only use original format until WebP/AVIF files exist */}
       {transformedSrc && !hasError ? (
-        <picture>
-          {/* AVIF - best compression, modern browsers (only for local images) */}
-          {avifSupported && avifSrc && !transformedSrc.startsWith('http') && (
-            <source
-              type="image/avif"
-              srcSet={generateSrcSet(transformedSrc, 'avif')}
-              sizes={sizes}
-            />
+        <img
+          key={imageKey}
+          src={currentSrc}
+          alt={alt}
+          width={width}
+          height={height}
+          className={cn(
+            'w-full h-full object-cover transition-opacity duration-300',
+            isLoading ? 'opacity-0' : 'opacity-100'
           )}
-          
-          {/* WebP - good compression, wide support (only for local images) */}
-          {webpSrc && !transformedSrc.startsWith('http') && (
-            <source
-              type="image/webp"
-              srcSet={generateSrcSet(transformedSrc, 'webp')}
-              sizes={sizes}
-            />
-          )}
-          
-          {/* Original format - fallback for older browsers */}
-          <img
-            key={imageKey}
-            src={currentSrc}
-            alt={alt}
-            width={width}
-            height={height}
-            className={cn(
-              'w-full h-full object-cover transition-opacity duration-300',
-              isLoading ? 'opacity-0' : 'opacity-100'
-            )}
-            onLoad={handleLoad}
-            onError={handleError}
-            loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
-            fetchPriority={priority ? 'high' : fetchPriority}
-            decoding={priority ? 'sync' : 'async'}
-          />
-        </picture>
+          onLoad={handleLoad}
+          onError={handleError}
+          loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : fetchPriority}
+          decoding={priority ? 'sync' : 'async'}
+        />
       ) : (
         <img
           key={imageKey}
