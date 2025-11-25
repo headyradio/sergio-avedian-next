@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import CMSDemo from "./pages/CMSDemo";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ScrollToTop from "./components/ScrollToTop";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Direct imports for critical pages to prevent loading issues
 import AboutPage from "./pages/AboutPage";
@@ -49,57 +50,59 @@ const App = () => {
   }));
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
-        <ThemeProvider defaultTheme="dark" storageKey="sergio-theme">
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              {/* Skip to main content link for keyboard users */}
-              <a href="#main-content" className="skip-to-content">
-                Skip to main content
-              </a>
-              <ScrollToTop />
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/coaching" element={<CoachingPage />} />
-                  <Route path="/about-sergio" element={<AboutPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/newsletter" element={<NewsletterPage />} />
-                  <Route path="/blog" element={<CMSBlogListPage />} />
-                  <Route path="/blog/:slug" element={<CMSBlogPostPage />} />
-                  <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-                  <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                  <Route path="/cookie-policy" element={<CookiePolicyPage />} />
-                  <Route path="/cms-demo" element={<CMSDemo />} />
-                  <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route 
-                    path="/admin" 
-                    element={
-                      <ProtectedRoute>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  <Route 
-                    path="/admin/blog-preview/:id" 
-                    element={
-                      <ProtectedRoute>
-                        <CMSBlogPreviewPage />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-          </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
-      </HelmetProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <HelmetProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="sergio-theme">
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                {/* Skip to main content link for keyboard users */}
+                <a href="#main-content" className="skip-to-content">
+                  Skip to main content
+                </a>
+                <ScrollToTop />
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/coaching" element={<CoachingPage />} />
+                    <Route path="/about-sergio" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/newsletter" element={<NewsletterPage />} />
+                    <Route path="/blog" element={<CMSBlogListPage />} />
+                    <Route path="/blog/:slug" element={<CMSBlogPostPage />} />
+                    <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                    <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+                    <Route path="/cms-demo" element={<CMSDemo />} />
+                    <Route path="/admin/login" element={<AdminLogin />} />
+                    <Route 
+                      path="/admin" 
+                      element={
+                        <ProtectedRoute>
+                          <AdminDashboard />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/admin/blog-preview/:id" 
+                      element={
+                        <ProtectedRoute>
+                          <CMSBlogPreviewPage />
+                        </ProtectedRoute>
+                      } 
+                    />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+            </BrowserRouter>
+          </TooltipProvider>
+        </ThemeProvider>
+        </HelmetProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 

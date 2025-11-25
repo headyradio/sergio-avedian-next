@@ -131,20 +131,11 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   };
 
   const handleError = () => {
-    console.error('OptimizedImage Error:', {
-      currentSrc,
-      originalSrc: src,
-      transformedSrc,
-      fallbackSrc,
-      isSafari: isSafariBrowser
-    });
-    
     setIsLoading(false);
     setHasError(true);
     
     // Try fallback if we haven't already
     if (currentSrc !== fallbackSrc && transformedSrc) {
-      console.log(`Trying fallback: ${fallbackSrc}`);
       setCurrentSrc(fallbackSrc);
       setImageKey(prev => prev + 1);
     }
