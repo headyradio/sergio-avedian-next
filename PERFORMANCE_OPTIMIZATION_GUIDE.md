@@ -28,9 +28,28 @@ manualChunks: {
 - Better browser caching efficiency
 
 ### 3. Tree Shaking & Minification
-- **Terser minification** with console removal in production
+- **esbuild minification** with console removal in production
 - **Dead code elimination** for unused exports
 - **CSS code splitting** enabled for route-based loading
+
+### 4. Layout Thrashing Prevention
+Implemented RAF (requestAnimationFrame) batching to prevent forced reflows:
+
+**Key Optimizations**:
+- **RAF throttling utility** (`src/lib/rafUtils.ts`) batches layout reads per frame
+- **Layout value caching** reduces repeated DOM queries
+- **Separate reads from writes** prevents layout thrashing
+- **Passive scroll listeners** allows browser optimizations
+
+**Files Optimized**:
+- `ScrollProgressIndicator.tsx`: Cached document dimensions, RAF-throttled scroll handler
+- `useScrollTrigger.ts`: Cached content layout values, RAF-throttled calculations
+
+**Performance Impact**:
+- Eliminates forced synchronous layouts during scroll
+- Reduces main thread blocking during interactions
+- Improves scroll smoothness and responsiveness
+- Prevents layout recalculations on every scroll event
 
 ## CSS Optimizations
 
