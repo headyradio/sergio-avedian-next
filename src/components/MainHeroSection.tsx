@@ -11,6 +11,9 @@ import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 const MainHeroSection = () => {
   const { data: content, isLoading } = useHomepageContent();
+  
+  console.log('MainHeroSection - isLoading:', isLoading);
+  console.log('MainHeroSection - content:', content);
 
   if (isLoading) {
     return (
@@ -98,15 +101,26 @@ const MainHeroSection = () => {
           <div className="relative">
             <div className="relative z-10">
               {/* LCP Image - Optimized with priority loading */}
-              <img
-                src={sergioHeroMain}
-                alt="Sergio Avedian - Wall Street Veteran & Trading Mentor"
-                width={800}
-                height={1000}
-                className="w-full h-auto rounded-3xl shadow-2xl"
-                loading="eager"
-                fetchPriority="high"
-              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet={sergioHeroMain.replace('.png', '.avif')}
+                />
+                <source
+                  type="image/webp"
+                  srcSet={sergioHeroMain.replace('.png', '.webp')}
+                />
+                <img
+                  src={sergioHeroMain}
+                  alt="Sergio Avedian - Wall Street Veteran & Trading Mentor"
+                  width={800}
+                  height={1000}
+                  className="w-full h-auto rounded-3xl shadow-2xl"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
+                />
+              </picture>
               
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -left-6 bg-background border border-border rounded-2xl p-6 shadow-lg">

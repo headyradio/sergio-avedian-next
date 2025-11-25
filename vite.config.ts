@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
-import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -12,14 +11,8 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' && componentTagger(),
-    // Bundle analysis plugin for visualizing bundle composition
-    mode === 'production' && visualizer({
-      filename: './dist/stats.html',
-      open: false,
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    mode === 'development' &&
+    componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -27,68 +20,29 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    // Enable source maps for debugging production issues
-    sourcemap: mode === 'production' ? 'hidden' : true,
     // Optimize chunk splitting for better caching
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
+        manualChunks: {
           // Vendor chunks for better caching
-          if (id.includes('node_modules')) {
-            // React ecosystem
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'react-vendor';
-            }
-            // UI component libraries (Radix)
-            if (id.includes('@radix-ui')) {
-              return 'ui-vendor';
-            }
-            // Supabase
-            if (id.includes('@supabase')) {
-              return 'supabase';
-            }
-            // Rich text editor
-            if (id.includes('@tiptap')) {
-              return 'editor';
-            }
-            // Form libraries
-            if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) {
-              return 'forms';
-            }
-            // Date utilities
-            if (id.includes('date-fns')) {
-              return 'date-utils';
-            }
-            // Query library
-            if (id.includes('@tanstack/react-query')) {
-              return 'query';
-            }
-            // Other node_modules go to vendor chunk
-            return 'vendor';
-          }
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
+          'supabase': ['@supabase/supabase-js'],
+          'editor': ['@tiptap/react', '@tiptap/starter-kit'],
         },
-      },
-      // Tree-shaking optimizations
-      treeshake: {
-        preset: 'recommended',
-        moduleSideEffects: false,
       },
     },
     // Increase chunk size warning limit for vendor bundles
     chunkSizeWarningLimit: 1000,
-    // Enable CSS code splitting for route-based loading
+    // Enable CSS code splitting
     cssCodeSplit: true,
-    // Use esbuild for minification (faster than terser)
+    // Use esbuild for minification (faster than terser and built-in)
     minify: 'esbuild',
     esbuild: {
       drop: mode === 'production' ? ['console', 'debugger'] : [],
-      legalComments: 'none', // Remove comments to reduce bundle size
-      treeShaking: true,
     },
-    // Target modern browsers for smaller bundles
-    target: 'es2020',
   },
-  // Optimize dependencies - pre-bundle commonly used packages
+  // Optimize dependencies
   optimizeDeps: {
     include: [
       'react',
@@ -97,7 +51,5 @@ export default defineConfig(({ mode }) => ({
       '@supabase/supabase-js',
       'date-fns',
     ],
-    // Exclude heavy packages that should be code-split
-    exclude: ['@tiptap/react', '@tiptap/starter-kit'],
   },
 }));
