@@ -3,10 +3,16 @@ import type { Config } from "tailwindcss";
 export default {
 	darkMode: ["class"],
 	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
+		// Scan all source files for class names
+		"./src/**/*.{ts,tsx,js,jsx}",
+		"./index.html",
+	],
+	// Safelist dynamic classes that might not be detected by PurgeCSS
+	safelist: [
+		// Add patterns for dynamically generated classes
+		{
+			pattern: /^(bg|text|border)-(primary|secondary|cta|surface)/,
+		},
 	],
 	prefix: "",
 	theme: {
