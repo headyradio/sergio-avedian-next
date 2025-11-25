@@ -14,7 +14,7 @@ const AboutPage = () => {
           content="Meet Sergio Avedian, a seasoned Wall Street professional with over 35 years of experience in finance, trading, and capital markets. Learn about his journey and expertise." 
         />
         <meta name="keywords" content="Sergio Avedian, Wall Street, finance, trading, investment, mentor, financial education" />
-        <link rel="canonical" href="/about-sergio" />
+        <link rel="canonical" href="https://sergioavedian.com/about-sergio" />
       </Helmet>
       
       <div className="min-h-screen bg-background">

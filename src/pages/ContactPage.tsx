@@ -13,7 +13,7 @@ const ContactPage = () => {
           content="Contact Sergio Avedian for personalized trading mentorship, investment coaching, and market analysis. Get expert guidance from a Wall Street veteran with 35+ years experience." 
         />
         <meta name="keywords" content="contact Sergio Avedian, trading mentor, investment coaching, Wall Street guidance, financial consultation" />
-        <link rel="canonical" href="/contact" />
+        <link rel="canonical" href="https://sergioavedian.com/contact" />
       </Helmet>
       
       <div className="min-h-screen bg-background">

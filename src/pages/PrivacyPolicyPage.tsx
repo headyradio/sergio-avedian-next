@@ -11,7 +11,7 @@ const PrivacyPolicyPage = () => {
           name="description" 
           content="Privacy Policy for SergioAvedian.com - How we collect, use, and protect your personal information." 
         />
-        <link rel="canonical" href="/privacy-policy" />
+        <link rel="canonical" href="https://sergioavedian.com/privacy-policy" />
       </Helmet>
       
       <div className="min-h-screen bg-background">

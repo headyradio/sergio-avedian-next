@@ -11,7 +11,7 @@ const TermsOfServicePage = () => {
           name="description" 
           content="Terms and Conditions for SergioAvedian.com - Educational platform offering trading courses, coaching, and market insights." 
         />
-        <link rel="canonical" href="/terms-of-service" />
+        <link rel="canonical" href="https://sergioavedian.com/terms-of-service" />
       </Helmet>
       
       <div className="min-h-screen bg-background">
