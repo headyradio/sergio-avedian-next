@@ -10,6 +10,58 @@ import useScrollToAnchor from "@/hooks/useScrollToAnchor";
 const Index = () => {
   useScrollToAnchor();
   
+  // Organization Schema for brand identity
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Sergio Avedian",
+    "url": "https://sergioavedian.com",
+    "logo": "https://sergioavedian.com/favicon.png",
+    "description": "Wall Street veteran with 35+ years of experience providing practical guidance on building wealth without a financial advisor.",
+    "founder": {
+      "@type": "Person",
+      "name": "Sergio Avedian",
+      "jobTitle": "Financial Educator & Wall Street Veteran",
+      "url": "https://sergioavedian.com/about"
+    },
+    "sameAs": [
+      "https://twitter.com/sergioaved",
+      "https://www.youtube.com/@sergioavedian",
+      "https://www.linkedin.com/in/sergioavedian"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "sergio@sergioavedian.com",
+      "url": "https://sergioavedian.com/contact"
+    }
+  };
+
+  // WebSite Schema for search functionality
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Sergio Avedian",
+    "url": "https://sergioavedian.com",
+    "description": "Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Sergio Avedian",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://sergioavedian.com/favicon.png"
+      }
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://sergioavedian.com/blog?search={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+  
   return (
     <>
       <Helmet>
@@ -41,6 +93,16 @@ const Index = () => {
         <meta name="twitter:image:alt" content="Sergio Avedian - Wall Street Veteran" />
         
         <link rel="canonical" href="https://sergioavedian.com/" />
+        
+        {/* Structured Data - Organization */}
+        <script type="application/ld+json">
+          {JSON.stringify(organizationSchema)}
+        </script>
+        
+        {/* Structured Data - WebSite */}
+        <script type="application/ld+json">
+          {JSON.stringify(websiteSchema)}
+        </script>
       </Helmet>
       
       <div className="min-h-screen bg-background">

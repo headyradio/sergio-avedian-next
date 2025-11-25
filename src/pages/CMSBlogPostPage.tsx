@@ -113,23 +113,29 @@ const CMSBlogPostPage = () => {
   const imageUrl = getAbsoluteImageUrl(post.cover_image_url);
   const description = post.seo_description || post.excerpt || `Read ${post.title} by Sergio Avedian`;
   
-  // Structured Data for SEO
+  // Enhanced Structured Data for SEO - Article Schema
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     "headline": post.title,
     "description": description,
-    "image": imageUrl,
+    "image": {
+      "@type": "ImageObject",
+      "url": imageUrl,
+      "caption": post.cover_image_alt || post.title
+    },
     "datePublished": post.published_at || post.created_at,
     "dateModified": post.updated_at || post.published_at || post.created_at,
     "author": {
       "@type": "Person",
       "name": post.author || "Sergio Avedian",
-      "url": "https://sergioavedian.com/about"
+      "url": "https://sergioavedian.com/about",
+      "jobTitle": "Wall Street Veteran & Financial Educator"
     },
     "publisher": {
       "@type": "Organization",
       "name": "Sergio Avedian",
+      "url": "https://sergioavedian.com",
       "logo": {
         "@type": "ImageObject",
         "url": "https://sergioavedian.com/favicon.png"
@@ -138,7 +144,20 @@ const CMSBlogPostPage = () => {
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": pageUrl
-    }
+    },
+    ...(post.category && { 
+      "articleSection": post.category.name,
+      "about": {
+        "@type": "Thing",
+        "name": post.category.name
+      }
+    }),
+    ...(post.seo_keywords && post.seo_keywords.length > 0 && {
+      "keywords": post.seo_keywords.join(', ')
+    }),
+    "inLanguage": "en-US",
+    "timeRequired": post.read_time || "PT5M",
+    "wordCount": post.content ? post.content.split(/\s+/).length : undefined
   };
 
   return (
