@@ -45,13 +45,11 @@ const Index = () => {
       
       <div className="min-h-screen bg-background">
         <Navigation />
-        <main id="main-content">
-          <MainHeroSection />
-          <GoldSubscriptionSection />
-          <CMSBlogSection />
-          <VideoSection />
-        </main>
-        <Footer />
+      <MainHeroSection />
+      <GoldSubscriptionSection />
+      <CMSBlogSection />
+      <VideoSection />
+      <Footer />
       </div>
     </>
   );

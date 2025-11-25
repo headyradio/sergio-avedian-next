@@ -145,10 +145,7 @@ const CMSHeroSection = () => {
               <img
                 src={homepageContent?.hero_image_url || latestVideo?.thumbnail_high || sergioHero}
                 alt={homepageContent?.hero_image_alt || (latestVideo ? latestVideo.title : "Sergio Avedian - Financial Trading Expert")}
-                width={800}
-                height={600}
                 className="w-full h-auto rounded-3xl shadow-large"
-                loading="lazy"
               />
               {/* Play overlay */}
               <div className="absolute inset-0 flex items-center justify-center">

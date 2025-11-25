@@ -19,37 +19,4 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  build: {
-    // Optimize chunk splitting for better caching
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          // Vendor chunks for better caching
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
-          'supabase': ['@supabase/supabase-js'],
-          'editor': ['@tiptap/react', '@tiptap/starter-kit'],
-        },
-      },
-    },
-    // Increase chunk size warning limit for vendor bundles
-    chunkSizeWarningLimit: 1000,
-    // Enable CSS code splitting
-    cssCodeSplit: true,
-    // Use esbuild for minification (faster than terser and built-in)
-    minify: 'esbuild',
-    esbuild: {
-      drop: mode === 'production' ? ['console', 'debugger'] : [],
-    },
-  },
-  // Optimize dependencies
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      '@supabase/supabase-js',
-      'date-fns',
-    ],
-  },
 }));

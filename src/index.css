@@ -1,4 +1,4 @@
-/* Font import moved to HTML head for better performance */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -497,61 +497,5 @@
 
   .tippy-box[data-theme~='light-border'] .tippy-content {
     padding: 0;
-  }
-  
-  /* Accessibility Utilities */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-  
-  .sr-only-focusable:focus,
-  .sr-only-focusable:active {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-  }
-  
-  /* Enhanced Focus Indicators for Keyboard Navigation */
-  *:focus-visible {
-    outline: 2px solid hsl(var(--primary));
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-  
-  button:focus-visible,
-  a:focus-visible {
-    outline: 2px solid hsl(var(--primary));
-    outline-offset: 2px;
-  }
-  
-  /* Skip to Content Link */
-  .skip-to-content {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 0 0 4px 0;
-    z-index: 100;
-    font-weight: 600;
-    transition: top 0.2s ease;
-  }
-  
-  .skip-to-content:focus {
-    top: 0;
-    outline: none;
   }
 }

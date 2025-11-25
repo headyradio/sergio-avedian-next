@@ -56,7 +56,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-surface border-t border-card-border" role="contentinfo" aria-label="Site footer">
+    <footer className="bg-surface border-t border-card-border">
       <div className="editorial-container py-16 lg:py-20">
         {/* Main Footer Content */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 mb-12">
@@ -65,7 +65,7 @@ const Footer = () => {
             <div className="mb-4">
               <img 
                 src={sergioAvedianLogo} 
-                alt="Sergio Avedian logo" 
+                alt="Sergio Avedian" 
                 className="h-12 w-auto object-contain"
               />
             </div>
@@ -78,35 +78,28 @@ const Footer = () => {
                 size="icon" 
                 className="text-text-muted hover:text-primary"
                 onClick={() => window.open("https://www.youtube.com/@SergioAvedian/", "_blank", "noopener noreferrer")}
-                aria-label="Visit Sergio Avedian's YouTube channel"
               >
                 <Youtube className="h-5 w-5" />
-                <span className="sr-only">YouTube</span>
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 className="text-text-muted hover:text-primary"
                 onClick={() => window.open("https://x.com/sergioaved", "_blank", "noopener noreferrer")}
-                aria-label="Follow Sergio Avedian on X (Twitter)"
               >
-                <img src={xLogo} alt="" className="h-4 w-4" role="presentation" />
-                <span className="sr-only">X (Twitter)</span>
+                <img src={xLogo} alt="X (Twitter)" className="h-4 w-4" />
               </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 className="text-text-muted hover:text-primary"
                 onClick={() => window.open("https://www.linkedin.com/in/sergio-avedian-9939291/", "_blank", "noopener noreferrer")}
-                aria-label="Connect with Sergio Avedian on LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
               </Button>
               <Link to="/contact">
-                <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary" aria-label="Contact Sergio Avedian">
+                <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
                   <Mail className="h-5 w-5" />
-                  <span className="sr-only">Contact</span>
                 </Button>
               </Link>
             </div>
@@ -115,9 +108,9 @@ const Footer = () => {
           {/* Footer Links */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h2 className="text-lg font-semibold text-text-primary mb-4">
+              <h4 className="text-lg font-semibold text-text-primary mb-4">
                 {section.title}
-              </h2>
+              </h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>
@@ -134,7 +127,6 @@ const Footer = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-text-secondary hover:text-text-primary transition-colors duration-200"
-                        aria-label={`Visit ${link.label} (opens in new tab)`}
                       >
                         {link.label}
                       </a>

@@ -9,21 +9,6 @@ const isSafari = () => {
   return ua.indexOf('safari') > -1 && ua.indexOf('chrome') === -1;
 };
 
-// Check AVIF support
-const supportsAvif = async (): Promise<boolean> => {
-  if (typeof window === 'undefined') return false;
-  if (!window.createImageBitmap) return false;
-  
-  const avifData = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A=';
-  
-  try {
-    const blob = await fetch(avifData).then(r => r.blob());
-    return await createImageBitmap(blob).then(() => true, () => false);
-  } catch {
-    return false;
-  }
-};
-
 interface OptimizedImageProps {
   src?: string;
   alt: string;
@@ -31,10 +16,6 @@ interface OptimizedImageProps {
   fallbackSrc?: string;
   aspectRatio?: 'square' | 'video' | 'portrait' | 'auto';
   priority?: boolean;
-  width?: number;
-  height?: number;
-  sizes?: string;
-  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 // Utility function to transform old asset URLs to correct public paths
@@ -55,24 +36,6 @@ const transformImageUrl = (url: string): string => {
   return url;
 };
 
-// Generate modern format URLs (WebP, AVIF)
-const getModernFormatUrl = (url: string, format: 'webp' | 'avif'): string => {
-  if (!url || url.startsWith('data:') || url.startsWith('http')) return url;
-  return url.replace(/\.(jpg|jpeg|png)$/i, `.${format}`);
-};
-
-// Generate srcset for responsive images
-const generateSrcSet = (url: string, format?: 'webp' | 'avif'): string => {
-  if (!url || url.startsWith('data:') || url.startsWith('http')) return '';
-  
-  const baseUrl = format ? getModernFormatUrl(url, format) : url;
-  const widths = [640, 750, 828, 1080, 1200, 1920];
-  
-  // For now, return single source until we have multiple sizes
-  // In production, you'd generate multiple image sizes at build time
-  return `${baseUrl} 1x`;
-};
-
 export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   src,
   alt,
@@ -80,32 +43,18 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   fallbackSrc = '/placeholder.svg',
   aspectRatio = 'auto',
   priority = false,
-  width,
-  height,
-  sizes = '100vw',
-  fetchPriority = 'auto',
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [imageKey, setImageKey] = useState(0);
-  const [avifSupported, setAvifSupported] = useState<boolean | null>(null);
   
   // Detect if Safari for special handling
   const isSafariBrowser = useMemo(() => isSafari(), []);
-  
-  // Check AVIF support once
-  useEffect(() => {
-    supportsAvif().then(setAvifSupported);
-  }, []);
   
   // Transform the URL immediately
   const transformedSrc = useMemo(() => {
     return src ? transformImageUrl(src) : null;
   }, [src]);
-  
-  // Generate format URLs
-  const webpSrc = useMemo(() => transformedSrc ? getModernFormatUrl(transformedSrc, 'webp') : null, [transformedSrc]);
-  const avifSrc = useMemo(() => transformedSrc ? getModernFormatUrl(transformedSrc, 'avif') : null, [transformedSrc]);
   
   // Set initial src immediately
   const [currentSrc, setCurrentSrc] = useState(() => transformedSrc || fallbackSrc);
@@ -169,63 +118,18 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
       {isLoading && (
         <Skeleton className="absolute inset-0 w-full h-full" />
       )}
-      
-      {/* Use picture element for modern format support with fallbacks */}
-      {transformedSrc && !hasError ? (
-        <picture>
-          {/* AVIF - best compression, modern browsers */}
-          {avifSupported && avifSrc && (
-            <source
-              type="image/avif"
-              srcSet={generateSrcSet(transformedSrc, 'avif')}
-              sizes={sizes}
-            />
-          )}
-          
-          {/* WebP - good compression, wide support */}
-          {webpSrc && (
-            <source
-              type="image/webp"
-              srcSet={generateSrcSet(transformedSrc, 'webp')}
-              sizes={sizes}
-            />
-          )}
-          
-          {/* Original format - fallback for older browsers */}
-          <img
-            key={imageKey}
-            src={currentSrc}
-            alt={alt}
-            width={width}
-            height={height}
-            className={cn(
-              'w-full h-full object-cover transition-opacity duration-300',
-              isLoading ? 'opacity-0' : 'opacity-100'
-            )}
-            onLoad={handleLoad}
-            onError={handleError}
-            loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
-            fetchPriority={priority ? 'high' : fetchPriority}
-            decoding={priority ? 'sync' : 'async'}
-          />
-        </picture>
-      ) : (
-        <img
-          key={imageKey}
-          src={currentSrc}
-          alt={alt}
-          width={width}
-          height={height}
-          className={cn(
-            'w-full h-full object-cover transition-opacity duration-300',
-            isLoading ? 'opacity-0' : 'opacity-100'
-          )}
-          onLoad={handleLoad}
-          onError={handleError}
-          loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
-        />
-      )}
-      
+      <img
+        key={imageKey}
+        src={currentSrc}
+        alt={alt}
+        className={cn(
+          'w-full h-full object-cover transition-opacity duration-300',
+          isLoading ? 'opacity-0' : 'opacity-100'
+        )}
+        onLoad={handleLoad}
+        onError={handleError}
+        loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
+      />
       {hasError && currentSrc === fallbackSrc && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
           <p className="text-muted-foreground text-sm">Image not available</p>
