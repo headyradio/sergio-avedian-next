@@ -1,5 +1,6 @@
-import { Share2, Mail, Linkedin } from "lucide-react";
+import { Mail, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import xLogo from "@/assets/x-logo-white.png";
 
 interface SocialShareButtonsProps {
   url: string;
@@ -29,7 +30,7 @@ export const SocialShareButtons = ({ url, title, description }: SocialShareButto
           onClick={() => window.open(shareLinks.twitter, '_blank')}
           aria-label="Share on X (Twitter)"
         >
-          <Share2 className="h-4 w-4" />
+          <img src={xLogo} alt="X" className="h-4 w-4" />
         </Button>
         <Button
           variant="outline"
