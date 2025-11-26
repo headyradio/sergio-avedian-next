@@ -235,7 +235,6 @@ const CMSBlogPostPage = () => {
               alt={post.cover_image_alt || post.title}
               className="w-full h-full"
               priority={true}
-              fetchPriority="high"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/70"></div>
           </div>
