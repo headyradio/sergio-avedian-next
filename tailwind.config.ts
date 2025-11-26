@@ -73,7 +73,8 @@ export default {
 			},
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
-				serif: ['Crimson Text', 'Georgia', 'serif']
+				serif: ['Playfair Display', 'Georgia', 'serif'],
+				display: ['Playfair Display', 'Georgia', 'serif']
 			},
 			boxShadow: {
 				subtle: 'var(--shadow-subtle)',
