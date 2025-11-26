@@ -10,6 +10,9 @@ import Footer from "@/components/Footer";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
 import ScrollProgressIndicator from "@/components/ScrollProgressIndicator";
 import CTAPopup from "@/components/CTAPopup";
+import { SocialShareButtons } from "@/components/blog/SocialShareButtons";
+import { RelatedArticles } from "@/components/blog/RelatedArticles";
+import { BackToTop } from "@/components/blog/BackToTop";
 
 import { useBlogPost } from "@/hooks/useSupabaseCMS";
 import { useScrollTrigger } from "@/hooks/useScrollTrigger";
@@ -271,71 +274,101 @@ const CMSBlogPostPage = () => {
         </div>
       </section>
 
-      {/* Article Byline */}
+      {/* Article Byline & Share */}
       <section className="py-8 border-b border-border/20">
-        <div className="editorial-container max-w-4xl">
-          <div className="flex flex-wrap items-center justify-center gap-6 text-text-muted">
-            <div className="flex items-center">
-              <User className="h-4 w-4 mr-2" />
-              <span className="font-medium">By {post.author}</span>
+        <div className="editorial-container max-w-3xl">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-4 md:gap-6 text-sm text-text-muted">
+              <div className="flex items-center">
+                <User className="h-4 w-4 mr-2" />
+                <span className="font-medium">By {post.author}</span>
+              </div>
+              <div className="flex items-center">
+                <Calendar className="h-4 w-4 mr-2" />
+                <time dateTime={post.published_at || post.created_at}>
+                  {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+              </div>
+              <div className="flex items-center">
+                <Clock className="h-4 w-4 mr-2" />
+                <span>{post.read_time || '5 min read'}</span>
+              </div>
             </div>
-            <div className="flex items-center">
-              <Calendar className="h-4 w-4 mr-2" />
-              <span>
-                {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <Clock className="h-4 w-4 mr-2" />
-              <span>{post.read_time || '5 min read'}</span>
-            </div>
+            <SocialShareButtons 
+              url={pageUrl}
+              title={post.title}
+              description={description}
+            />
           </div>
         </div>
       </section>
 
       {/* Article Content */}
       <article className="py-16 lg:py-20">
-        <div className="editorial-container max-w-4xl">
+        <div className="editorial-container max-w-3xl">
 
           {/* Article Content */}
           <div 
-            className="prose prose-lg prose-gray dark:prose-invert max-w-none prose-headings:font-bold prose-headings:text-text-primary prose-p:text-text-secondary prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-text-primary prose-ul:text-text-secondary prose-ol:text-text-secondary prose-blockquote:border-l-primary prose-blockquote:bg-surface/50 prose-blockquote:p-4 prose-blockquote:rounded-r-lg prose-code:bg-surface prose-code:text-text-primary prose-code:px-2 prose-code:py-1 prose-code:rounded prose-pre:bg-surface prose-pre:border prose-pre:border-border"
+            className="article-content prose prose-lg max-w-none
+              prose-headings:font-display prose-headings:font-bold prose-headings:text-text-primary prose-headings:tracking-tight
+              prose-h1:text-4xl prose-h1:mb-6 prose-h1:mt-12
+              prose-h2:text-3xl prose-h2:mb-5 prose-h2:mt-10 prose-h2:border-b prose-h2:border-border/20 prose-h2:pb-3
+              prose-h3:text-2xl prose-h3:mb-4 prose-h3:mt-8
+              prose-p:text-text-secondary prose-p:text-[17px] prose-p:leading-[1.75] prose-p:mb-6
+              prose-a:text-primary prose-a:no-underline prose-a:font-medium hover:prose-a:underline prose-a:transition-colors
+              prose-strong:text-text-primary prose-strong:font-semibold
+              prose-ul:text-text-secondary prose-ul:leading-relaxed prose-ul:mb-6
+              prose-ol:text-text-secondary prose-ol:leading-relaxed prose-ol:mb-6
+              prose-li:mb-2
+              prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-surface/30 
+              prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-lg prose-blockquote:italic
+              prose-blockquote:text-text-primary prose-blockquote:font-serif
+              prose-code:bg-surface prose-code:text-text-primary prose-code:px-2 prose-code:py-1 
+              prose-code:rounded prose-code:text-sm prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
+              prose-pre:bg-surface prose-pre:border prose-pre:border-border prose-pre:rounded-lg prose-pre:p-4
+              prose-img:rounded-lg prose-img:shadow-md"
             dangerouslySetInnerHTML={{ __html: convertMarkdownToHTML(post.content || '') }}
           />
 
-          {/* Subscribe CTA */}
-          <div className="mt-16 p-8 bg-gradient-to-r from-primary/5 to-cta/5 border border-primary/20 rounded-2xl text-center">
-            <h3 className="text-2xl font-bold text-text-primary mb-4">
-              Get More Trading Insights
-            </h3>
-            <p className="text-lg text-text-secondary mb-6 max-w-2xl mx-auto">
-              Join thousands of traders and investors getting exclusive market analysis and strategies from a Wall Street veteran.
-            </p>
-            <div className="flex justify-center">
-              <SubscribeDropdown variant="cta" size="lg" />
+          {/* Newsletter Signup */}
+          <div className="mt-16 p-10 bg-gradient-to-r from-primary/5 to-cta/5 border-2 border-primary/20 rounded-2xl">
+            <div className="max-w-xl mx-auto text-center">
+              <h3 className="font-display text-3xl font-bold text-text-primary mb-3">
+                Don't Miss the Next Insight
+              </h3>
+              <p className="text-base text-text-muted mb-6 leading-relaxed">
+                Join thousands of traders and investors receiving exclusive market analysis, proven strategies, and actionable insights from a Wall Street veteran with 35+ years of experience.
+              </p>
+              <div className="flex justify-center">
+                <SubscribeDropdown variant="cta" size="lg" />
+              </div>
             </div>
           </div>
 
-            {/* Author Bio */}
-          <div className="mt-12">
-            <div className="p-6 bg-surface/50 rounded-xl border border-border">
-              <div className="flex items-start space-x-4">
-                <Avatar className="w-16 h-16 flex-shrink-0">
-                  <AvatarFallback className="bg-gradient-to-br from-primary to-cta text-white font-bold text-xl">
-                    SA
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h4 className="font-bold text-text-primary mb-2">Sergio Avedian</h4>
-                  <p className="text-text-secondary leading-relaxed">
-                    Wall Street veteran with 35+ years of experience in trading and investment management. 
-                    Former senior executive at major financial institutions, now sharing proven strategies and market insights 
-                    with independent traders and investors worldwide.
-                  </p>
+          {/* Author Bio */}
+          <div className="mt-16 p-8 bg-surface/30 rounded-xl border border-border">
+            <div className="flex flex-col sm:flex-row items-start gap-6">
+              <Avatar className="w-20 h-20 flex-shrink-0">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-cta text-white font-bold text-2xl">
+                  SA
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h4 className="font-display text-xl font-bold text-text-primary mb-2">About Sergio Avedian</h4>
+                <p className="text-text-secondary text-[15px] leading-relaxed mb-4">
+                  Wall Street veteran with 35+ years of experience in trading and investment management. 
+                  Former senior executive at major financial institutions, now sharing proven strategies and market insights 
+                  with independent traders and investors worldwide.
+                </p>
+                <div className="flex gap-2 pt-2">
+                  <SocialShareButtons 
+                    url="https://sergioavedian.com/about"
+                    title="Learn more about Sergio Avedian"
+                  />
                 </div>
               </div>
             </div>
@@ -343,12 +376,19 @@ const CMSBlogPostPage = () => {
 
           {/* Comments Section */}
           <div className="mt-16">
+            <h3 className="font-display text-2xl font-bold text-text-primary mb-6">Reader Discussion</h3>
             <CommentSection postId={post.id} />
           </div>
         </div>
       </article>
 
+      {/* Related Articles */}
+      <RelatedArticles currentPostId={post.id} categoryId={post.category_id} />
+
       <Footer />
+      
+      {/* Back to Top Button */}
+      <BackToTop />
       
       {/* CTA Popup */}
       <CTAPopup 
