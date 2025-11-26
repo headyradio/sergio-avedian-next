@@ -16,6 +16,7 @@ interface OptimizedImageProps {
   fallbackSrc?: string;
   aspectRatio?: 'square' | 'video' | 'portrait' | 'auto';
   priority?: boolean;
+  fetchPriority?: 'high' | 'low' | 'auto';
 }
 
 // Utility function to transform old asset URLs to correct public paths
@@ -43,6 +44,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
   fallbackSrc = '/placeholder.svg',
   aspectRatio = 'auto',
   priority = false,
+  fetchPriority = 'auto',
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -129,6 +131,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         onLoad={handleLoad}
         onError={handleError}
         loading={priority || isSafariBrowser ? 'eager' : 'lazy'}
+        fetchPriority={fetchPriority}
       />
       {hasError && currentSrc === fallbackSrc && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted/50">
