@@ -45,7 +45,7 @@ export const RelatedArticles = ({ currentPostId, categoryId }: RelatedArticlesPr
             Continue Reading
           </h2>
           <p className="text-lg text-text-muted">
-            More insights from Wall Street's front lines
+            More insights from Sergio Avedian
           </p>
         </div>
 

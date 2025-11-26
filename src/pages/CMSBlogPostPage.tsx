@@ -334,6 +334,11 @@ const CMSBlogPostPage = () => {
             dangerouslySetInnerHTML={{ __html: convertMarkdownToHTML(post.content || '') }}
           />
 
+          {/* Related Articles */}
+          <div className="mt-16">
+            <RelatedArticles currentPostId={post.id} categoryId={post.category_id} />
+          </div>
+
           {/* Newsletter Signup */}
           <div className="mt-16 p-10 bg-gradient-to-r from-primary/5 to-cta/5 border-2 border-primary/20 rounded-2xl">
             <div className="max-w-xl mx-auto text-center">
@@ -381,9 +386,6 @@ const CMSBlogPostPage = () => {
           </div>
         </div>
       </article>
-
-      {/* Related Articles */}
-      <RelatedArticles currentPostId={post.id} categoryId={post.category_id} />
 
       <Footer />
       
