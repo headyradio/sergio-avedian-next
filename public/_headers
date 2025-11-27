@@ -2,6 +2,7 @@
 # Vite generates hashed filenames for JS/CSS, so these can be cached forever
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
 
 # Cache images for 1 year with revalidation
 # Images in public/assets don't change, but allow revalidation
