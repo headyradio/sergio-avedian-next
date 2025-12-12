@@ -115,6 +115,10 @@
     scroll-behavior: smooth;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-variant-ligatures: common-ligatures;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
@@ -124,12 +128,35 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image: var(--gradient-mesh);
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   
   /* Fixed background only on non-touch devices (avoids iOS Safari bug) */
   @media (hover: hover) and (pointer: fine) {
     body {
       background-attachment: fixed;
+    }
+  }
+  
+  /* iOS Safari stability fixes */
+  @supports (-webkit-touch-callout: none) {
+    .card-premium,
+    .glass-card,
+    article {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+  }
+  
+  /* Touch device specific styles */
+  @media (hover: none) and (pointer: coarse) {
+    .editorial-container {
+      touch-action: pan-y;
     }
   }
   
