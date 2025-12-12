@@ -124,7 +124,13 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image: var(--gradient-mesh);
-    background-attachment: fixed;
+  }
+  
+  /* Fixed background only on non-touch devices (avoids iOS Safari bug) */
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      background-attachment: fixed;
+    }
   }
   
   /* Modern Typography System */
