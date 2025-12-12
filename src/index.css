@@ -137,16 +137,28 @@
   }
   
   h1 {
-    font-size: clamp(1.75rem, 1.75rem + 1.5vi, 2.5rem);
+    font-size: 1.75rem;
     font-weight: 800;
   }
   
   h2 {
-    font-size: clamp(1.5rem, 1.5rem + 1vi, 2rem);
+    font-size: 1.5rem;
   }
   
   h3 {
-    font-size: clamp(1.25rem, 1.25rem + 0.5vi, 1.5rem);
+    font-size: 1.25rem;
+  }
+  
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+    h2 {
+      font-size: 2rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+    }
   }
   
   .font-mono {
