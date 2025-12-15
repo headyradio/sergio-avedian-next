@@ -579,21 +579,26 @@ const BlogPostManager = () => {
                 <Button 
                   type="button"
                   onClick={async () => {
-                    if (editingPost) {
-                      setScheduleDialogPost(editingPost);
-                    } else {
-                      // For new posts, save first then open publish dialog
-                      try {
+                    try {
+                      let savedPost: CMSBlogPost;
+                      
+                      if (editingPost) {
+                        // Save changes first, then open publish dialog
+                        const result = await updateBlogPost.mutateAsync({ id: editingPost.id, ...formData });
+                        savedPost = result as CMSBlogPost;
+                      } else {
+                        // For new posts, create first then open publish dialog
                         const result = await createBlogPost.mutateAsync(formData);
-                        // Refresh and set the newly created post
-                        if (result && result.id) {
-                          const fullPost: CMSBlogPost = result as any;
-                          setScheduleDialogPost(fullPost);
-                        }
-                      } catch (error: any) {
-                        console.error('Create error:', error);
-                        toast.error('Please check all required fields');
+                        savedPost = result as CMSBlogPost;
                       }
+                      
+                      // Set the saved post for the publish dialog
+                      if (savedPost && savedPost.id) {
+                        setScheduleDialogPost(savedPost);
+                      }
+                    } catch (error: any) {
+                      console.error('Save error:', error);
+                      toast.error('Please check all required fields');
                     }
                   }}
                   disabled={createBlogPost.isPending || updateBlogPost.isPending || !formData.title || !formData.slug || !formData.author}
