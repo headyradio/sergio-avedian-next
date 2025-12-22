@@ -742,45 +742,62 @@ const BlogPostManager = () => {
             kit_broadcast_id: scheduleDialogPost.kit_broadcast_id,
           }}
           onPublish={async (data) => {
+            const postId = scheduleDialogPost.id;
+
             try {
               if (data.target === 'web' || data.target === 'both') {
-                const updateData: any = {
+                if (data.webAction === 'schedule' && !data.webScheduleTime) {
+                  throw new Error('Please select a publish date/time');
+                }
+
+                const updateData: Partial<CMSBlogPost> = {
                   published: data.webAction === 'now',
-                  published_at: data.webAction === 'schedule' ? data.webScheduleTime : new Date().toISOString(),
+                  published_at:
+                    data.webAction === 'schedule'
+                      ? data.webScheduleTime
+                      : new Date().toISOString(),
                 };
 
-                const { error } = await supabase
-                  .from('cms_blog_posts')
-                  .update(updateData)
-                  .eq('id', scheduleDialogPost.id);
-
-                if (error) throw error;
+                // Use the mutation (with SELECT) so we can detect RLS/permission failures
+                await updateBlogPost.mutateAsync({ id: postId, ...updateData });
               }
 
               if (data.target === 'newsletter' || data.target === 'both') {
-                const newsletterData = {
-                  post_id: scheduleDialogPost.id,
+                if (data.newsletterAction === 'schedule' && !data.newsletterScheduleTime) {
+                  throw new Error('Please select a newsletter send date/time');
+                }
+
+                const newsletterBody = {
+                  post_id: postId,
                   mode: data.newsletterAction,
-                  scheduled_for: data.newsletterAction === 'schedule' ? data.newsletterScheduleTime : undefined,
+                  // Edge function expects send_at (not scheduled_for)
+                  send_at:
+                    data.newsletterAction === 'schedule'
+                      ? data.newsletterScheduleTime
+                      : data.newsletterAction === 'send_now'
+                        ? new Date().toISOString()
+                        : null,
                 };
 
                 const { error: newsletterError } = await supabase.functions.invoke('send-blog-newsletter', {
-                  body: newsletterData,
+                  body: newsletterBody,
                 });
 
                 if (newsletterError) throw newsletterError;
               }
 
-              // Invalidate queries to refresh the post list
+              // Refresh lists
               await queryClient.invalidateQueries({ queryKey: ['cms-blog-posts'] });
               await queryClient.invalidateQueries({ queryKey: ['newsletter-queue'] });
 
               toast.success(
-                data.target === 'both' 
-                  ? "Post published to web and newsletter queued"
+                data.target === 'both'
+                  ? 'Post published to web and newsletter queued'
                   : data.target === 'web'
-                  ? data.webAction === 'now' ? "Post published" : "Post scheduled"
-                  : "Newsletter queued"
+                    ? data.webAction === 'now'
+                      ? 'Post published'
+                      : 'Post scheduled'
+                    : 'Newsletter queued'
               );
 
               setScheduleDialogPost(null);
@@ -788,7 +805,7 @@ const BlogPostManager = () => {
               setEditingPost(null);
             } catch (error: any) {
               console.error('Publish error:', error);
-              toast.error(`Failed to publish: ${error.message}`);
+              toast.error(`Failed to publish: ${error?.message || 'Unknown error'}`);
             }
           }}
         />
