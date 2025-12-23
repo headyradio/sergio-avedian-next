@@ -73,3 +73,6 @@ verify_jwt = false
 
 [functions.prerender-blog]
 verify_jwt = false
+
+[functions.export-blog-data]
+verify_jwt = false
