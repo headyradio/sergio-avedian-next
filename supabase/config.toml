@@ -76,3 +76,6 @@ verify_jwt = false
 
 [functions.export-blog-data]
 verify_jwt = false
+
+[functions.admin-insert-post]
+verify_jwt = false
