@@ -79,3 +79,9 @@ verify_jwt = false
 
 [functions.admin-insert-post]
 verify_jwt = false
+
+[functions.upload-blog-image]
+verify_jwt = false
+
+[functions.admin-update-post]
+verify_jwt = false
