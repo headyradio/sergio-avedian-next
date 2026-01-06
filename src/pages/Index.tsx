@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import Navigation from "@/components/Navigation";
 import MainHeroSection from "@/components/MainHeroSection";
+import FeaturedArticleBanner from "@/components/FeaturedArticleBanner";
 import GoldSubscriptionSection from "@/components/GoldSubscriptionSection";
 import VideoSection from "@/components/VideoSection";
 import CMSBlogSection from "@/components/CMSBlogSection";
@@ -107,8 +108,9 @@ const Index = () => {
       
       <div className="min-h-screen bg-background">
         <Navigation />
-      <MainHeroSection />
-      <GoldSubscriptionSection />
+        <MainHeroSection />
+        <FeaturedArticleBanner />
+        <GoldSubscriptionSection />
       <CMSBlogSection />
       <VideoSection />
       <Footer />
