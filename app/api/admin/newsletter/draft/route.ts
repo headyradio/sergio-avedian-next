@@ -5,18 +5,24 @@ import { client, urlForImage } from "@/lib/sanity/client";
 // Simple secret verification to prevent unauthorized usage
 const SANITY_WEBHOOK_SECRET = process.env.SANITY_WEBHOOK_SECRET;
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, x-sanity-secret'
+};
+
 export async function POST(request: NextRequest) {
   try {
     // 1. Authenticate Request
     const secret = request.headers.get("x-sanity-secret");
     if (secret !== SANITY_WEBHOOK_SECRET) {
       if (!SANITY_WEBHOOK_SECRET) console.warn("SANITY_WEBHOOK_SECRET is not set");
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401, headers: corsHeaders });
     }
 
     const { docId } = await request.json();
     if (!docId) {
-      return NextResponse.json({ error: "Missing docId" }, { status: 400 });
+      return NextResponse.json({ error: "Missing docId" }, { status: 400, headers: corsHeaders });
     }
 
     // 2. Fetch Article from Sanity
@@ -30,7 +36,7 @@ export async function POST(request: NextRequest) {
     const article = await client.fetch(query, { id: docId });
 
     if (!article) {
-      return NextResponse.json({ error: "Article not found" }, { status: 404 });
+      return NextResponse.json({ error: "Article not found" }, { status: 404, headers: corsHeaders });
     }
 
     // 3. Generate Email Content
@@ -68,11 +74,7 @@ export async function POST(request: NextRequest) {
       broadcastId: broadcast.data?.id,
       message: "Draft created successfully" 
     }, {
-      headers: {
-        'Access-Control-Allow-Origin': '*', // In production, replace with specific Studio URL
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, x-sanity-secret'
-      }
+      headers: corsHeaders
     });
 
   } catch (error) {
@@ -81,11 +83,7 @@ export async function POST(request: NextRequest) {
       { error: "Internal Server Error" }, 
       { 
         status: 500,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, x-sanity-secret'
-        }
+        headers: corsHeaders
       }
     );
   }
@@ -93,10 +91,6 @@ export async function POST(request: NextRequest) {
 
 export async function OPTIONS() {
   return NextResponse.json({}, {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, x-sanity-secret'
-    }
+    headers: corsHeaders
   });
 }
