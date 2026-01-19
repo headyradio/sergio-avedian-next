@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Clock, Calendar, User, Share2, Twitter, Linkedin, Mail } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { client, urlForImage } from "@/lib/sanity/client";
@@ -9,6 +9,7 @@ import { postBySlugQuery } from "@/lib/sanity/queries";
 import Image from "next/image";
 import { format } from "date-fns";
 import PostBody from "@/components/PostBody";
+import SocialShareButtons from "@/components/blog/SocialShareButtons";
 
 interface Props {
   params: { slug: string };
@@ -154,19 +155,9 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4">
               <span className="text-sm font-medium text-text-secondary uppercase tracking-wider hidden md:block">Share</span>
-              <div className="flex gap-2">
-                <button className="p-2 rounded-full hover:bg-muted transition-colors text-text-secondary hover:text-foreground" aria-label="Share on Twitter">
-                  <Twitter className="w-4 h-4" />
-                </button>
-                <button className="p-2 rounded-full hover:bg-muted transition-colors text-text-secondary hover:text-foreground" aria-label="Share on LinkedIn">
-                  <Linkedin className="w-4 h-4" />
-                </button>
-                <button className="p-2 rounded-full hover:bg-muted transition-colors text-text-secondary hover:text-foreground" aria-label="Share via Email">
-                  <Mail className="w-4 h-4" />
-                </button>
-              </div>
+              <SocialShareButtons title={post.title} slug={post.slug.current} />
             </div>
           </div>
         </div>
