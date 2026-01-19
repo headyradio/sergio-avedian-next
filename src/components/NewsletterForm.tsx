@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +23,8 @@ const NewsletterForm = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
-  const { subscribe, isLoading, isSuccess } = useNewsletterSubscription();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { subscribe, isLoading } = useNewsletterSubscription();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,11 +46,15 @@ const NewsletterForm = () => {
       return;
     }
 
-    subscribe({ 
-      email: email.trim(), 
-      firstName: firstName.trim(),
-      lastName: lastName.trim()
-    });
+    const result = await subscribe(email.trim(), `${firstName.trim()} ${lastName.trim()}`);
+    
+    if (result.success) {
+      setIsSuccess(true);
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setConsent(false);
+    }
   };
 
   if (isSuccess) {
@@ -57,12 +64,12 @@ const NewsletterForm = () => {
           <CheckCircle2 className="w-10 h-10 text-success" />
         </div>
         <div className="space-y-3">
-          <h2 className="text-3xl font-bold text-text-primary">You're All Set!</h2>
+          <h2 className="text-3xl font-bold text-text-primary">You&apos;re All Set!</h2>
           <p className="text-lg text-text-secondary">
             Check your email to confirm your subscription
           </p>
           <p className="text-sm text-text-muted">
-            You'll start receiving Sergio's insights and strategies in your inbox soon.
+            You&apos;ll start receiving Sergio&apos;s insights and strategies in your inbox soon.
           </p>
         </div>
       </div>
@@ -121,7 +128,6 @@ const NewsletterForm = () => {
             checked={consent}
             onCheckedChange={(checked) => setConsent(checked as boolean)}
             disabled={isLoading}
-            required
             className="mt-1"
           />
           <Label htmlFor="consent" className="text-sm leading-6 text-text-secondary cursor-pointer">
@@ -174,7 +180,7 @@ const NewsletterForm = () => {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Investment Disclaimer</AlertDialogTitle>
                   <AlertDialogDescription className="text-left">
-                    DISCLAIMER: Investments or strategies mentioned on this channel may not be suitable for you and you should make your own independent decisions. You should strongly consider seeking advice from an investment advisor. Past performance is not indicative of future results. Neither the channel participants nor Sergio Avedian guarantee any specific outcome or profit! You should be aware of the real risk of loss in following any strategy or investment discussed on this channel! Strategies or investments discussed may fluctuate in price or value!
+                    DISCLAIMER: Investments or strategies mentioned may not be suitable for you and you should make your own independent decisions. You should strongly consider seeking advice from an investment advisor. Past performance is not indicative of future results. Neither the channel participants nor Sergio Avedian guarantee any specific outcome or profit!
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

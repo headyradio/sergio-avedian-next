@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,7 +33,7 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
-  const { subscribe, isLoading, isSuccess } = useNewsletterSubscription();
+  const { subscribe, isLoading } = useNewsletterSubscription();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,23 +56,16 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
     }
 
     // Call the subscription function
-    subscribe({ 
-      email: email.trim(), 
-      firstName: firstName.trim(),
-      lastName: lastName.trim()
-    });
-  };
-
-  // Reset form and close modal on successful subscription
-  useEffect(() => {
-    if (isSuccess) {
+    const result = await subscribe(email.trim(), `${firstName.trim()} ${lastName.trim()}`);
+    
+    if (result.success) {
       setFirstName("");
       setLastName("");
       setEmail("");
       setConsent(false);
       onOpenChange(false);
     }
-  }, [isSuccess, onOpenChange]);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

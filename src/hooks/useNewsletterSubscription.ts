@@ -1,77 +1,50 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+"use client";
+
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-interface SubscribeRequest {
-  email: string;
-  firstName?: string;
-  lastName?: string;
-}
-
-interface SubscribeResponse {
-  success: boolean;
-  message: string;
-  subscriber?: any;
-  error?: string;
-  details?: string;
-}
-
-export const useNewsletterSubscription = () => {
+export function useNewsletterSubscription() {
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
 
-  const subscribeMutation = useMutation({
-    mutationFn: async (data: SubscribeRequest): Promise<SubscribeResponse> => {
-      console.log('Calling convertkit-subscribe edge function with:', data);
-      
-      const { data: response, error } = await supabase.functions.invoke(
-        'convertkit-subscribe',
-        {
-          body: {
-            email: data.email,
-            firstName: data.firstName,
-            lastName: data.lastName,
-          },
-        }
-      );
+  const subscribe = async (email: string, firstName?: string) => {
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, first_name: firstName }),
+      });
 
-      if (error) {
-        console.error('Edge function error:', error);
-        throw new Error(error.message || 'Failed to subscribe');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to subscribe");
       }
 
-      console.log('Edge function response:', response);
-      return response;
-    },
-    onSuccess: (data) => {
-      console.log('Subscription successful:', data);
-      
-      if (data.success) {
-        toast({
-          title: "Successfully Subscribed!",
-          description: "Welcome to our newsletter. You'll receive our latest insights and trading psychology tips.",
-        });
-      } else {
-        throw new Error(data.message || 'Subscription failed');
-      }
-    },
-    onError: (error: Error) => {
-      console.error('Subscription error:', error);
+      toast({
+        title: "Successfully subscribed!",
+        description: "You're now on the list for exclusive insights.",
+      });
+
+      return { success: true };
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Please try again";
       
       toast({
-        title: "Subscription Failed", 
-        description: error.message.includes('already subscribed') || error.message.includes('duplicate')
-          ? "You're already subscribed to our newsletter!"
-          : "We couldn't process your subscription. Please try again.",
-        variant: error.message.includes('already subscribed') || error.message.includes('duplicate') ? "default" : "destructive",
+        title: "Subscription failed",
+        description: message,
+        variant: "destructive",
       });
-    },
-  });
 
-  return {
-    subscribe: subscribeMutation.mutate,
-    isLoading: subscribeMutation.isPending,
-    error: subscribeMutation.error,
-    isSuccess: subscribeMutation.isSuccess,
+      return { success: false, error: message };
+    } finally {
+      setIsLoading(false);
+    }
   };
-};
+
+  return { subscribe, isLoading };
+}

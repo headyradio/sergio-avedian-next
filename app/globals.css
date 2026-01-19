@@ -1,0 +1,546 @@
+/* Fonts loaded via index.html for better performance */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Modern Dark Design System - Sleek & Contemporary */
+
+@layer base {
+  :root {
+    /* Modern Dark-First Color Palette */
+    --background: 220 25% 4%;
+    --foreground: 0 0% 97%;
+    --surface: 220 20% 6%;
+    --surface-secondary: 220 15% 8%;
+    --surface-tertiary: 220 12% 10%;
+    
+    /* Enhanced Typography Colors */
+    --text-primary: 0 0% 97%;
+    --text-secondary: 220 8% 75%;
+    --text-muted: 220 8% 55%;
+    --text-inverse: 220 25% 4%;
+    
+    /* Modern Brand Colors */
+    --brand-primary: 195 100% 60%;
+    --brand-secondary: 280 100% 70%;
+    --brand-accent: 25 95% 65%;
+    
+    /* Interactive Elements */
+    --primary: 195 100% 60%;
+    --primary-hover: 195 100% 65%;
+    --primary-foreground: 220 25% 4%;
+    
+    --secondary: 220 15% 12%;
+    --secondary-hover: 220 15% 15%;
+    --secondary-foreground: 0 0% 97%;
+    
+    /* Electric Blue CTA */
+    --cta-primary: 195 100% 60%;
+    --cta-primary-hover: 195 100% 65%;
+    --cta-foreground: 220 25% 4%;
+    
+    /* Glass Morphism Cards */
+    --card: 220 20% 6%;
+    --card-foreground: 0 0% 97%;
+    --card-border: 220 15% 15%;
+    --card-border-hover: 195 50% 25%;
+    
+    /* Floating Navigation */
+    --nav-background: 220 25% 4% / 0.8;
+    --nav-border: 220 15% 15%;
+    --nav-hover: 220 15% 10%;
+    
+    /* Enhanced Semantic Colors */
+    --destructive: 0 85% 65%;
+    --destructive-foreground: 0 0% 97%;
+    --success: 140 70% 60%;
+    --warning: 45 95% 65%;
+    
+    /* System Elements */
+    --border: 220 15% 15%;
+    --input: 220 15% 12%;
+    --ring: 195 100% 60%;
+    --radius: 12px;
+    
+    /* Enhanced Gradients & Effects */
+    --gradient-hero: linear-gradient(135deg, hsl(220 25% 4%) 0%, hsl(220 20% 6%) 50%, hsl(220 15% 8%) 100%);
+    --gradient-mesh: radial-gradient(circle at 25% 25%, hsl(195 100% 60% / 0.1), transparent 50%), 
+                     radial-gradient(circle at 75% 75%, hsl(280 100% 70% / 0.1), transparent 50%);
+    --gradient-card: linear-gradient(145deg, hsl(220 20% 6%), hsl(220 15% 8%));
+    --gradient-glass: linear-gradient(145deg, hsl(220 20% 8% / 0.8), hsl(220 15% 10% / 0.6));
+    --gradient-radial: radial-gradient(circle, var(--color), transparent);
+    
+    /* Enhanced Shadow System */
+    --shadow-subtle: 0 1px 3px hsl(220 25% 4% / 0.3), 0 1px 2px hsl(195 100% 60% / 0.05);
+    --shadow-medium: 0 4px 12px hsl(220 25% 4% / 0.4), 0 2px 6px hsl(195 100% 60% / 0.1);
+    --shadow-large: 0 16px 32px hsl(220 25% 4% / 0.5), 0 4px 12px hsl(195 100% 60% / 0.15);
+    --shadow-glow: 0 0 24px hsl(195 100% 60% / 0.3);
+    --shadow-glow-warm: 0 0 24px hsl(25 95% 65% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(195 100% 60% / 0.2);
+    
+    /* Micro-interactions */
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Spacing System */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-2xl: 48px;
+    --space-3xl: 64px;
+    
+    /* Sidebar Variables */
+    --sidebar-background: 220 20% 6%;
+    --sidebar-foreground: 0 0% 97%;
+    --sidebar-primary: 195 100% 60%;
+    --sidebar-primary-foreground: 220 25% 4%;
+    --sidebar-accent: 220 15% 12%;
+    --sidebar-accent-foreground: 0 0% 97%;
+    --sidebar-border: 220 15% 15%;
+    --sidebar-ring: 195 100% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-variant-ligatures: common-ligatures;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: var(--gradient-mesh);
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Fixed background only on non-touch devices (avoids iOS Safari bug) */
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      background-attachment: fixed;
+    }
+  }
+  
+  /* iOS Safari stability fixes */
+  @supports (-webkit-touch-callout: none) {
+    .card-premium,
+    .glass-card,
+    article {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+  }
+  
+  /* Touch device specific styles */
+  @media (hover: none) and (pointer: coarse) {
+    .editorial-container {
+      touch-action: pan-y;
+    }
+  }
+  
+  /* Modern Typography System */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: hsl(var(--text-primary));
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+  
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+    h2 {
+      font-size: 2rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Consolas', monospace;
+    font-feature-settings: "liga" 0;
+  }
+  
+  /* Enhanced Focus Styles */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2);
+  }
+  
+  /* Selection Styles */
+  ::selection {
+    background-color: hsl(var(--primary) / 0.3);
+    color: hsl(var(--text-primary));
+  }
+  
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--surface));
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+}
+
+@layer components {
+  /* Modern Container System */
+  .editorial-container {
+    @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
+  }
+  
+  /* Glass Morphism Cards */
+  .glass-card {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--card-border));
+    transition: var(--transition-smooth);
+  }
+  
+  .glass-card:hover {
+    border-color: hsl(var(--card-border-hover));
+    box-shadow: var(--shadow-medium), var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+  
+  /* Modern Card Hover Effects */
+  .card-modern {
+    @apply transition-all duration-300 ease-out;
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--card-border));
+  }
+  
+  .card-modern:hover {
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: var(--shadow-large);
+    transform: translateY(-4px) scale(1.02);
+  }
+  
+  /* Premium Card Effects */
+  .card-premium {
+    @apply transition-all duration-300 ease-out;
+    background: var(--gradient-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--primary) / 0.2);
+    box-shadow: var(--shadow-elegant);
+  }
+  
+  .card-premium:hover {
+    border-color: hsl(var(--primary) / 0.4);
+    box-shadow: var(--shadow-large), var(--shadow-glow);
+    transform: translateY(-6px);
+  }
+  
+  /* Interactive Section Animations */
+  .section-animate {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+  }
+  
+  .section-animate.in-view {
+    @apply opacity-100 translate-y-0;
+  }
+  
+  /* Floating Elements */
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  /* Parallax Background Effects */
+  .parallax-bg {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  /* Enhanced CTA Styles */
+  .cta-electric {
+    background: linear-gradient(135deg, hsl(var(--cta-primary)), hsl(var(--primary)));
+    box-shadow: var(--shadow-glow);
+    transition: var(--transition-base);
+  }
+  
+  .cta-electric:hover {
+    box-shadow: var(--shadow-glow), var(--shadow-large);
+    transform: translateY(-2px);
+  }
+  
+  /* Floating Navigation */
+  .nav-floating {
+    background: hsl(var(--nav-background));
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--nav-border));
+  }
+  
+  /* Text Gradient Effects */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--brand-secondary)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Animated Underlines */
+  .link-animated {
+    position: relative;
+    transition: var(--transition-base);
+  }
+  
+  .link-animated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--brand-secondary)));
+    transition: width var(--transition-base);
+  }
+  
+  .link-animated:hover::after {
+    width: 100%;
+  }
+  
+  /* Modern Prose Styling */
+  .prose-modern {
+    line-height: 1.7;
+    color: hsl(var(--text-secondary));
+  }
+  
+  .prose-modern h1, .prose-modern h2, .prose-modern h3 {
+    color: hsl(var(--text-primary));
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .prose-modern p {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Loading States */
+  .loading-shimmer {
+    background: linear-gradient(90deg, 
+      hsl(var(--surface)) 0%, 
+      hsl(var(--surface-secondary)) 50%, 
+      hsl(var(--surface)) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  /* Glow Effects */
+  .glow-primary {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--brand-accent) / 0.3);
+  }
+  
+  /* Scrollbar Hide */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Mobile Touch Target Utilities */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  .touch-target-lg {
+    @apply min-h-[48px] min-w-[48px];
+  }
+  
+  /* Mobile-Friendly Button Utilities */
+  .mobile-cta {
+    @apply w-full sm:w-auto min-h-[48px] px-6 sm:px-8 text-base sm:text-lg;
+  }
+  
+  /* Responsive Spacing Utilities */
+  .mobile-padding {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  
+  .mobile-gap {
+    @apply gap-3 sm:gap-4 lg:gap-6;
+  }
+
+  /* Notion-Style Editor Canvas */
+  .notion-editor {
+    font-size: 18px;
+    line-height: 1.7;
+    color: hsl(var(--foreground));
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .notion-editor h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 40px 0 8px;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor h2 {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 32px 0 8px;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor h3 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 24px 0 8px;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor p {
+    margin: 8px 0;
+    color: hsl(var(--foreground));
+  }
+
+  .notion-editor ul,
+  .notion-editor ol {
+    margin: 12px 0;
+    padding-left: 28px;
+  }
+
+  .notion-editor li {
+    margin: 6px 0;
+  }
+
+  .notion-editor blockquote {
+    border-left: 3px solid hsl(var(--primary));
+    padding-left: 20px;
+    margin: 20px 0;
+    font-style: italic;
+    color: hsl(var(--text-secondary));
+  }
+
+  .notion-editor pre {
+    background: hsl(var(--surface));
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .notion-editor code {
+    background: hsl(var(--surface));
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  .notion-editor pre code {
+    background: transparent;
+    padding: 0;
+  }
+
+  /* Placeholder styling */
+  .notion-editor .is-empty::before,
+  .notion-editor .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--text-muted));
+    float: left;
+    height: 0;
+    pointer-events: none;
+    font-size: 18px;
+  }
+
+  .notion-editor .ProseMirror-focused .is-empty::before {
+    color: hsl(var(--text-muted));
+  }
+
+  /* Custom cursor styling for better visibility */
+  .notion-editor .ProseMirror {
+    caret-color: hsl(var(--primary));
+  }
+
+  /* Smooth scrolling for the editor */
+  .notion-editor {
+    scroll-behavior: smooth;
+  }
+
+  /* Tippy.js slash command menu styling */
+  .tippy-box[data-theme~='light-border'] {
+    background-color: hsl(var(--popover));
+    color: hsl(var(--popover-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .tippy-box[data-theme~='light-border'] .tippy-content {
+    padding: 0;
+  }
+}

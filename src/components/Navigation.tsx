@@ -1,31 +1,34 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import SubscribeDropdown from "./SubscribeDropdown";
 import EmailSubscriptionModal from "./EmailSubscriptionModal";
 import SearchModal from "./SearchModal";
-import logoImage from "@/assets/sergio-avedian-logo.png";
+import Image from "next/image";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
   // Function to get the correct Videos href based on current location
   const getVideosHref = () => {
-    return location.pathname === "/" ? "#videos" : "/#videos";
+    return pathname === "/" ? "#videos" : "/#videos";
   };
 
   const navItems = [
-    { label: "Home", href: "/", isExternal: true },
-    { label: "Videos", href: getVideosHref(), isExternal: false, isVideos: true },
-    { label: "Blog", href: "/blog", isExternal: true },
-    { label: "Coaching", href: "/coaching", isExternal: true },
-    { label: "Newsletter", href: "#newsletter", isExternal: false, isModal: true },
-    { label: "About", href: "/about-sergio", isExternal: true },
+    { label: "Home", href: "/", isLink: true },
+    { label: "Videos", href: getVideosHref(), isLink: false, isVideos: true },
+    { label: "Blog", href: "/blog", isLink: true },
+    { label: "Coaching", href: "/coaching", isLink: true },
+    { label: "Newsletter", href: "#newsletter", isLink: false, isModal: true },
+    { label: "About", href: "/about-sergio", isLink: true },
   ];
 
   return (
@@ -33,21 +36,24 @@ const Navigation = () => {
       <div className="editorial-container">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img 
-              src={logoImage} 
+          <Link href="/" className="flex items-center">
+            <Image 
+              src="/sergio-avedian-logo.png"
               alt="Sergio Avedian" 
+              width={200}
+              height={80}
               className="h-20 w-auto py-2 transition-opacity duration-200 hover:opacity-80"
+              priority
             />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => 
-              item.isExternal ? (
+              item.isLink ? (
                 <Link
                   key={item.label}
-                  to={item.href}
+                  href={item.href}
                   className="text-text-secondary hover:text-text-primary transition-colors duration-300 font-medium link-animated"
                 >
                   {item.label}
@@ -120,10 +126,10 @@ const Navigation = () => {
         >
         <div className="space-y-3 pt-4 border-t border-nav-border">
             {navItems.map((item) => 
-              item.isExternal ? (
+              item.isLink ? (
                 <Link
                   key={item.label}
-                  to={item.href}
+                  href={item.href}
                   className="block text-text-secondary hover:text-text-primary transition-colors duration-200 font-medium py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >

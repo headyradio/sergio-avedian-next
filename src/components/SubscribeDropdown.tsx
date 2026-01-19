@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,9 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Mail } from "lucide-react";
+import { ChevronDown, Mail, Youtube } from "lucide-react";
 import EmailSubscriptionModal from "./EmailSubscriptionModal";
-import youtubeIcon from "@/assets/youtube-icon.png";
 
 interface SubscribeDropdownProps {
   variant?: "cta" | "default";
@@ -44,12 +45,8 @@ const SubscribeDropdown = ({ variant = "cta", size = "sm", className }: Subscrib
             onClick={handleYouTubeSubscribe}
             className="flex items-center gap-3 p-3 cursor-pointer hover:bg-surface transition-colors"
           >
-            <div className="flex items-center justify-center w-8 h-8">
-              <img 
-                src={youtubeIcon} 
-                alt="YouTube" 
-                className="w-8 h-8 object-contain"
-              />
+            <div className="flex items-center justify-center w-8 h-8 bg-red-600 rounded-full">
+              <Youtube className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col">
               <span className="font-medium text-text-primary">YouTube Channel</span>

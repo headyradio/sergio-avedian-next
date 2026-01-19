@@ -1,0 +1,84 @@
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
+import { urlForImage } from "@/lib/sanity/client";
+import { format } from "date-fns";
+
+interface Post {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  excerpt?: string;
+  mainImage?: any;
+  publishedAt: string;
+  author?: { name: string; image?: any };
+  categories?: Array<{ title: string; slug: { current: string } }>;
+}
+
+interface BlogListProps {
+  initialPosts: Post[];
+}
+
+export default function BlogList({ initialPosts }: BlogListProps) {
+  if (!initialPosts || initialPosts.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-text-secondary text-lg">
+          No posts yet. Check back soon!
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {initialPosts.map((post) => (
+        <article key={post._id} className="card-premium rounded-xl overflow-hidden group">
+          <Link href={`/blog/${post.slug.current}`}>
+            {post.mainImage && (
+              <div className="relative aspect-video overflow-hidden">
+                <Image
+                  src={urlForImage(post.mainImage).width(600).height(340).url()}
+                  alt={post.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            )}
+            <div className="p-6">
+              {post.categories && post.categories.length > 0 && (
+                <div className="flex gap-2 mb-3">
+                  {post.categories.slice(0, 2).map((cat) => (
+                    <span
+                      key={cat.slug.current}
+                      className="text-xs font-medium px-2 py-1 rounded-full bg-primary/10 text-primary"
+                    >
+                      {cat.title}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <h2 className="text-xl font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors">
+                {post.title}
+              </h2>
+              {post.excerpt && (
+                <p className="text-text-secondary text-sm line-clamp-2 mb-4">
+                  {post.excerpt}
+                </p>
+              )}
+              <div className="flex items-center justify-between text-sm text-text-muted">
+                {post.author && <span>{post.author.name}</span>}
+                {post.publishedAt && (
+                  <time dateTime={post.publishedAt}>
+                    {format(new Date(post.publishedAt), "MMM d, yyyy")}
+                  </time>
+                )}
+              </div>
+            </div>
+          </Link>
+        </article>
+      ))}
+    </div>
+  );
+}

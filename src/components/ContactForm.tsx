@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send, CheckCircle } from "lucide-react";
-import { useEmailJSContactForm } from "@/hooks/useEmailJSContactForm";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
@@ -17,7 +18,6 @@ const contactSchema = z.object({
   phone: z.string().optional(),
   subject: z.string().min(5, "Subject must be at least 5 characters").max(200, "Subject must be less than 200 characters"),
   message: z.string().min(20, "Message must be at least 20 characters").max(2000, "Message must be less than 2000 characters"),
-  honeypot: z.string().optional(), // Anti-spam field
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -29,7 +29,7 @@ interface ContactFormProps {
 
 const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
   const { toast } = useToast();
-  const { submitContact, isSubmitting } = useEmailJSContactForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm<ContactFormData>({
@@ -40,27 +40,25 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
       phone: "",
       subject: defaultSubject || "",
       message: "",
-      honeypot: "", // Hidden anti-spam field
     },
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    // Anti-spam check
-    if (data.honeypot) {
-      console.log("Spam detected");
-      return;
-    }
-
+    setIsSubmitting(true);
+    
     try {
-      // Create properly typed submission data
-      const submissionData = {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        subject: data.subject,
-        message: data.message,
-      };
-      await submitContact(submissionData);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send message");
+      }
+
       setIsSuccess(true);
       form.reset();
       onSuccess?.();
@@ -74,6 +72,8 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
         description: "Please try again later or contact us directly.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -111,21 +111,6 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Anti-spam honeypot field (hidden) */}
-            <FormField
-              control={form.control}
-              name="honeypot"
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  style={{ display: "none" }}
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
-              )}
-            />
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -213,7 +198,7 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
                   <FormControl>
                     <Textarea 
                       {...field} 
-                      placeholder="Please share your trading experience, goals, and any specific questions you have for Sergio..."
+                      placeholder="Please share your trading experience, goals, and any specific questions..."
                       className="bg-surface border-border focus:border-primary transition-colors min-h-[120px] resize-none"
                       rows={6}
                     />
@@ -227,7 +212,7 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-medium py-3 h-auto transition-all duration-200 transform hover:scale-105"
+                className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-medium py-3 h-auto"
               >
                 {isSubmitting ? (
                   <>

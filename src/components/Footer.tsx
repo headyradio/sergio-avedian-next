@@ -1,14 +1,14 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Youtube, Linkedin, Mail } from "lucide-react";
 import SubscribeDropdown from "@/components/SubscribeDropdown";
-import sergioAvedianLogo from "@/assets/sergio-avedian-logo-2.png";
-import xLogo from "@/assets/x-logo.png";
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import EmailSubscriptionModal from "@/components/EmailSubscriptionModal";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
   const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
 
   const footerSections = [
@@ -19,8 +19,6 @@ const Footer = () => {
         { label: "Blog Articles", href: "/blog", type: "internal" },
         { label: "Trading Education", href: "/coaching", type: "internal" },
         { label: "About Sergio", href: "/about-sergio", type: "internal" },
-        { label: "Investment Strategies", href: "/blog?category=investment", type: "internal" },
-        { label: "Options Trading", href: "/blog?category=options", type: "internal" },
       ]
     },
     {
@@ -35,21 +33,19 @@ const Footer = () => {
     }
   ];
 
-  const handleLinkClick = (link: any, e: React.MouseEvent) => {
+  const handleLinkClick = (link: { type: string; href: string }, e: React.MouseEvent) => {
     if (link.type === "modal") {
       e.preventDefault();
       setIsNewsletterModalOpen(true);
     } else if (link.type === "anchor") {
       e.preventDefault();
-      // Check if we're already on the home page
-      if (window.location.pathname === '/') {
-        const elementId = link.href.substring(2); // Remove /#
+      if (typeof window !== 'undefined' && window.location.pathname === '/') {
+        const elementId = link.href.substring(2);
         const element = document.getElementById(elementId);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       } else {
-        // Navigate to home page with hash, let the home page handle scrolling
         window.location.href = link.href;
       }
     }
@@ -58,14 +54,15 @@ const Footer = () => {
   return (
     <footer className="bg-surface border-t border-card-border">
       <div className="editorial-container py-16 lg:py-20">
-        {/* Main Footer Content */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="mb-4">
-              <img 
-                src={sergioAvedianLogo} 
+              <Image 
+                src="/sergio-avedian-logo.png"
                 alt="Sergio Avedian" 
+                width={150}
+                height={48}
                 className="h-12 w-auto object-contain"
               />
             </div>
@@ -85,19 +82,11 @@ const Footer = () => {
                 variant="ghost" 
                 size="icon" 
                 className="text-text-muted hover:text-primary"
-                onClick={() => window.open("https://x.com/sergioaved", "_blank", "noopener noreferrer")}
-              >
-                <img src={xLogo} alt="X (Twitter)" className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="text-text-muted hover:text-primary"
                 onClick={() => window.open("https://www.linkedin.com/in/sergio-avedian-9939291/", "_blank", "noopener noreferrer")}
               >
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Link to="/contact">
+              <Link href="/contact">
                 <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
                   <Mail className="h-5 w-5" />
                 </Button>
@@ -116,7 +105,7 @@ const Footer = () => {
                   <li key={link.label}>
                     {link.type === "internal" ? (
                       <Link
-                        to={link.href}
+                        href={link.href}
                         className="text-text-secondary hover:text-text-primary transition-colors duration-200"
                       >
                         {link.label}
@@ -146,7 +135,6 @@ const Footer = () => {
           ))}
         </div>
 
-
         {/* Bottom Copyright Section */}
         <div className="border-t border-border/40 mt-12 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
@@ -154,13 +142,13 @@ const Footer = () => {
               <span>© 2025 Sergio Avedian. All rights reserved.</span>
             </div>
             <div className="flex items-center gap-6">
-              <Link to="/privacy-policy" className="hover:text-primary transition-colors">
+              <Link href="/privacy-policy" className="hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms-of-service" className="hover:text-primary transition-colors">
+              <Link href="/terms-of-service" className="hover:text-primary transition-colors">
                 Terms of Service
               </Link>
-              <Link to="/cookie-policy" className="hover:text-primary transition-colors">
+              <Link href="/cookie-policy" className="hover:text-primary transition-colors">
                 Cookie Policy
               </Link>
             </div>

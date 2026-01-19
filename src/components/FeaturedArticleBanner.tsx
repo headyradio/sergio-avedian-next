@@ -1,5 +1,5 @@
 import { ExternalLink, Sparkles } from "lucide-react";
-import businessInsiderLogo from "@/assets/business-insider-logo.png";
+import Image from "next/image";
 
 const FeaturedArticleBanner = () => {
   return (
@@ -19,10 +19,12 @@ const FeaturedArticleBanner = () => {
               <Sparkles className="h-3 w-3" />
               Featured
             </span>
-            <img
-              src={businessInsiderLogo}
+            <Image
+              src="/business-insider-logo.png"
               alt="Business Insider"
-              className="h-5 md:h-6 object-contain brightness-0 invert opacity-80"
+              width={100}
+              height={24}
+              className="h-5 md:h-6 w-auto object-contain brightness-0 invert opacity-80"
             />
           </div>
           

@@ -1,0 +1,42 @@
+{
+  "node": {
+    "12615369de2b376d533dd9162e7c452e7eadb49c": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/blog/page": "action-browser",
+        "app/blog/[slug]/page": "action-browser"
+      }
+    },
+    "b8360a5079df540b5d640d8c01f26f6c9c76d273": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/blog/page": "action-browser",
+        "app/blog/[slug]/page": "action-browser"
+      }
+    },
+    "44aab41918eb8e540c28044d26bf54eb39119b99": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Favedian-newsroom-nextjs%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/blog/page": "action-browser",
+        "app/blog/[slug]/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "Vi3j0xduUVNZ+GWVVEyBMMMwtt3bTFFoQYnGk0emzyI="
+}

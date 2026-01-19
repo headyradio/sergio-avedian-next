@@ -1,28 +1,29 @@
+"use client";
+
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const useScrollToAnchor = () => {
-  const location = useLocation();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (location.hash) {
+    // Get the hash from the URL
+    const hash = typeof window !== 'undefined' ? window.location.hash : '';
+    
+    if (hash) {
       // Remove the # from the hash
-      const elementId = location.hash.substring(1);
+      const elementId = hash.slice(1);
+      const element = document.getElementById(elementId);
       
-      // Small delay to ensure the element is rendered
-      const timeoutId = setTimeout(() => {
-        const element = document.getElementById(elementId);
-        if (element) {
-          element.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      }, 100);
-
-      return () => clearTimeout(timeoutId);
+      if (element) {
+        // Small delay to ensure the DOM is ready
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
     }
-  }, [location.hash, location.pathname]);
+  }, [pathname, searchParams]);
 };
 
 export default useScrollToAnchor;
