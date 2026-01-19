@@ -39,6 +39,11 @@ export const metadata: Metadata = {
     images: ["https://sergioavedian.com/sergio-hero-main.png"],
   },
   metadataBase: new URL("https://sergioavedian.com"),
+  icons: {
+    icon: "/sergio-avedian-logo.svg",
+    shortcut: "/sergio-avedian-logo.svg",
+    apple: "/sergio-avedian-logo.svg",
+  },
 };
 
 export default function RootLayout({
