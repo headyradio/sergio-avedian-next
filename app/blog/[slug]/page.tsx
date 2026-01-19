@@ -5,7 +5,7 @@ import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { client, urlForImage } from "@/lib/sanity/client";
-import { postBySlugQuery } from "@/lib/sanity/queries";
+import { postBySlugQuery, postSlugsQuery } from "@/lib/sanity/queries";
 import Image from "next/image";
 import { format } from "date-fns";
 import PostBody from "@/components/PostBody";
@@ -15,12 +15,17 @@ interface Props {
   params: { slug: string };
 }
 
-export const revalidate = 60;
+export const revalidate = 60; // ISR: Revalidate every 60 seconds
+
+// Generate static params for all blog posts (SSG)
+export async function generateStaticParams() {
+  const slugs = await client.fetch(postSlugsQuery);
+  return slugs.map((slug: string) => ({ slug }));
+}
 
 async function getPost(slug: string) {
   try {
     const post = await client.fetch(postBySlugQuery, { slug });
-    console.log(`DEBUG: mainImage for ${slug}:`, JSON.stringify(post?.mainImage, null, 2));
     return post;
   } catch (error) {
     console.error("Error fetching post:", error);
@@ -37,18 +42,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const ogImage = post.mainImage
+    ? urlForImage(post.mainImage).width(1200).height(630).url()
+    : "https://sergioavedian.com/og-image.png"; // Fallback image
+
   return {
-    title: post.title,
-    description: post.excerpt || `Read ${post.title} by Sergio Avedian`,
+    title: `${post.title} | Sergio Avedian`,
+    description: post.excerpt || `Read ${post.title} on Sergio Avedian's Blog`,
     openGraph: {
       title: post.title,
-      description: post.excerpt,
+      description: post.excerpt || `Read ${post.title} on Sergio Avedian's Blog`,
       type: "article",
       publishedTime: post.publishedAt,
-      authors: post.author ? [post.author.name] : undefined,
-      images: post.mainImage
-        ? [{ url: urlForImage(post.mainImage).width(1200).height(630).url() }]
-        : undefined,
+      url: `https://sergioavedian.com/blog/${post.slug.current}`,
+      siteName: "Sergio Avedian",
+      authors: post.author ? [post.author.name] : ["Sergio Avedian"],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage],
     },
   };
 }

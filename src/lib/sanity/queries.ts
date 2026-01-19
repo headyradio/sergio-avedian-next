@@ -97,3 +97,8 @@ export const latestPostsQuery = groq`
     "categories": categories[]->{title, slug}
   }
 `;
+
+// Get all post slugs for static paths
+export const postSlugsQuery = groq`
+  *[_type == "post" && defined(slug.current)][].slug.current
+`;
