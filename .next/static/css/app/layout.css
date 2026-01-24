@@ -2035,6 +2035,9 @@ h3 {
 .mb-5 {
   margin-bottom: 1.25rem;
 }
+.mt-6 {
+  margin-top: 1.5rem;
+}
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -2358,6 +2361,9 @@ h3 {
 }
 .max-w-5xl {
   max-width: 64rem;
+}
+.max-w-xl {
+  max-width: 36rem;
 }
 .flex-1 {
   flex: 1 1 0%;
