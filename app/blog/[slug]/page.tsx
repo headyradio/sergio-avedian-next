@@ -5,6 +5,7 @@ import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import SuggestedArticles from "@/components/SuggestedArticles";
+import FinalCTASection from "@/components/FinalCTASection";
 import { client, urlForImage } from "@/lib/sanity/client";
 import { postBySlugQuery, postSlugsQuery, suggestedPostsQuery } from "@/lib/sanity/queries";
 import Image from "next/image";
@@ -193,6 +194,9 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Suggested Articles */}
         <SuggestedArticles posts={suggestedPosts} />
+
+        {/* CTA Section */}
+        <FinalCTASection />
       </main>
       
       <Footer />
