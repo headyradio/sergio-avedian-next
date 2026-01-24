@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Calendar, Clock, ArrowRight, Award, Phone } from "lucide-react";
 import Link from "next/link";
 import { urlForImage } from "@/lib/sanity/client";
@@ -32,22 +31,24 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
   }
 
   return (
-    <section id="blog" className="py-24 lg:py-32 bg-surface">
+    <section id="blog" className="py-24 lg:py-32 bg-background">
       <div className="editorial-container">
-        <div className="text-center space-y-6 mb-16">
-          <h2 className="text-4xl lg:text-5xl font-black tracking-tight text-text-primary">
-            Sergio&apos;s Blog
+        {/* Section Header */}
+        <div className="mb-16">
+          <h2 className="text-4xl lg:text-5xl font-bold text-text-primary mb-4">
+            Latest Articles
           </h2>
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto prose-modern">
-            Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.
+          <p className="text-lg text-text-secondary max-w-2xl">
+            Practical insights and strategies for building wealth without a financial advisor.
           </p>
         </div>
 
-        {/* Blog Posts Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {/* Blog Posts Grid - Dark cards like slide deck */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {posts.map((post) => (
             <Link key={post._id} href={`/blog/${post.slug.current}`}>
-              <Card className="overflow-hidden card-modern group cursor-pointer h-full flex flex-col">
+              <article className="bg-surface rounded-lg overflow-hidden group cursor-pointer h-full flex flex-col hover:shadow-large transition-all duration-300 hover:-translate-y-1">
+                {/* Image */}
                 <div className="relative aspect-video w-full overflow-hidden">
                   {post.mainImage ? (
                     <Image
@@ -57,36 +58,41 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-brand-secondary/20 flex items-center justify-center">
+                    <div className="w-full h-full bg-surface-secondary flex items-center justify-center">
                       <span className="text-text-muted">No Image</span>
                     </div>
                   )}
                 </div>
                 
-                <div className="p-6 flex flex-col flex-grow space-y-4">
-                  <div className="flex items-center justify-between">
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-grow">
+                  {/* Category & Read Time */}
+                  <div className="flex items-center justify-between mb-3">
                     {post.categories && post.categories.length > 0 && (
-                      <span className="px-3 py-1 bg-surface rounded-full text-sm font-medium text-brand-primary">
+                      <span className="text-xs font-medium text-primary uppercase tracking-wider">
                         {post.categories[0].title}
                       </span>
                     )}
-                    <div className="flex items-center gap-1 text-sm text-text-muted">
-                      <Clock className="h-4 w-4" />
-                      5 min read
+                    <div className="flex items-center gap-1 text-xs text-text-muted">
+                      <Clock className="h-3 w-3" />
+                      5 min
                     </div>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors line-clamp-2">
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold text-text-primary group-hover:text-primary transition-colors line-clamp-2 mb-3">
                     {post.title}
                   </h3>
                   
-                  <p className="text-text-secondary text-sm leading-relaxed line-clamp-3 flex-grow">
+                  {/* Excerpt */}
+                  <p className="text-text-secondary text-sm leading-relaxed line-clamp-2 flex-grow">
                     {post.excerpt}
                   </p>
                   
-                  <div className="flex items-center justify-between pt-4 border-t border-border mt-auto">
-                    <div className="flex items-center gap-1 text-sm text-text-muted">
-                      <Calendar className="h-4 w-4" />
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-4 mt-auto border-t border-border/50">
+                    <div className="flex items-center gap-1 text-xs text-text-muted">
+                      <Calendar className="h-3 w-3" />
                       {new Date(post.publishedAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -94,49 +100,47 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
                       })}
                     </div>
                     
-                    <Button variant="ghost" size="sm" className="group/btn p-0 hover:bg-transparent hover:text-primary">
-                      Read More
-                      <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                    </Button>
+                    <span className="text-primary text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Read <ArrowRight className="h-3 w-3" />
+                    </span>
                   </div>
                 </div>
-              </Card>
+              </article>
             </Link>
           ))}
         </div>
 
-        {/* Read More Articles CTA */}
+        {/* View All Button */}
         <div className="text-center">
           <Link href="/blog">
-            <Button variant="outline" size="lg" className="group">
-              Read More Articles
+            <Button variant="outline" size="lg" className="group border-2 border-border hover:border-primary">
+              View All Articles
               <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
         </div>
 
-        {/* Coaching CTA */}
-        <div className="mt-20 text-center glass-card p-12 rounded-3xl">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Award className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-foreground">35+ Years Wall Street Experience</span>
-          </div>
-          
-          <h3 className="text-3xl font-black text-text-primary mb-4">
-            Need More Guidance?
-          </h3>
-          <p className="text-xl text-text-secondary mb-8 max-w-2xl mx-auto">
-            Reach out to discuss your trading goals and see how personalized coaching 
-            can accelerate your path to consistent profits.
-          </p>
-          
-          <div className="flex justify-center">
+        {/* Coaching CTA - Light gray panel like slide deck */}
+        <div className="mt-20 bg-surface-tertiary rounded-lg p-10 lg:p-12">
+          <div className="max-w-3xl mx-auto text-center">
+            <span className="text-xs font-medium text-text-inverse/70 uppercase tracking-wider mb-4 block">
+              Personalized Guidance
+            </span>
+            
+            <h3 className="text-3xl font-bold text-text-inverse mb-4">
+              Need More Guidance?
+            </h3>
+            <p className="text-lg text-text-inverse/80 mb-8">
+              Reach out to discuss your trading goals and see how personalized coaching 
+              can accelerate your path to consistent profits.
+            </p>
+            
             <Link href="/coaching">
               <Button 
                 size="lg" 
-                className="cta-electric text-lg px-8 py-4 font-semibold"
+                className="bg-primary hover:bg-primary-hover text-primary-foreground font-semibold px-8"
               >
-                <Phone className="w-5 h-5 mr-2" />
+                <Phone className="w-4 h-4 mr-2" />
                 Contact Me to Learn More
               </Button>
             </Link>

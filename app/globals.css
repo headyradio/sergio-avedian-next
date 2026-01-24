@@ -8,101 +8,79 @@
 
 @layer base {
   :root {
-    /* Modern Dark-First Color Palette */
-    --background: 220 25% 4%;
-    --foreground: 0 0% 97%;
-    --surface: 220 20% 6%;
-    --surface-secondary: 220 15% 8%;
-    --surface-tertiary: 220 12% 10%;
+    /* Deep Charcoal + Electric Blue - Refined Dark Theme */
+    --background: 220 15% 8%;          /* #101418 Near-black charcoal */
+    --foreground: 0 0% 98%;            /* Off-white */
     
-    /* Enhanced Typography Colors */
-    --text-primary: 0 0% 97%;
-    --text-secondary: 220 8% 75%;
-    --text-muted: 220 8% 55%;
-    --text-inverse: 220 25% 4%;
+    --surface: 220 12% 12%;            /* #181C22 Dark card bg */
+    --surface-secondary: 220 10% 15%;  /* Slightly lighter */
+    --surface-tertiary: 220 8% 85%;    /* Light gray panels */
     
-    /* Modern Brand Colors */
-    --brand-primary: 195 100% 60%;
-    --brand-secondary: 280 100% 70%;
-    --brand-accent: 25 95% 65%;
+    /* Typography */
+    --text-primary: 0 0% 98%;          /* Near-white */
+    --text-secondary: 220 5% 75%;      /* Soft gray */
+    --text-muted: 220 5% 50%;          /* Dimmed */
+    --text-inverse: 220 15% 8%;        /* Dark text on light */
     
-    /* Interactive Elements */
-    --primary: 195 100% 60%;
-    --primary-hover: 195 100% 65%;
-    --primary-foreground: 220 25% 4%;
+    /* Brand Colors - Electric Blue Accent */
+    --brand-primary: 195 100% 50%;     /* #00BFFF Electric Blue */
+    --brand-secondary: 220 100% 65%;   /* Deeper blue */
+    --brand-accent: 195 100% 60%;      /* Lighter cyan-blue */
     
-    --secondary: 220 15% 12%;
-    --secondary-hover: 220 15% 15%;
-    --secondary-foreground: 0 0% 97%;
+    /* Interactive - Blue */
+    --primary: 195 100% 50%;           /* Electric Blue */
+    --primary-hover: 195 100% 60%;
+    --primary-foreground: 220 15% 8%;  /* Dark text on blue */
     
-    /* Electric Blue CTA */
-    --cta-primary: 195 100% 60%;
-    --cta-primary-hover: 195 100% 65%;
-    --cta-foreground: 220 25% 4%;
+    --secondary: 220 12% 15%;
+    --secondary-hover: 220 12% 20%;
+    --secondary-foreground: 0 0% 98%;
     
-    /* Glass Morphism Cards */
-    --card: 220 20% 6%;
-    --card-foreground: 0 0% 97%;
-    --card-border: 220 15% 15%;
-    --card-border-hover: 195 50% 25%;
+    /* CTA - Blue */
+    --cta-primary: 195 100% 50%;
+    --cta-primary-hover: 195 100% 60%;
+    --cta-foreground: 220 15% 8%;
     
-    /* Floating Navigation */
-    --nav-background: 220 25% 4% / 0.8;
-    --nav-border: 220 15% 15%;
-    --nav-hover: 220 15% 10%;
+    /* Cards */
+    --card: 220 12% 12%;
+    --card-foreground: 0 0% 98%;
+    --card-border: 220 10% 20%;
+    --card-border-hover: 195 50% 40%;
     
-    /* Enhanced Semantic Colors */
-    --destructive: 0 85% 65%;
-    --destructive-foreground: 0 0% 97%;
-    --success: 140 70% 60%;
-    --warning: 45 95% 65%;
+    /* Navigation */
+    --nav-background: 220 15% 8% / 0.95;
+    --nav-border: 220 10% 18%;
+    --nav-hover: 220 12% 15%;
     
-    /* System Elements */
-    --border: 220 15% 15%;
-    --input: 220 15% 12%;
-    --ring: 195 100% 60%;
-    --radius: 12px;
+    /* Semantic */
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 150 60% 45%;
+    --warning: 40 95% 55%;
     
-    /* Enhanced Gradients & Effects */
-    --gradient-hero: linear-gradient(135deg, hsl(220 25% 4%) 0%, hsl(220 20% 6%) 50%, hsl(220 15% 8%) 100%);
-    --gradient-mesh: radial-gradient(circle at 25% 25%, hsl(195 100% 60% / 0.1), transparent 50%), 
-                     radial-gradient(circle at 75% 75%, hsl(280 100% 70% / 0.1), transparent 50%);
-    --gradient-card: linear-gradient(145deg, hsl(220 20% 6%), hsl(220 15% 8%));
-    --gradient-glass: linear-gradient(145deg, hsl(220 20% 8% / 0.8), hsl(220 15% 10% / 0.6));
-    --gradient-radial: radial-gradient(circle, var(--color), transparent);
+    /* System */
+    --border: 220 10% 18%;
+    --input: 220 12% 14%;
+    --ring: 195 100% 50%;
+    --radius: 10px;
     
-    /* Enhanced Shadow System */
-    --shadow-subtle: 0 1px 3px hsl(220 25% 4% / 0.3), 0 1px 2px hsl(195 100% 60% / 0.05);
-    --shadow-medium: 0 4px 12px hsl(220 25% 4% / 0.4), 0 2px 6px hsl(195 100% 60% / 0.1);
-    --shadow-large: 0 16px 32px hsl(220 25% 4% / 0.5), 0 4px 12px hsl(195 100% 60% / 0.15);
-    --shadow-glow: 0 0 24px hsl(195 100% 60% / 0.3);
-    --shadow-glow-warm: 0 0 24px hsl(25 95% 65% / 0.3);
-    --shadow-elegant: 0 10px 30px -10px hsl(195 100% 60% / 0.2);
+    /* Gradients */
+    --gradient-hero: linear-gradient(180deg, hsl(220 15% 8%) 0%, hsl(220 12% 6%) 100%);
+    --gradient-mesh: radial-gradient(ellipse at 25% 0%, hsl(195 100% 50% / 0.08), transparent 50%),
+                     radial-gradient(ellipse at 75% 100%, hsl(220 100% 65% / 0.05), transparent 50%);
+    --gradient-card: linear-gradient(145deg, hsl(220 12% 12%), hsl(220 12% 10%));
     
-    /* Micro-interactions */
-    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Shadows - Blue tinted */
+    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.4);
+    --shadow-medium: 0 4px 16px rgba(0,0,0,0.5);
+    --shadow-large: 0 12px 32px rgba(0,0,0,0.6);
+    --shadow-glow: 0 0 25px hsl(195 100% 50% / 0.25);
+    --shadow-elegant: 0 15px 50px -12px rgba(0,0,0,0.7);
     
-    /* Spacing System */
-    --space-xs: 4px;
-    --space-sm: 8px;
-    --space-md: 16px;
-    --space-lg: 24px;
-    --space-xl: 32px;
-    --space-2xl: 48px;
-    --space-3xl: 64px;
-    
-    /* Sidebar Variables */
-    --sidebar-background: 220 20% 6%;
-    --sidebar-foreground: 0 0% 97%;
-    --sidebar-primary: 195 100% 60%;
-    --sidebar-primary-foreground: 220 25% 4%;
-    --sidebar-accent: 220 15% 12%;
-    --sidebar-accent-foreground: 0 0% 97%;
-    --sidebar-border: 220 15% 15%;
-    --sidebar-ring: 195 100% 60%;
+    /* Transitions */
+    --transition-fast: all 0.15s ease-out;
+    --transition-base: all 0.25s ease-out;
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 }
 
@@ -160,37 +138,38 @@
     }
   }
   
-  /* Modern Typography System */
+  /* Modern Typography System - Poppins Headings */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
+    font-family: var(--font-poppins), 'Poppins', sans-serif;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     color: hsl(var(--text-primary));
   }
   
   h1 {
-    font-size: 1.75rem;
-    font-weight: 800;
+    font-size: 2.25rem;
+    font-weight: 700;
   }
   
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
+    font-weight: 600;
   }
   
   h3 {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
   
   @media (min-width: 768px) {
     h1 {
-      font-size: 2.5rem;
+      font-size: 3.5rem;
     }
     h2 {
-      font-size: 2rem;
+      font-size: 2.5rem;
     }
     h3 {
-      font-size: 1.5rem;
+      font-size: 1.75rem;
     }
   }
   

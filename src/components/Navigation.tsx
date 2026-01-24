@@ -32,9 +32,9 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 nav-floating">
+    <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/30">
       <div className="editorial-container">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image 
@@ -96,7 +96,7 @@ const Navigation = () => {
             >
               <Search className="h-5 w-5" />
             </Button>
-            <SubscribeDropdown variant="cta" size="sm" className="cta-electric" />
+            <SubscribeDropdown variant="cta" size="sm" className="bg-primary hover:bg-primary-hover text-primary-foreground font-medium rounded-md" />
           </div>
 
           {/* Mobile Menu Button */}
