@@ -118,12 +118,13 @@ const Navigation = () => {
         {/* Mobile Menu */}
         <div
           className={cn(
-            "md:hidden transition-all duration-300 ease-in-out",
+            "md:hidden transition-all duration-300 ease-in-out bg-background border-b border-border/30 absolute left-0 right-0 top-full shadow-xl",
             isMenuOpen
-              ? "max-h-64 opacity-100 pb-4"
+              ? "max-h-[85vh] opacity-100 pb-4 overflow-y-auto"
               : "max-h-0 opacity-0 overflow-hidden"
           )}
         >
+          <div className="container mx-auto px-4">
         <div className="space-y-3 pt-4 border-t border-nav-border">
             {navItems.map((item) => 
               item.isLink ? (
@@ -179,6 +180,7 @@ const Navigation = () => {
               </Button>
               <SubscribeDropdown variant="cta" size="sm" className="flex-1" />
             </div>
+          </div>
           </div>
         </div>
       </div>

@@ -34,7 +34,7 @@ const components = {
 
 export default function PostBody({ content }: { content: any }) {
   return (
-    <div className="max-w-3xl mx-auto prose-modern">
+    <div className="max-w-3xl mx-auto prose-modern px-4 md:px-0">
       <PortableText value={content} components={components} />
     </div>
   );
