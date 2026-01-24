@@ -1952,6 +1952,10 @@ h3 {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 .my-8 {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -2054,6 +2058,9 @@ h3 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+.\!block {
+  display: block !important;
 }
 .block {
   display: block;
@@ -2335,6 +2342,9 @@ h3 {
 }
 .min-w-5 {
   min-width: 1.25rem;
+}
+.min-w-\[120px\] {
+  min-width: 120px;
 }
 .min-w-\[12rem\] {
   min-width: 12rem;
@@ -2669,6 +2679,11 @@ h3 {
 }
 .overflow-x-hidden {
   overflow-x: hidden;
+}
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .whitespace-nowrap {
   white-space: nowrap;

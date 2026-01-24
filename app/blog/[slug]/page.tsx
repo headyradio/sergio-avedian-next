@@ -13,6 +13,8 @@ import { format } from "date-fns";
 import PostBody from "@/components/PostBody";
 import SocialShareButtons from "@/components/blog/SocialShareButtons";
 import TableOfContents from "@/components/TableOfContents";
+import ArticleAudioPlayer from "@/components/ArticleAudioPlayer";
+import { portableTextToPlainText } from "@/lib/utils";
 
 interface Props {
   params: { slug: string };
@@ -218,6 +220,13 @@ export default async function BlogPostPage({ params }: Props) {
                   <SocialShareButtons title={post.title} slug={post.slug.current} />
                 </div>
               </div>
+
+               {/* Audio Player */}
+               <ArticleAudioPlayer 
+                  slug={post.slug.current}
+                  title={post.title}
+                  plainText={`${post.title}. By ${post.author?.name || 'Sergio Avedian'}. ${portableTextToPlainText(post.body)}`}
+               />
 
                {/* Mobile TOC */}
                 <div className="lg:hidden mb-8 border border-border/40 rounded-lg p-4 bg-surface/50">
