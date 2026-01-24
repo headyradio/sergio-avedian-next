@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -59,7 +54,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
+      <head>
+        {/* Adobe Fonts - Adriane Text */}
+        <link rel="stylesheet" href="https://use.typekit.net/kbh0ngu.css" />
+      </head>
+      <body className={`${poppins.variable} antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>
