@@ -88,11 +88,16 @@ const Footer = () => {
               >
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Link href="/contact" aria-label="Contact Sergio Avedian">
-                <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-text-muted hover:text-primary"
+                asChild
+              >
+                <Link href="/contact" aria-label="Contact Sergio Avedian">
                   <Mail className="h-5 w-5" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </div>
 
