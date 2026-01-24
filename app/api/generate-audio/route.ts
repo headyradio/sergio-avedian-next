@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { put } from '@vercel/blob';
+import { put, list } from '@vercel/blob';
 
 // Voice ID: Using a standard professional voice ("Adam") as placeholder.
 // Replace with Sergio's custom voice clone ID if available.
@@ -21,6 +21,29 @@ export async function POST(request: NextRequest) {
         { error: 'Server configuration error: Missing API Key' },
         { status: 500 }
       );
+    }
+
+    // 1. Check Cache (Vercel Blob)
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      try {
+        console.log(`Checking cache for slug: ${slug}`);
+        // List blobs to find if one exists with this slug
+        const filter = `audio/${slug}.mp3`;
+        const { blobs } = await list({
+          prefix: filter,
+          limit: 1,
+        });
+
+        const cachedBlob = blobs.find(b => b.pathname === filter);
+
+        if (cachedBlob) {
+           console.log(`Cache HIT for slug: ${slug} -> ${cachedBlob.url}`);
+           return NextResponse.json({ audioUrl: cachedBlob.url, cached: true });
+        }
+        console.log(`Cache MISS for slug: ${slug}`);
+      } catch (e) {
+        console.warn("Failed to check cache:", e);
+      }
     }
 
     console.log(`Generating audio for slug: ${slug}`);
@@ -64,6 +87,7 @@ export async function POST(request: NextRequest) {
         const { url } = await put(`audio/${slug}.mp3`, audioBuffer, {
           access: 'public',
           contentType: 'audio/mpeg',
+          addRandomSuffix: false // IMPORTANT: Ensure determinism for simple path checking
         });
         console.log(`Audio cached to Blob: ${url}`);
         return NextResponse.json({ audioUrl: url, cached: true });
