@@ -9,7 +9,7 @@ export const postsQuery = groq`
     excerpt,
     "mainImage": coverImage,
     publishedAt,
-    "author": author->{name, image},
+    "author": author->{name, image, "slug": slug.current},
     "categories": categories[]->{title, slug}
   }
 `;
@@ -23,7 +23,7 @@ export const paginatedPostsQuery = groq`
     excerpt,
     "mainImage": coverImage,
     publishedAt,
-    "author": author->{name, image},
+    "author": author->{name, image, "slug": slug.current},
     "categories": categories[]->{title, slug}
   }
 `;
@@ -43,7 +43,7 @@ export const postBySlugQuery = groq`
     "body": content,
     "mainImage": coverImage,
     publishedAt,
-    "author": author->{name, image, bio},
+    "author": author->{name, image, bio, "slug": slug.current},
     "categories": categories[]->{title, slug}
   }
 `;
@@ -67,7 +67,7 @@ export const postsByCategoryQuery = groq`
     excerpt,
     "mainImage": coverImage,
     publishedAt,
-    "author": author->{name, image},
+    "author": author->{name, image, "slug": slug.current},
     "categories": categories[]->{title, slug}
   }
 `;
@@ -81,7 +81,7 @@ export const featuredPostsQuery = groq`
     excerpt,
     "mainImage": coverImage,
     publishedAt,
-    "author": author->{name, image}
+    "author": author->{name, image, "slug": slug.current}
   }
 `;
 // Get latest posts (for homepage fallback)
@@ -93,7 +93,7 @@ export const latestPostsQuery = groq`
     excerpt,
     "mainImage": coverImage,
     publishedAt,
-    "author": author->{name, image},
+    "author": author->{name, image, "slug": slug.current},
     "categories": categories[]->{title, slug}
   }
 `;
@@ -112,6 +112,31 @@ export const suggestedPostsQuery = groq`
     excerpt,
     "mainImage": coverImage,
     publishedAt,
+    "categories": categories[]->{title, slug}
+  }
+`;
+
+// Get author by slug
+export const authorBySlugQuery = groq`
+  *[_type == "author" && slug.current == $slug][0] {
+    _id,
+    name,
+    "slug": slug.current,
+    image,
+    bio
+  }
+`;
+
+// Get posts by author
+export const postsByAuthorQuery = groq`
+  *[_type == "post" && author->slug.current == $slug && !(_id in path("drafts.**"))] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    excerpt,
+    "mainImage": coverImage,
+    publishedAt,
+    "author": author->{name, image, "slug": slug.current},
     "categories": categories[]->{title, slug}
   }
 `;

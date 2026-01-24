@@ -12,7 +12,7 @@ interface Post {
   excerpt?: string;
   mainImage?: any;
   publishedAt: string;
-  author?: { name: string; image?: any };
+  author?: { name: string; image?: any; slug?: string };
   categories?: Array<{ title: string; slug: { current: string } }>;
 }
 
@@ -68,7 +68,25 @@ export default function BlogList({ initialPosts }: BlogListProps) {
                 </p>
               )}
               <div className="flex items-center justify-between text-sm text-text-muted">
-                {post.author && <span>{post.author.name}</span>}
+                {post.author && (
+                  <Link href={`/author/${post.author.slug}`} className="flex items-center gap-2 hover:text-primary transition-colors z-10 relative">
+                    {post.author.image ? (
+                      <div className="relative w-6 h-6 rounded-full overflow-hidden border border-border">
+                        <Image
+                          src={urlForImage(post.author.image).width(64).height(64).url()}
+                          alt={post.author.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-surface-secondary flex items-center justify-center text-xs font-bold text-text-muted">
+                        {post.author.name.charAt(0)}
+                      </div>
+                    )}
+                    <span>{post.author.name}</span>
+                  </Link>
+                )}
                 {post.publishedAt && (
                   <time dateTime={post.publishedAt}>
                     {format(new Date(post.publishedAt), "MMM d, yyyy")}

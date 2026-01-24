@@ -1,11 +1,17 @@
 "use client";
 
+import { slugify } from "@/lib/utils";
 import { PortableText } from '@portabletext/react';
+import { Gallery } from "./Gallery";
 
 const components = {
   block: {
     h1: ({children}: any) => <h1 className="text-4xl font-bold my-4 text-text-primary">{children}</h1>,
-    h2: ({children}: any) => <h2 className="text-2xl font-bold my-4 text-text-primary">{children}</h2>,
+    h2: ({children}: any) => {
+      const text = children?.toString() || "";
+      const id = slugify(text);
+      return <h2 id={id} className="text-2xl font-bold my-4 text-text-primary scroll-mt-24">{children}</h2>
+    },
     h3: ({children}: any) => <h3 className="text-xl font-bold my-3 text-text-primary">{children}</h3>,
     h4: ({children}: any) => <h4 className="text-lg font-bold my-2 text-text-primary">{children}</h4>,
     normal: ({children}: any) => <p className="mb-4 text-text-secondary leading-relaxed">{children}</p>,
@@ -29,6 +35,9 @@ const components = {
         </a>
       );
     },
+  },
+  types: {
+    gallery: Gallery,
   },
 };
 

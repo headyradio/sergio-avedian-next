@@ -1,7 +1,7 @@
 {
   "/page": "app/page.js",
   "/blog/[slug]/page": "app/blog/[slug]/page.js",
-  "/about-sergio/page": "app/about-sergio/page.js",
-  "/cookie-policy/page": "app/cookie-policy/page.js",
-  "/privacy-policy/page": "app/privacy-policy/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/blog/page": "app/blog/page.js",
+  "/author/[slug]/page": "app/author/[slug]/page.js"
 }

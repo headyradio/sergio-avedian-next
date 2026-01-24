@@ -12,6 +12,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import PostBody from "@/components/PostBody";
 import SocialShareButtons from "@/components/blog/SocialShareButtons";
+import TableOfContents from "@/components/TableOfContents";
 
 interface Props {
   params: { slug: string };
@@ -104,6 +105,15 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   const readingTime = estimateReadingTime(post.body);
+  
+  // Extract Headings for TOC
+  const headings = post.body
+    ?.filter((block: any) => block._type === 'block' && block.style === 'h2')
+    .map((block: any) => ({
+      text: block.children?.[0]?.text || "",
+      id: block.children?.[0]?.text ? block.children[0].text.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-') : ""
+    }))
+    .filter((h: any) => h.text && h.id) || [];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -158,42 +168,76 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Post Meta Data Bar */}
-        <div className="container mx-auto px-4 mb-16">
-          <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between py-6 border-b border-border/40 gap-6">
-            <div className="flex flex-wrap items-center gap-6 text-sm text-text-secondary">
-              {post.author && (
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-foreground">{post.author.name}</span>
-                </div>
-              )}
-              {post.publishedAt && (
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-primary" />
-                  <time dateTime={post.publishedAt}>
-                    {format(new Date(post.publishedAt), "MMMM d, yyyy")}
-                  </time>
-                </div>
-              )}
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-primary" />
-                <span>{readingTime} min read</span>
-              </div>
-            </div>
+        <div className="editorial-container px-4">
+          <div className="flex flex-col lg:flex-row gap-8 relative items-start">
+             
+             {/* Left Column: TOC (Desktop) */}
+            <aside className="hidden lg:block w-64 xl:w-72 flex-shrink-0 sticky top-24">
+                <TableOfContents headings={headings} />
+            </aside>
 
-              <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-text-secondary uppercase tracking-wider hidden md:block">Share</span>
-              <SocialShareButtons title={post.title} slug={post.slug.current} />
-            </div>
+            {/* Main Content Column */}
+            <article className="flex-1 w-full min-w-0 max-w-3xl mx-auto lg:mx-0">
+              
+              {/* Post Meta Data Bar */}
+              <div className="flex flex-col md:flex-row items-center justify-between py-6 border-b border-border/40 gap-6 mb-8">
+                <div className="flex flex-wrap items-center gap-6 text-sm text-text-secondary">
+                  {post.author && (
+                    <Link href={`/author/${post.author.slug || '#'}`} className="flex items-center gap-2 hover:text-primary transition-colors">
+                      {post.author.image ? (
+                        <div className="relative w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+                           <Image 
+                              src={urlForImage(post.author.image).width(64).height(64).url()} 
+                              alt={post.author.name}
+                              fill
+                              className="object-cover" 
+                           />
+                        </div>
+                      ) : (
+                         <User className="w-4 h-4 text-primary" />
+                      )}
+                      <span className="font-medium">{post.author.name}</span>
+                    </Link>
+                  )}
+                  {post.publishedAt && (
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-primary" />
+                      <time dateTime={post.publishedAt}>
+                        {format(new Date(post.publishedAt), "MMMM d, yyyy")}
+                      </time>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-primary" />
+                    <span>{readingTime} min read</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <span className="text-sm font-medium text-text-secondary uppercase tracking-wider hidden md:block">Share</span>
+                  <SocialShareButtons title={post.title} slug={post.slug.current} />
+                </div>
+              </div>
+
+               {/* Mobile TOC */}
+                <div className="lg:hidden mb-8 border border-border/40 rounded-lg p-4 bg-surface/50">
+                    <TableOfContents headings={headings} />
+                </div>
+
+              {/* Post Content */}
+              {post.body && <PostBody content={post.body} />}
+            </article>
+
+            {/* Empty Right Column for Balance or potential Ads/Related later */}
+             <div className="hidden xl:block w-16 flex-shrink-0"></div>
+
           </div>
         </div>
-
-        {/* Post Content */}
-        {post.body && <PostBody content={post.body} />}
-
+        
         {/* Suggested Articles */}
-        <SuggestedArticles posts={suggestedPosts} />
+        <div className="mt-20">
+             <SuggestedArticles posts={suggestedPosts} />
+        </div>
 
         {/* CTA Section */}
         <FinalCTASection />

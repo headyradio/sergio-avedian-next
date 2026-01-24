@@ -14,6 +14,7 @@ interface BlogPost {
   author: {
     name: string;
     image: any;
+    slug?: string;
   };
   categories?: Array<{
     title: string;
@@ -103,6 +104,14 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
                         day: 'numeric',
                         year: 'numeric'
                       })}
+                       {post.author && post.author.name && (
+                        <>
+                          <span className="mx-1">•</span>
+                          <Link href={`/author/${post.author.slug}`} className="hover:text-primary transition-colors">
+                            {post.author.name}
+                          </Link>
+                        </>
+                      )}
                     </div>
                     
                     <span className="text-primary text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
