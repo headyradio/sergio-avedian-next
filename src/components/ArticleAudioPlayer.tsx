@@ -134,23 +134,74 @@ export default function ArticleAudioPlayer({ slug, title, plainText }: ArticleAu
              </Button>
         </div>
 
-        <audio
-            ref={audioRef}
-            src={audioUrl || undefined}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            onEnded={() => setIsPlaying(false)}
-            onError={() => setIsLoading(false)}
-            // Once URL is set from the fetch, this attempts to play
-             // But we need to be careful about not autoplaying on mount if url persistence was added later
-             // For now, simple logic:
-             onLoadedMetadata={() => {
-                 if(isLoading) {
-                      setIsLoading(false); 
-                      audioRef.current?.play().catch(() => {});
-                 }
-             }}
-        />
+      <audio
+        ref={audioRef}
+        src={audioUrl || undefined}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onEnded={() => setIsPlaying(false)}
+        onError={() => setIsLoading(false)}
+        onLoadedMetadata={() => {
+          if (isLoading) {
+            setIsLoading(false);
+            audioRef.current?.play().catch(() => {});
+          }
+        }}
+      />
+
+      {/* Floating Player - Visible when audio is ready */}
+      {audioUrl && (
+        <div className={cn(
+          "fixed bottom-6 right-6 z-50 flex items-center gap-3 p-3 rounded-full bg-surface border border-border/50 shadow-elegant backdrop-blur-md transition-all duration-500 ease-out transform",
+          isPlaying ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0 pointer-events-none group-hover:translate-y-0 group-hover:opacity-100"
+        )}>
+          {/* We actually want it persistent if audio is loaded, maybe just check audioUrl. 
+              Let's make it always visible if audioUrl exists, effectively acting as "Now Playing" 
+          */}
+        </div>
+      )}
+      
+      {/* Revised Floating Player Logic */}
+      {audioUrl && (
+         <div className="fixed bottom-6 right-6 z-50 animate-in slide-in-from-bottom-10 fade-in duration-300">
+            <div className="flex items-center gap-3 p-2 pr-4 pl-2 rounded-full bg-background/80 backdrop-blur-lg border border-primary/20 shadow-lg shadow-primary/5">
+                <div className="relative">
+                   <div className={cn("absolute inset-0 rounded-full bg-primary/20 animate-ping", isPlaying ? "opacity-75" : "opacity-0")} />
+                   <Button
+                      onClick={handleTogglePlay}
+                      size="icon"
+                      className="rounded-full h-10 w-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm relative z-10"
+                   >
+                      {isPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current pl-0.5" />}
+                   </Button>
+                </div>
+                
+                <div className="flex flex-col mr-2">
+                    <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">Now Playing</span>
+                    <span className="text-xs font-medium text-foreground max-w-[120px] truncate leading-tight">{title}</span>
+                </div>
+
+                <Button
+                   variant="ghost"
+                   size="icon"
+                   className="h-6 w-6 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/50 -mr-1"
+                   onClick={() => {
+                       if (audioRef.current) {
+                           audioRef.current.pause();
+                           audioRef.current.currentTime = 0;
+                           setIsPlaying(false);
+                           // Effectively closes/hides if we clear audioUrl, but maybe user just wants to close the floater?
+                           // For now, let's just stop. To close fully we need to clear audioUrl.
+                           setAudioUrl(null);
+                       }
+                   }}
+                >
+                    <span className="sr-only">Close</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </Button>
+            </div>
+         </div>
+      )}
     </div>
   );
 }
