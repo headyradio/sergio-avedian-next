@@ -23,12 +23,12 @@ export default function TermsOfServicePage() {
               <p className="text-gray-300 leading-relaxed">These Terms of Service ("Terms") govern your access to and use of the SergioAvedian.com website (the "Site") and all related services, content, courses, coaching, newsletters, videos, and materials (collectively, the "Services") operated by Sergio Avedian ("we," "us," or "our"). By accessing or using the Services, you agree to be bound by these Terms. If you do not agree, do not use the Services.</p>
 
               {/* Important Disclaimer Box */}
-              <div className="bg-amber-900/30 border-2 border-amber-500/50 rounded-lg p-6 my-8">
-                <h3 className="text-lg font-bold text-amber-300 mb-3 flex items-center gap-2">
+              <div className="bg-amber-950/40 border border-amber-500/30 rounded-lg p-6 my-8">
+                <h3 className="text-lg font-bold text-amber-500 mb-3 flex items-center gap-2">
                   <span className="text-xl">⚠️</span> IMPORTANT INVESTMENT DISCLAIMER
                 </h3>
-                <p className="text-amber-100 text-base leading-relaxed">
-                  <strong>Investments or strategies mentioned on this website, YouTube channel, or any of our content may not be suitable for you and you should make your own independent decisions. You should strongly consider seeking advice from a qualified investment advisor before making any investment decisions. Past performance is not indicative of future results.</strong>
+                <p className="text-white text-base leading-relaxed font-medium">
+                  Investments or strategies mentioned on this website, YouTube channel, or any of our content may not be suitable for you and you should make your own independent decisions. You should strongly consider seeking advice from a qualified investment advisor before making any investment decisions. Past performance is not indicative of future results.
                 </p>
               </div>
 

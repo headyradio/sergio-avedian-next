@@ -2888,6 +2888,9 @@ h3 {
 .bg-amber-900\/30 {
   background-color: rgb(120 53 15 / 0.3);
 }
+.bg-amber-950\/40 {
+  background-color: rgb(69 26 3 / 0.4);
+}
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
