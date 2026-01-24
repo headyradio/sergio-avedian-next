@@ -10,9 +10,10 @@ export interface Video {
   title: string;
   thumbnail: string;
   publishedAt: string;
-  duration?: string; // ISO 8601 duration
+  duration?: string; // Formatted duration
   viewCount?: string;
   isLive?: boolean;
+  isShort?: boolean;
 }
 
 // Basic fetch wrapper with error handling
@@ -24,7 +25,7 @@ async function fetchYouTube(endpoint: string, params: Record<string, string>) {
   Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value));
 
   try {
-    const res = await fetch(url.toString(), { next: { revalidate: 3600 } }); // Cache for 1 hour
+    const res = await fetch(url.toString(), { next: { revalidate: 3600 } });
     if (!res.ok) {
       console.error(`YouTube API Error: ${res.status} ${res.statusText}`);
       return null;
@@ -67,13 +68,23 @@ function getDurationSeconds(isoDuration: string | undefined): number {
   return (hours * 3600) + (minutes * 60) + seconds;
 }
 
+// Check if video title/description indicates a live stream
+function isLiveStream(title: string): boolean {
+  const lowerTitle = title.toLowerCase();
+  return lowerTitle.includes('live stream') || 
+         lowerTitle.includes('livestream') ||
+         lowerTitle.includes('🔴') ||
+         lowerTitle.includes('live:') ||
+         lowerTitle.includes('- live');
+}
 
-async function enhanceVideosWithDetails(videos: Video[]): Promise<Video[]> {
+// Enhance videos with duration and filter data
+async function enhanceVideosWithDetails(videos: Video[]): Promise<(Video & { _isoDuration?: string, _liveBroadcast?: string })[]> {
   if (videos.length === 0) return [];
   
   const ids = videos.map(v => v.id).join(',');
   const data = await fetchYouTube('videos', {
-    part: 'contentDetails,statistics',
+    part: 'contentDetails,statistics,liveStreamingDetails,snippet',
     id: ids,
   });
 
@@ -83,44 +94,79 @@ async function enhanceVideosWithDetails(videos: Video[]): Promise<Video[]> {
 
   return videos.map(video => {
     const details: any = detailsMap.get(video.id);
+    const liveBroadcast = details?.snippet?.liveBroadcastContent || 'none';
+    const hasLiveDetails = !!details?.liveStreamingDetails;
+    
     return {
       ...video,
-      duration: details ? formatDuration(details.contentDetails.duration) : undefined,
-      // Store ISO duration internally if needed for filtering, but here we just format
+      duration: details ? formatDuration(details.contentDetails?.duration) : undefined,
       _isoDuration: details?.contentDetails?.duration, 
-      viewCount: details ? details.statistics.viewCount : undefined,
-    } as Video & { _isoDuration?: string };
+      _liveBroadcast: liveBroadcast,
+      viewCount: details ? details.statistics?.viewCount : undefined,
+      // Mark as live if it has live streaming details or is currently live
+      isLive: hasLiveDetails || liveBroadcast === 'live',
+    };
   });
 }
 
-// 1. Get Shorts (10 items)
+// 1. Get Shorts (true YouTube Shorts - vertical, < 60s)
 export async function getShorts(limit = 10): Promise<Video[]> {
   if (!CHANNEL_ID) return [];
 
-  const data = await fetchYouTube('search', {
+  // Fetch from uploads playlist to get all videos
+  const uploadsPlaylistId = CHANNEL_ID.replace('UC', 'UU');
+  
+  const data = await fetchYouTube('playlistItems', {
     part: 'snippet',
-    channelId: CHANNEL_ID,
-    videoDuration: 'short', // < 4 mins, but usually < 1 min for shorts
-    type: 'video',
-    maxResults: limit.toString(),
-    order: 'date'
+    playlistId: uploadsPlaylistId,
+    maxResults: '50', // Fetch more to filter
   });
 
   if (!data?.items) return [];
 
-  const videos = data.items.map((item: any) => ({
-    id: item.id.videoId,
+  let videos = data.items.map((item: any) => ({
+    id: item.snippet.resourceId.videoId,
     title: item.snippet.title,
     thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url,
     publishedAt: item.snippet.publishedAt,
     isLive: false,
   }));
 
-  return enhanceVideosWithDetails(videos);
+  // Enhance with duration details
+  const enhanced = await enhanceVideosWithDetails(videos);
+
+  // Filter to only include TRUE shorts:
+  // - Duration <= 60 seconds
+  // - NOT a live stream (by title or live details)
+  const shorts = enhanced.filter((v: any) => {
+    const seconds = getDurationSeconds(v._isoDuration);
+    const title = v.title.toLowerCase();
+    
+    // Must be short (60 seconds or less)
+    if (seconds > 60 || seconds === 0) return false;
+    
+    // Exclude live streams
+    if (v.isLive || v._liveBroadcast !== 'none' || isLiveStream(v.title)) return false;
+    
+    // Exclude if title contains "live" indicators
+    if (title.includes('live')) return false;
+    
+    return true;
+  });
+
+  return shorts.slice(0, limit).map(v => ({
+    id: v.id,
+    title: v.title,
+    thumbnail: v.thumbnail,
+    publishedAt: v.publishedAt,
+    duration: v.duration,
+    viewCount: v.viewCount,
+    isLive: false,
+    isShort: true,
+  }));
 }
 
-// 2. Get Latest Long Form (Not Shorts, Not Live)
-// We fetch more than we need because we have to filter clientside after fetching details
+// 2. Get Latest Long Form Videos (NOT shorts, NOT live streams)
 export async function getLatestLongFormVideos(limit = 6): Promise<Video[]> {
   if (!CHANNEL_ID) return [];
 
@@ -130,7 +176,7 @@ export async function getLatestLongFormVideos(limit = 6): Promise<Video[]> {
   const data = await fetchYouTube('playlistItems', {
     part: 'snippet',
     playlistId: uploadsPlaylistId,
-    maxResults: '20', // Fetch extra to allow for filtering
+    maxResults: '30', // Fetch extra to allow for filtering
   });
 
   if (!data?.items) return [];
@@ -146,29 +192,37 @@ export async function getLatestLongFormVideos(limit = 6): Promise<Video[]> {
   // Enhance with duration details
   const enhanced = await enhanceVideosWithDetails(initialVideos);
 
-  // Filter out shorts (< 60s) AND videos with "Shorts" in title ideally, but duration is best
-  // Also filter based on liveBroadcastContent if available in snippet (but we didn't fetch full snippet)
-  // Actually videos endpoint 'contentDetails' doesn't show live status well for VODs
-  // We'll rely on duration > 60s.
-  // We can also assume vertical vs horizontal but API doesn't give aspect ratio easily.
-  
-  return enhanced.filter((v: any) => {
+  // Filter out:
+  // 1. Shorts (< 60s)
+  // 2. Live streams (by title or live details)
+  const longFormVideos = enhanced.filter((v: any) => {
     const seconds = getDurationSeconds(v._isoDuration);
-    // Filter out shorts (less than 60s)
-    if (seconds <= 65) return false; 
+    const title = v.title.toLowerCase();
     
-    // Filter out potentially "Power Hour" or "Trading with Sergio" if we want purely "Other" latest?
-    // User said "Latest Videos, which are videos that aren't shorts and aren't live videos"
-    // "Live videos" usually means the *category* of Live replays.
-    // Live replays are usually long. 
-    // Maybe filter by title exclusion? Or just exclude Shorts. 
-    // Let's just exclude Shorts for now as that's the main distinction "not shorts". 
-    // Usually Live VODs *are* latest videos.
-    // If user wants to exclude "Live Stream Archives" from "Latest", that's harder without a specific playlist.
-    // But user said "exclude shorts and live videos". 
-    // We can filter titles containing "Live" or "Stream"?
-    return true; 
-  }).slice(0, limit);
+    // Exclude shorts (60 seconds or less)
+    if (seconds <= 60) return false;
+    
+    // Exclude live streams
+    if (v.isLive || v._liveBroadcast !== 'none') return false;
+    if (isLiveStream(v.title)) return false;
+    
+    // Exclude titles containing common live stream indicators
+    if (title.includes('live stream') || title.includes('livestream')) return false;
+    if (title.includes('🔴')) return false;
+    
+    return true;
+  });
+
+  return longFormVideos.slice(0, limit).map(v => ({
+    id: v.id,
+    title: v.title,
+    thumbnail: v.thumbnail,
+    publishedAt: v.publishedAt,
+    duration: v.duration,
+    viewCount: v.viewCount,
+    isLive: false,
+    isShort: false,
+  }));
 }
 
 // 3. Search for Specific Shows (Power Hour, Trading with Sergio)
@@ -191,7 +245,7 @@ export async function getShowVideos(query: string, limit = 4): Promise<Video[]> 
     title: item.snippet.title,
     thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url,
     publishedAt: item.snippet.publishedAt,
-    isLive: false, // These are VODs usually
+    isLive: false,
   }));
 
   return enhanceVideosWithDetails(videos);
