@@ -83,6 +83,7 @@ const MainHeroSection = () => {
                 height={620}
                 className="relative rounded-lg shadow-elegant"
                 priority
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           </div>
