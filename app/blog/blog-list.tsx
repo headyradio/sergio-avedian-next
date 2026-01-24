@@ -34,8 +34,11 @@ export default function BlogList({ initialPosts }: BlogListProps) {
   return (
     <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
       {initialPosts.map((post) => (
-        <article key={post._id} className="card-premium rounded-xl overflow-hidden group">
-          <Link href={`/blog/${post.slug.current}`}>
+        <article key={post._id} className="card-premium rounded-xl overflow-hidden group relative">
+          <Link href={`/blog/${post.slug.current}`} className="absolute inset-0 z-0">
+             <span className="sr-only">Read {post.title}</span>
+          </Link>
+
             {post.mainImage && (
               <div className="relative aspect-video overflow-hidden">
                 <Image
@@ -46,9 +49,9 @@ export default function BlogList({ initialPosts }: BlogListProps) {
                 />
               </div>
             )}
-            <div className="p-6">
+            <div className="p-6 pointer-events-none">
               {post.categories && post.categories.length > 0 && (
-                <div className="flex gap-2 mb-3">
+                <div className="flex gap-2 mb-3 relative z-10 pointer-events-auto">
                   {post.categories.slice(0, 2).map((cat) => (
                     <span
                       key={cat.slug.current}
@@ -69,7 +72,7 @@ export default function BlogList({ initialPosts }: BlogListProps) {
               )}
               <div className="flex items-center justify-between text-sm text-text-muted">
                 {post.author && (
-                  <Link href={`/author/${post.author.slug}`} className="flex items-center gap-2 hover:text-primary transition-colors z-10 relative">
+                  <Link href={`/author/${post.author.slug}`} className="flex items-center gap-2 hover:text-primary transition-colors z-10 relative pointer-events-auto">
                     {post.author.image ? (
                       <div className="relative w-6 h-6 rounded-full overflow-hidden border border-border">
                         <Image
@@ -94,7 +97,6 @@ export default function BlogList({ initialPosts }: BlogListProps) {
                 )}
               </div>
             </div>
-          </Link>
         </article>
       ))}
     </div>

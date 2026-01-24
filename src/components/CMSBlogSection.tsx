@@ -52,8 +52,11 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
         {/* Blog Posts Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {posts.map((post) => (
-            <Link key={post._id} href={`/blog/${post.slug.current}`}>
-              <article className="bg-surface rounded-lg overflow-hidden group cursor-pointer h-full flex flex-col hover:shadow-large transition-all duration-300 hover:-translate-y-1">
+            <article key={post._id} className="bg-surface rounded-lg overflow-hidden group relative h-full flex flex-col hover:shadow-large transition-all duration-300 hover:-translate-y-1">
+                <Link href={`/blog/${post.slug.current}`} className="absolute inset-0 z-0">
+                   <span className="sr-only">Read {post.title}</span>
+                </Link>
+
                 {/* Image */}
                 <div className="relative aspect-video w-full overflow-hidden">
                   {post.mainImage ? (
@@ -71,11 +74,11 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
                 </div>
                 
                 {/* Content */}
-                <div className="p-6 flex flex-col flex-grow">
+                <div className="p-6 flex flex-col flex-grow pointer-events-none">
                   {/* Category & Read Time */}
                   <div className="flex items-center justify-between mb-3">
                     {post.categories && post.categories.length > 0 && (
-                      <span className="text-xs font-medium text-primary uppercase tracking-wider">
+                      <span className="text-xs font-medium text-primary uppercase tracking-wider relative z-10">
                         {post.categories[0].title}
                       </span>
                     )}
@@ -107,7 +110,7 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
                        {post.author && post.author.name && (
                         <>
                           <span className="mx-1">•</span>
-                          <Link href={`/author/${post.author.slug}`} className="hover:text-primary transition-colors">
+                          <Link href={`/author/${post.author.slug}`} className="hover:text-primary transition-colors relative z-10 pointer-events-auto">
                             {post.author.name}
                           </Link>
                         </>
@@ -120,7 +123,6 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
                   </div>
                 </div>
               </article>
-            </Link>
           ))}
         </div>
 
