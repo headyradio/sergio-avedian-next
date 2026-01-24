@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play, ChevronRight, Radio } from "lucide-react";
+import { Play, ChevronRight, Radio, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import type { Video } from "@/lib/youtube";
 import ShortsModal from "./ShortsModal";
@@ -142,10 +142,20 @@ export default function VideoSection({
         {/* Latest Videos Grid */}
         {latestVideos.length > 0 && (
           <div>
-            <h3 className="text-lg font-semibold flex items-center gap-2 mb-4 text-text-primary">
-              <span className="w-1 h-4 bg-primary rounded-full" />
-              Latest Videos
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center gap-2 text-text-primary">
+                <span className="w-1 h-4 bg-primary rounded-full" />
+                Latest Videos
+              </h3>
+              <Link
+                href="https://www.youtube.com/@sergioavedian/videos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-primary hover:text-primary-hover transition-colors flex items-center gap-1"
+              >
+                See all <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {latestVideos.map((video) => (
                 <VideoCard key={video.id} video={video} />

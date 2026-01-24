@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import Navigation from "@/components/Navigation";
 import MainHeroSection from "@/components/MainHeroSection";
+import MissionStatement from "@/components/MissionStatement";
 import FeaturedArticleBanner from "@/components/FeaturedArticleBanner";
 import GoldSubscriptionSection from "@/components/GoldSubscriptionSection";
 import VideoSection from "@/components/VideoSection";
@@ -26,6 +27,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background">
       <Navigation />
       <MainHeroSection />
+      <MissionStatement />
       <FeaturedArticleBanner />
       <GoldSubscriptionSection />
       <CMSBlogSection posts={posts} />
