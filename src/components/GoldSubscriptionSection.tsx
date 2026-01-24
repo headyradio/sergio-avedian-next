@@ -37,72 +37,66 @@ const GoldSubscriptionSection = () => {
 
   return (
     <TooltipProvider>
-      <section className="py-16">
+      <section className="py-12">
         <div className="editorial-container">
-        <Card className="card-modern overflow-hidden bg-gradient-to-br from-amber-50/50 to-yellow-100/30 dark:from-amber-950/20 dark:to-yellow-900/10 border-amber-200/50 dark:border-amber-800/30">
-          <CardContent className="p-6 sm:p-8 lg:p-12">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-full mb-4">
-                <Crown className="h-8 w-8 text-white" />
+        <Card className="overflow-hidden bg-gradient-to-br from-amber-950/30 to-yellow-900/20 border-amber-800/30">
+          <CardContent className="p-6 lg:p-8">
+            {/* Compact Header Row */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-lg shrink-0">
+                  <Crown className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl lg:text-2xl font-bold text-text-primary">
+                    Gold Membership
+                  </h2>
+                  <p className="text-sm text-text-secondary">
+                    Exclusive access to Sergio's trading community
+                  </p>
+                </div>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-black text-gradient mb-4">
-                Gold Membership
-              </h2>
-              <div className="flex items-center justify-center mb-6">
-                <span className="text-4xl lg:text-5xl font-black text-text-primary">$9.99</span>
-                <span className="text-xl text-text-secondary ml-2">/month</span>
+              
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <span className="text-2xl font-bold text-text-primary">$9.99</span>
+                  <span className="text-sm text-text-muted">/month</span>
+                </div>
+                <Button 
+                  onClick={handleJoinMembership}
+                  className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-semibold px-6"
+                >
+                  <Crown className="h-4 w-4 mr-2" />
+                  Join Now
+                </Button>
               </div>
-              <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-                Join an exclusive community of serious traders and get direct access to Sergio's 35+ years of Wall Street expertise.
-              </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4 sm:gap-6 mb-8">
+            {/* Benefits Grid - Compact */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
                 return (
-                  <div key={index} className="flex items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl bg-card/50 border border-card-border/50">
-                    <div className="flex items-center justify-center w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg shrink-0">
-                      <Icon className="h-6 w-6 text-amber-600 dark:text-amber-400" />
-                    </div>
+                  <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-surface/50 border border-border/30">
+                    <Icon className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
                     <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-text-primary">
-                          {benefit.title}
-                        </h3>
-                        {benefit.hasTooltip && (
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <Info className="h-4 w-4 text-text-secondary hover:text-text-primary transition-colors" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-xs max-w-48">{benefit.tooltipText}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        )}
-                      </div>
-                      <p className="text-sm text-text-secondary">
-                        {benefit.description}
-                      </p>
+                      <h3 className="text-sm font-medium text-text-primary leading-tight">
+                        {benefit.title}
+                      </h3>
+                      {benefit.hasTooltip && (
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <Info className="h-3 w-3 text-text-muted mt-1" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-xs max-w-48">{benefit.tooltipText}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
                     </div>
                   </div>
                 );
               })}
-            </div>
-
-            <div className="text-center">
-              <Button 
-                onClick={handleJoinMembership}
-                size="lg"
-                className="w-full sm:w-auto min-h-[48px] bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-semibold px-6 sm:px-8 py-3 text-base sm:text-lg"
-              >
-                <Crown className="h-5 w-5 mr-2 flex-shrink-0" />
-                <span className="hidden sm:inline">Join Gold Membership</span>
-                <span className="sm:hidden">Join Gold</span>
-              </Button>
-              <p className="text-xs sm:text-sm text-text-muted mt-4">
-                Managed through YouTube • Cancel anytime
-              </p>
             </div>
           </CardContent>
         </Card>

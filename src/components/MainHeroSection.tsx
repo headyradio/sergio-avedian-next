@@ -8,18 +8,18 @@ import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 const MainHeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center bg-background overflow-hidden">
+    <section className="relative min-h-[75vh] flex items-center bg-background overflow-hidden">
       {/* Subtle gradient overlay */}
       <div 
         className="absolute inset-0 opacity-30"
         style={{ background: 'var(--gradient-mesh)' }}
       />
 
-      <div className="editorial-container relative z-10 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="editorial-container relative z-10 py-12 lg:py-16">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           
           {/* Content Column */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-surface border border-border">
               <span className="text-sm font-medium text-text-secondary">

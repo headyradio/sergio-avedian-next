@@ -31,20 +31,25 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
   }
 
   return (
-    <section id="blog" className="py-24 lg:py-32 bg-background">
+    <section id="blog" className="py-16 lg:py-20 bg-background">
       <div className="editorial-container">
         {/* Section Header */}
-        <div className="mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-text-primary mb-4">
-            Latest Articles
-          </h2>
-          <p className="text-lg text-text-secondary max-w-2xl">
-            Practical insights and strategies for building wealth without a financial advisor.
-          </p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-text-primary">
+              Latest Articles
+            </h2>
+            <p className="text-sm text-text-secondary mt-1">
+              Practical insights for building wealth
+            </p>
+          </div>
+          <Link href="/blog" className="text-sm font-medium text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+            View all <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
 
-        {/* Blog Posts Grid - Dark cards like slide deck */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {/* Blog Posts Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {posts.map((post) => (
             <Link key={post._id} href={`/blog/${post.slug.current}`}>
               <article className="bg-surface rounded-lg overflow-hidden group cursor-pointer h-full flex flex-col hover:shadow-large transition-all duration-300 hover:-translate-y-1">
@@ -110,41 +115,26 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
           ))}
         </div>
 
-        {/* View All Button */}
-        <div className="text-center">
-          <Link href="/blog">
-            <Button variant="outline" size="lg" className="group border-2 border-border hover:border-primary">
-              View All Articles
-              <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
+        {/* Coaching CTA - Compact dark panel */}
+        <div className="mt-12 bg-surface rounded-lg p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <h3 className="text-xl font-semibold text-text-primary mb-2">
+              Need Personalized Guidance?
+            </h3>
+            <p className="text-sm text-text-secondary">
+              Work directly with Sergio for custom trading strategies.
+            </p>
+          </div>
+          
+          <Link href="/coaching">
+            <Button 
+              size="default" 
+              className="bg-primary hover:bg-primary-hover text-primary-foreground font-medium whitespace-nowrap"
+            >
+              <Phone className="w-4 h-4 mr-2" />
+              Get Coaching
             </Button>
           </Link>
-        </div>
-
-        {/* Coaching CTA - Light gray panel like slide deck */}
-        <div className="mt-20 bg-surface-tertiary rounded-lg p-10 lg:p-12">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="text-xs font-medium text-text-inverse/70 uppercase tracking-wider mb-4 block">
-              Personalized Guidance
-            </span>
-            
-            <h3 className="text-3xl font-bold text-text-inverse mb-4">
-              Need More Guidance?
-            </h3>
-            <p className="text-lg text-text-inverse/80 mb-8">
-              Reach out to discuss your trading goals and see how personalized coaching 
-              can accelerate your path to consistent profits.
-            </p>
-            
-            <Link href="/coaching">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary-hover text-primary-foreground font-semibold px-8"
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                Contact Me to Learn More
-              </Button>
-            </Link>
-          </div>
         </div>
       </div>
     </section>

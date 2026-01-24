@@ -1,3 +1,7 @@
 {
-  "/api/admin/newsletter/draft/route": "app/api/admin/newsletter/draft/route.js"
+  "/page": "app/page.js",
+  "/coaching/page": "app/coaching/page.js",
+  "/blog/page": "app/blog/page.js",
+  "/blog/[slug]/page": "app/blog/[slug]/page.js",
+  "/about-sergio/page": "app/about-sergio/page.js"
 }

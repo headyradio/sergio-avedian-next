@@ -1,5 +1,42 @@
 {
-  "node": {},
+  "node": {
+    "15d1354a1bf54e91136a5a787b2f81514f917d45": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/blog/[slug]/page": "action-browser",
+        "app/blog/page": "action-browser"
+      }
+    },
+    "9b150d58f1e06f4d147962a69d6e3a732945983f": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/blog/[slug]/page": "action-browser",
+        "app/blog/page": "action-browser"
+      }
+    },
+    "ff49dcf5d2c6ac001bfbd839f9208853e1c73848": {
+      "workers": {
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/[slug]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!",
+        "app/blog/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2F%40sanity%2Fnext-loader%2Fdist%2Fserver-actions.js%22%2C%5B%22revalidateSyncTags%22%2C%22setPerspectiveCookie%22%5D%5D%2C%5B%22%2FUsers%2Fjohan%2F.gemini%2Fantigravity%2Fscratch%2Fsergio-avedian-next%2Fnode_modules%2Fnext-sanity%2Fdist%2Fvisual-editing%2Fserver-actions.js%22%2C%5B%22revalidateRootLayout%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/blog/[slug]/page": "action-browser",
+        "app/blog/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
-  "encryptionKey": "kxkh/lv1UowiLrzoQdLOhZoyOgBlqEXyIC1F57NVn+E="
+  "encryptionKey": "LnKJ1ewk+TXKNmyTRGu5IgcR3tWzMK//BXnFh4Fvni4="
 }

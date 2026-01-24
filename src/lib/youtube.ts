@@ -225,28 +225,63 @@ export async function getLatestLongFormVideos(limit = 6): Promise<Video[]> {
   }));
 }
 
-// 3. Search for Specific Shows (Power Hour, Trading with Sergio)
-export async function getShowVideos(query: string, limit = 4): Promise<Video[]> {
+// 3. Get Live Streams (Power Hour + Trading with Sergio combined)
+// Excludes shorts, only includes videos > 60 seconds
+export async function getLiveStreams(limit = 6): Promise<Video[]> {
   if (!CHANNEL_ID) return [];
 
-  const data = await fetchYouTube('search', {
-    part: 'snippet',
-    channelId: CHANNEL_ID,
-    q: query,
-    type: 'video',
-    maxResults: limit.toString(),
-    order: 'date'
-  });
+  // Search for live stream content with multiple queries
+  const queries = ['Sergio Avedian Power Hour', 'Trading with Sergio', 'Sergio Avedian Live'];
+  
+  const allResults: Video[] = [];
+  
+  for (const query of queries) {
+    const data = await fetchYouTube('search', {
+      part: 'snippet',
+      channelId: CHANNEL_ID,
+      q: query,
+      type: 'video',
+      maxResults: '10',
+      order: 'date'
+    });
 
-  if (!data?.items) return [];
+    if (data?.items) {
+      const videos = data.items.map((item: any) => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url,
+        publishedAt: item.snippet.publishedAt,
+        isLive: true,
+      }));
+      allResults.push(...videos);
+    }
+  }
 
-  const videos = data.items.map((item: any) => ({
-    id: item.id.videoId,
-    title: item.snippet.title,
-    thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url,
-    publishedAt: item.snippet.publishedAt,
-    isLive: false,
+  // De-duplicate by video ID
+  const uniqueVideos = Array.from(
+    new Map(allResults.map(v => [v.id, v])).values()
+  );
+
+  // Enhance with duration details
+  const enhanced = await enhanceVideosWithDetails(uniqueVideos);
+
+  // Filter out shorts (must be > 60 seconds) and sort by date
+  const filtered = enhanced
+    .filter((v: any) => {
+      const seconds = getDurationSeconds(v._isoDuration);
+      // Must be longer than 60 seconds (not a short)
+      return seconds > 60;
+    })
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
+  return filtered.slice(0, limit).map(v => ({
+    id: v.id,
+    title: v.title,
+    thumbnail: v.thumbnail,
+    publishedAt: v.publishedAt,
+    duration: v.duration,
+    viewCount: v.viewCount,
+    isLive: true,
+    isShort: false,
   }));
-
-  return enhanceVideosWithDetails(videos);
 }
