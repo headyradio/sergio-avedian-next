@@ -4,17 +4,34 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import SuggestedArticles from "@/components/SuggestedArticles";
-import FinalCTASection from "@/components/FinalCTASection";
 import { client, urlForImage } from "@/lib/sanity/client";
 import { postBySlugQuery, postSlugsQuery, suggestedPostsQuery } from "@/lib/sanity/queries";
 import Image from "next/image";
 import { format } from "date-fns";
 import PostBody from "@/components/PostBody";
-import SocialShareButtons from "@/components/blog/SocialShareButtons";
 import TableOfContents from "@/components/TableOfContents";
-import ArticleAudioPlayer from "@/components/ArticleAudioPlayer";
 import { portableTextToPlainText } from "@/lib/utils";
+import dynamic from "next/dynamic";
+
+// Dynamic Imports for Code Splitting
+const ArticleAudioPlayer = dynamic(() => import("@/components/ArticleAudioPlayer"), {
+  ssr: false, // Interaction only, not needed for SEO
+  loading: () => <div className="h-24 bg-surface/50 rounded-lg animate-pulse my-6" />,
+});
+
+const SocialShareButtons = dynamic(() => import("@/components/blog/SocialShareButtons"), {
+  ssr: false, // Interaction only
+  loading: () => <div className="h-8 w-24 bg-surface/50 rounded-full animate-pulse" />,
+});
+
+const SuggestedArticles = dynamic(() => import("@/components/SuggestedArticles"), {
+  // SSR needed for SEO links, but can still be split from main bundle
+  loading: () => <div className="h-96 bg-surface/50 rounded-lg animate-pulse mt-20" />,
+});
+
+const FinalCTASection = dynamic(() => import("@/components/FinalCTASection"), {
+  loading: () => <div className="h-64 bg-surface/50 rounded-lg animate-pulse mt-12" />,
+});
 
 interface Props {
   params: { slug: string };
@@ -134,7 +151,8 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {/* Hero Section */}
-        <div className="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center mb-12">
+        {/* Optimized: Smaller height on mobile to save LCP pixels */}
+        <div className="relative w-full h-[40vh] min-h-[300px] md:h-[60vh] md:min-h-[500px] flex items-center justify-center mb-12">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             {post.mainImage ? (
@@ -144,6 +162,8 @@ export default async function BlogPostPage({ params }: Props) {
                 fill
                 className="object-cover"
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
+                quality={85}
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800" />
@@ -159,11 +179,11 @@ export default async function BlogPostPage({ params }: Props) {
                 {post.categories[0].title}
               </span>
             )}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
               {post.title}
             </h1>
             {post.excerpt && (
-              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+              <p className="text-base md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
                 {post.excerpt}
               </p>
             )}
