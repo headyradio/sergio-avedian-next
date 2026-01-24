@@ -10,15 +10,15 @@
   :root {
     /* Deep Charcoal + Electric Blue - Refined Dark Theme */
     --background: 220 15% 8%;          /* #101418 Near-black charcoal */
-    --foreground: 40 20% 92%;          /* Deeper warm white for body */
+    --foreground: 0 0% 98%;            /* Off-white */
     
     --surface: 220 12% 12%;            /* #181C22 Dark card bg */
     --surface-secondary: 220 10% 15%;  /* Slightly lighter */
     --surface-tertiary: 220 8% 85%;    /* Light gray panels */
     
-    /* Typography - Deeper warm whites for readability */
-    --text-primary: 40 15% 94%;        /* Warm cream-white for headings */
-    --text-secondary: 40 10% 70%;      /* Warm soft gray */
+    /* Typography */
+    --text-primary: 0 0% 98%;          /* Near-white */
+    --text-secondary: 220 5% 75%;      /* Soft gray */
     --text-muted: 220 5% 50%;          /* Dimmed */
     --text-inverse: 220 15% 8%;        /* Dark text on light */
     
@@ -97,17 +97,11 @@
     -moz-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    
-    /* Adobe Fonts - Adriane Text for body, Poppins for headings */
-    --font-body: "adriane", Georgia, "Times New Roman", serif;
-    --font-heading: var(--font-poppins), 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-body);
-    font-weight: 400;
-    font-style: normal;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
