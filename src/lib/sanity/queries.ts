@@ -102,3 +102,16 @@ export const latestPostsQuery = groq`
 export const postSlugsQuery = groq`
   *[_type == "post" && defined(slug.current)][].slug.current
 `;
+
+// Get suggested posts (excluding current post)
+export const suggestedPostsQuery = groq`
+  *[_type == "post" && !(_id in path("drafts.**")) && slug.current != $currentSlug] | order(publishedAt desc)[0...3] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    "mainImage": coverImage,
+    publishedAt,
+    "categories": categories[]->{title, slug}
+  }
+`;

@@ -4,8 +4,9 @@ import Link from "next/link";
 import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import SuggestedArticles from "@/components/SuggestedArticles";
 import { client, urlForImage } from "@/lib/sanity/client";
-import { postBySlugQuery, postSlugsQuery } from "@/lib/sanity/queries";
+import { postBySlugQuery, postSlugsQuery, suggestedPostsQuery } from "@/lib/sanity/queries";
 import Image from "next/image";
 import { format } from "date-fns";
 import PostBody from "@/components/PostBody";
@@ -92,7 +93,10 @@ function estimateReadingTime(body: any[]): number {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const post = await getPost(params.slug);
+  const [post, suggestedPosts] = await Promise.all([
+    getPost(params.slug),
+    client.fetch(suggestedPostsQuery, { currentSlug: params.slug })
+  ]);
 
   if (!post) {
     notFound();
@@ -186,6 +190,9 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Post Content */}
         {post.body && <PostBody content={post.body} />}
+
+        {/* Suggested Articles */}
+        <SuggestedArticles posts={suggestedPosts} />
       </main>
       
       <Footer />

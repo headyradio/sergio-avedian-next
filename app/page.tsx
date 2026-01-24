@@ -8,6 +8,7 @@ import FeaturedArticleBanner from "@/components/FeaturedArticleBanner";
 import GoldSubscriptionSection from "@/components/GoldSubscriptionSection";
 import VideoSection from "@/components/VideoSection";
 import CMSBlogSection from "@/components/CMSBlogSection";
+import FinalCTASection from "@/components/FinalCTASection";
 import Footer from "@/components/Footer";
 import { client } from "@/lib/sanity/client";
 import { latestPostsQuery } from "@/lib/sanity/queries";
@@ -33,6 +34,7 @@ export default async function HomePage() {
         liveStreams={liveStreams}
         shorts={shorts} 
       />
+      <FinalCTASection />
       <Footer />
     </div>
   );
