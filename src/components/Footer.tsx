@@ -75,6 +75,7 @@ const Footer = () => {
                 size="icon" 
                 className="text-text-muted hover:text-primary"
                 onClick={() => window.open("https://www.youtube.com/@SergioAvedian/", "_blank", "noopener noreferrer")}
+                aria-label="Visit Sergio Avedian on YouTube"
               >
                 <Youtube className="h-5 w-5" />
               </Button>
@@ -83,10 +84,11 @@ const Footer = () => {
                 size="icon" 
                 className="text-text-muted hover:text-primary"
                 onClick={() => window.open("https://www.linkedin.com/in/sergio-avedian-9939291/", "_blank", "noopener noreferrer")}
+                aria-label="Visit Sergio Avedian on LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Link href="/contact">
+              <Link href="/contact" aria-label="Contact Sergio Avedian">
                 <Button variant="ghost" size="icon" className="text-text-muted hover:text-primary">
                   <Mail className="h-5 w-5" />
                 </Button>
@@ -97,9 +99,9 @@ const Footer = () => {
           {/* Footer Links */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h4 className="text-lg font-semibold text-text-primary mb-4">
+              <h3 className="text-lg font-semibold text-text-primary mb-4">
                 {section.title}
-              </h4>
+              </h3>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>
@@ -137,14 +139,14 @@ const Footer = () => {
 
         {/* Investment Disclaimer */}
         <div className="mt-12 p-4 bg-surface-secondary/50 rounded-lg border border-border/30">
-          <p className="text-xs text-text-muted leading-relaxed text-center">
+          <p className="text-xs text-text-secondary/80 leading-relaxed text-center">
             <strong className="text-text-secondary">DISCLAIMER:</strong> Investments or strategies mentioned on this channel may not be suitable for you and you should make your own independent decisions. You should strongly consider seeking advice from an investment advisor. Past performance is not indicative of future results.
           </p>
         </div>
 
         {/* Bottom Copyright Section */}
         <div className="border-t border-border/40 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary/80">
             <div className="flex items-center gap-1">
               <span>© 2025 Sergio Avedian. All rights reserved.</span>
             </div>

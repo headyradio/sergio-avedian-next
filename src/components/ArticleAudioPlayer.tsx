@@ -96,9 +96,9 @@ export default function ArticleAudioPlayer({ slug, title, plainText }: ArticleAu
         </div>
         
         <div className="flex-grow min-w-0">
-            <h4 className="text-sm font-medium text-text-secondary uppercase tracking-wider mb-1">
+            <p className="text-sm font-medium text-text-secondary uppercase tracking-wider mb-1">
                 Listen to this article
-            </h4>
+            </p>
             <p className="text-xs text-text-muted truncate">
                 {title}
             </p>
@@ -171,6 +171,7 @@ export default function ArticleAudioPlayer({ slug, title, plainText }: ArticleAu
                       onClick={handleTogglePlay}
                       size="icon"
                       className="rounded-full h-10 w-10 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm relative z-10"
+                      aria-label={isPlaying ? "Pause audio" : "Play audio"}
                    >
                       {isPlaying ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current pl-0.5" />}
                    </Button>
