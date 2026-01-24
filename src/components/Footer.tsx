@@ -135,8 +135,15 @@ const Footer = () => {
           ))}
         </div>
 
+        {/* Investment Disclaimer */}
+        <div className="mt-12 p-4 bg-surface-secondary/50 rounded-lg border border-border/30">
+          <p className="text-xs text-text-muted leading-relaxed text-center">
+            <strong className="text-text-secondary">DISCLAIMER:</strong> Investments or strategies mentioned on this channel may not be suitable for you and you should make your own independent decisions. You should strongly consider seeking advice from an investment advisor. Past performance is not indicative of future results.
+          </p>
+        </div>
+
         {/* Bottom Copyright Section */}
-        <div className="border-t border-border/40 mt-12 pt-8">
+        <div className="border-t border-border/40 mt-8 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
             <div className="flex items-center gap-1">
               <span>© 2025 Sergio Avedian. All rights reserved.</span>

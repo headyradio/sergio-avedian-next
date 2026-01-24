@@ -40,6 +40,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/privacy-policy/page.js"
+    ],
+    "/terms-of-service/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/terms-of-service/page.js"
+    ],
+    "/cookie-policy/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/cookie-policy/page.js"
     ]
   }
 }

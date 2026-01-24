@@ -1945,6 +1945,10 @@ h3 {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
 .-ml-4 {
   margin-left: -1rem;
 }
@@ -2767,6 +2771,9 @@ h3 {
 .border-white\/10 {
   border-color: rgb(255 255 255 / 0.1);
 }
+.border-amber-500\/30 {
+  border-color: rgb(245 158 11 / 0.3);
+}
 .border-l-transparent {
   border-left-color: transparent;
 }
@@ -2868,6 +2875,12 @@ h3 {
 }
 .bg-background\/80 {
   background-color: hsl(var(--background) / 0.8);
+}
+.bg-surface-secondary\/50 {
+  background-color: hsl(var(--surface-secondary) / 0.5);
+}
+.bg-amber-500\/10 {
+  background-color: rgb(245 158 11 / 0.1);
 }
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
@@ -3385,6 +3398,10 @@ h3 {
 }
 .text-white\/80 {
   color: rgb(255 255 255 / 0.8);
+}
+.text-amber-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 191 36 / var(--tw-text-opacity, 1));
 }
 .underline {
   text-decoration-line: underline;
