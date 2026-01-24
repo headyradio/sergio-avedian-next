@@ -655,15 +655,15 @@ video {
 :root {
     /* Deep Charcoal + Electric Blue - Refined Dark Theme */
     --background: 220 15% 8%;          /* #101418 Near-black charcoal */
-    --foreground: 0 0% 98%;            /* Off-white */
+    --foreground: 40 20% 92%;          /* Deeper warm white for body */
     
     --surface: 220 12% 12%;            /* #181C22 Dark card bg */
     --surface-secondary: 220 10% 15%;  /* Slightly lighter */
     --surface-tertiary: 220 8% 85%;    /* Light gray panels */
     
-    /* Typography */
-    --text-primary: 0 0% 98%;          /* Near-white */
-    --text-secondary: 220 5% 75%;      /* Soft gray */
+    /* Typography - Deeper warm whites for readability */
+    --text-primary: 40 15% 94%;        /* Warm cream-white for headings */
+    --text-secondary: 40 10% 70%;      /* Warm soft gray */
     --text-muted: 220 5% 50%;          /* Dimmed */
     --text-inverse: 220 15% 8%;        /* Dark text on light */
     
@@ -3105,9 +3105,6 @@ h3 {
 }
 .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-}
-.font-sans {
-  font-family: Inter, system-ui, sans-serif;
 }
 .text-2xl {
   font-size: 1.5rem;
