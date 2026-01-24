@@ -2774,6 +2774,9 @@ h3 {
 .border-amber-500\/30 {
   border-color: rgb(245 158 11 / 0.3);
 }
+.border-amber-500\/50 {
+  border-color: rgb(245 158 11 / 0.5);
+}
 .border-l-transparent {
   border-left-color: transparent;
 }
@@ -2881,6 +2884,9 @@ h3 {
 }
 .bg-amber-500\/10 {
   background-color: rgb(245 158 11 / 0.1);
+}
+.bg-amber-900\/30 {
+  background-color: rgb(120 53 15 / 0.3);
 }
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
@@ -3402,6 +3408,22 @@ h3 {
 .text-amber-400 {
   --tw-text-opacity: 1;
   color: rgb(251 191 36 / var(--tw-text-opacity, 1));
+}
+.text-gray-300 {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity, 1));
+}
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+}
+.text-amber-100 {
+  --tw-text-opacity: 1;
+  color: rgb(254 243 199 / var(--tw-text-opacity, 1));
+}
+.text-amber-300 {
+  --tw-text-opacity: 1;
+  color: rgb(252 211 77 / var(--tw-text-opacity, 1));
 }
 .underline {
   text-decoration-line: underline;
