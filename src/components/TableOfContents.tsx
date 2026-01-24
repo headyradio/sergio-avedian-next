@@ -48,7 +48,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <nav className="space-y-2">
-      <h3 className="font-bold text-lg text-text-primary mb-4">Jump to section</h3>
+      <h2 className="font-bold text-lg text-text-primary mb-4">Jump to section</h2>
       <ul className="space-y-3 border-l px-2 border-white/50">
         {headings.map((heading) => (
           <li key={heading.id}>

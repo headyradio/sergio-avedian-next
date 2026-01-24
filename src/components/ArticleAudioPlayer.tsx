@@ -99,7 +99,7 @@ export default function ArticleAudioPlayer({ slug, title, plainText }: ArticleAu
             <p className="text-sm font-medium text-text-secondary uppercase tracking-wider mb-1">
                 Listen to this article
             </p>
-            <p className="text-xs text-text-muted truncate">
+            <p className="text-xs text-text-secondary truncate">
                 {title}
             </p>
         </div>

@@ -93,6 +93,7 @@ const Navigation = () => {
               size="icon" 
               className="hover:glow-primary"
               onClick={() => setIsSearchModalOpen(true)}
+              aria-label="Search"
             >
               <Search className="h-5 w-5" />
             </Button>
@@ -105,6 +106,7 @@ const Navigation = () => {
               variant="ghost"
               size="icon"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? (
                 <X className="h-4 w-4" />
@@ -175,6 +177,7 @@ const Navigation = () => {
                   setIsMenuOpen(false);
                   setIsSearchModalOpen(true);
                 }}
+                aria-label="Search"
               >
                 <Search className="h-4 w-4" />
               </Button>

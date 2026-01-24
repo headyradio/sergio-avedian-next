@@ -190,7 +190,7 @@ export default async function BlogPostPage({ params }: Props) {
                         <div className="relative w-8 h-8 rounded-full overflow-hidden border border-primary/20">
                            <Image 
                               src={urlForImage(post.author.image).width(64).height(64).url()} 
-                              alt={post.author.name}
+                              alt=""
                               fill
                               className="object-cover" 
                            />
