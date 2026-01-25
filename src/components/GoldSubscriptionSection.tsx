@@ -98,18 +98,6 @@ const GoldSubscriptionSection = () => {
                         <h3 className="text-sm font-medium text-text-primary leading-tight">
                           {benefit.title}
                         </h3>
-                        {benefit.hasTooltip && (
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <Info className="h-3 w-3 text-text-muted mt-1" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-xs max-w-48">
-                                {benefit.tooltipText}
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        )}
                       </div>
                     </div>
                   );
