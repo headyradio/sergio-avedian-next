@@ -1,6 +1,9 @@
 {
-  "/page": "app/page.js",
-  "/api/generate-audio/route": "app/api/generate-audio/route.js",
   "/blog/page": "app/blog/page.js",
-  "/blog/[slug]/page": "app/blog/[slug]/page.js"
+  "/page": "app/page.js",
+  "/blog/[slug]/page": "app/blog/[slug]/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/coaching/page": "app/coaching/page.js",
+  "/api/generate-audio/route": "app/api/generate-audio/route.js",
+  "/author/[slug]/page": "app/author/[slug]/page.js"
 }

@@ -4,30 +4,38 @@ import Image from "next/image";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { client, urlForImage } from "@/lib/sanity/client";
-import { authorBySlugQuery, postsByAuthorQuery } from "@/lib/sanity/queries";
-import CMSBlogSection from "@/components/CMSBlogSection";
+import { authorBySlugQuery, paginatedPostsByAuthorQuery, postsCountByAuthorQuery } from "@/lib/sanity/queries";
+import BlogList from "@/components/BlogList";
+import Pagination from "@/components/Pagination";
 
 export const revalidate = 60;
 
+const POSTS_PER_PAGE = 9;
+
 interface AuthorPageProps {
   params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-async function getAuthorData(slug: string) {
+async function getAuthorData(slug: string, page: number) {
+  const start = (page - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+
   try {
-    const [author, posts] = await Promise.all([
+    const [author, posts, total] = await Promise.all([
       client.fetch(authorBySlugQuery, { slug }),
-      client.fetch(postsByAuthorQuery, { slug }),
+      client.fetch(paginatedPostsByAuthorQuery, { slug, start, end }),
+      client.fetch(postsCountByAuthorQuery, { slug }),
     ]);
-    return { author, posts };
+    return { author, posts, total };
   } catch (error) {
     console.error("Error fetching author data:", error);
-    return { author: null, posts: [] };
+    return { author: null, posts: [], total: 0 };
   }
 }
 
 export async function generateMetadata({ params }: AuthorPageProps): Promise<Metadata> {
-  const { author } = await getAuthorData(params.slug);
+  const author = await client.fetch(authorBySlugQuery, { slug: params.slug });
   
   if (!author) {
     return {
@@ -41,8 +49,10 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
   };
 }
 
-export default async function AuthorPage({ params }: AuthorPageProps) {
-  const { author, posts } = await getAuthorData(params.slug);
+export default async function AuthorPage({ params, searchParams }: AuthorPageProps) {
+  const currentPage = typeof searchParams.page === 'string' ? Number(searchParams.page) : 1;
+  const { author, posts, total } = await getAuthorData(params.slug, currentPage);
+  const totalPages = Math.ceil(total / POSTS_PER_PAGE);
 
   if (!author) {
     notFound();
@@ -80,7 +90,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               </p>
             )}
              <p className="text-sm text-text-muted mt-4">
-              {posts.length} Article{posts.length !== 1 ? 's' : ''} Published
+              {total} Article{total !== 1 ? 's' : ''} Published
             </p>
           </div>
         </header>
@@ -88,11 +98,8 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         {/* Author Posts */}
         <div className="mb-8">
             <h2 className="text-2xl font-bold text-text-primary mb-6">Latest Articles by {author.name}</h2>
-             {posts.length > 0 ? (
-                <CMSBlogSection posts={posts} />
-             ) : (
-                <p className="text-text-secondary">No articles found.</p>
-             )}
+             <BlogList initialPosts={posts} />
+             <Pagination currentPage={currentPage} totalPages={totalPages} />
         </div>
       </main>
       <Footer />

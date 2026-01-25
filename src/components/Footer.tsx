@@ -29,6 +29,7 @@ const Footer = () => {
         { label: "Personal Coaching", href: "/coaching", type: "internal" },
         { label: "YouTube Channel", href: "https://www.youtube.com/@SergioAvedian/", type: "external" },
         { label: "LinkedIn", href: "https://www.linkedin.com/in/sergio-avedian-9939291/", type: "external" },
+        { label: "X.com", href: "https://x.com/sergioaved", type: "external" },
       ]
     }
   ];
@@ -70,6 +71,17 @@ const Footer = () => {
               Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.
             </p>
             <div className="flex items-center space-x-4">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-text-muted hover:text-primary"
+                onClick={() => window.open("https://x.com/sergioaved", "_blank", "noopener noreferrer")}
+                aria-label="Visit Sergio Avedian on X.com"
+              >
+                <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+                  <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                </svg>
+              </Button>
               <Button 
                 variant="ghost" 
                 size="icon" 

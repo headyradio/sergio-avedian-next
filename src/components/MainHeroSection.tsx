@@ -46,7 +46,7 @@ const MainHeroSection = () => {
               <SubscribeDropdown variant="cta" size="lg" className="bg-primary hover:bg-primary-hover text-primary-foreground font-semibold px-8 py-4 rounded-lg shadow-glow" />
               <Link href="/coaching">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto group border-2 border-text-secondary/30 hover:border-primary text-text-primary hover:text-primary">
-                  Start Coaching
+                  Get Coaching
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
@@ -85,6 +85,24 @@ const MainHeroSection = () => {
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
+              
+              {/* X.com Callout Badge */}
+              <a 
+                href="https://x.com/sergioaved" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="absolute -bottom-6 -left-6 z-20 flex items-center gap-3 p-4 rounded-xl bg-surface/90 backdrop-blur-md border border-white/10 shadow-lg hover:scale-105 transition-transform duration-300 group"
+              >
+                <div className="bg-black p-2 rounded-lg text-white">
+                  <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+                    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs text-text-secondary font-medium uppercase tracking-wider">Follow on X</span>
+                  <span className="text-sm font-bold text-text-primary group-hover:text-primary transition-colors">@sergioaved</span>
+                </div>
+              </a>
             </div>
           </div>
         </div>

@@ -140,3 +140,38 @@ export const postsByAuthorQuery = groq`
     "categories": categories[]->{title, slug}
   }
 `;
+
+// Get paginated posts by author
+export const paginatedPostsByAuthorQuery = groq`
+  *[_type == "post" && author->slug.current == $slug && !(_id in path("drafts.**"))] | order(publishedAt desc) [$start...$end] {
+    _id,
+    title,
+    slug,
+    excerpt,
+    "mainImage": coverImage,
+    publishedAt,
+    "author": author->{name, image, "slug": slug.current},
+    "categories": categories[]->{title, slug}
+  }
+`;
+
+// Get total posts count by author
+export const postsCountByAuthorQuery = groq`
+  count(*[_type == "post" && author->slug.current == $slug && !(_id in path("drafts.**"))])
+`;
+
+// Search posts
+export const searchPostsQuery = groq`
+  *[_type == "post" && !(_id in path("drafts.**")) && (
+    title match $term + "*" || 
+    excerpt match $term + "*" ||
+    pt::text(content) match $term + "*"
+  )] | order(publishedAt desc)[0...10] {
+    _id,
+    title,
+    slug,
+    publishedAt,
+    "author": author->{name},
+    "category": categories[0]->title
+  }
+`;

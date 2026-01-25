@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { client } from "@/lib/sanity/client";
 import { paginatedPostsQuery, postsCountQuery } from "@/lib/sanity/queries";
-import BlogList from "./blog-list";
+import BlogList from "@/components/BlogList";
 import Pagination from "@/components/Pagination";
 
 export const metadata: Metadata = {
