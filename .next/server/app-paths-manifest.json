@@ -1,18 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/contact/route": "app/api/contact/route.js",
-  "/api/admin/newsletter/draft/route": "app/api/admin/newsletter/draft/route.js",
-  "/api/generate-audio/route": "app/api/generate-audio/route.js",
-  "/api/newsletter/route": "app/api/newsletter/route.js",
-  "/coaching/page": "app/coaching/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/author/[slug]/page": "app/author/[slug]/page.js",
-  "/newsletter/page": "app/newsletter/page.js",
   "/blog/page": "app/blog/page.js",
   "/blog/[slug]/page": "app/blog/[slug]/page.js",
-  "/page": "app/page.js",
-  "/terms-of-service/page": "app/terms-of-service/page.js",
-  "/cookie-policy/page": "app/cookie-policy/page.js",
-  "/about-sergio/page": "app/about-sergio/page.js",
-  "/privacy-policy/page": "app/privacy-policy/page.js"
+  "/api/generate-audio/route": "app/api/generate-audio/route.js",
+  "/page": "app/page.js"
 }

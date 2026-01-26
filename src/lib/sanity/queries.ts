@@ -86,7 +86,7 @@ export const featuredPostsQuery = groq`
 `;
 // Get latest posts (for homepage fallback)
 export const latestPostsQuery = groq`
-  *[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...6] {
+  *[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc, _createdAt desc)[0...6] {
     _id,
     title,
     slug,

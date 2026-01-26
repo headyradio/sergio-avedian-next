@@ -63,9 +63,9 @@ export default function BlogList({ initialPosts }: BlogListProps) {
                   ))}
                 </div>
               )}
-              <h2 className="text-xl font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors">
+              <h3 className="text-xl font-semibold text-text-primary mb-2 group-hover:text-primary transition-colors">
                 {post.title}
-              </h2>
+              </h3>
               {post.excerpt && (
                 <p className="text-text-secondary text-sm line-clamp-2 mb-4">
                   {post.excerpt}

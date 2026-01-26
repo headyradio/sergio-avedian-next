@@ -127,6 +127,20 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
           ))}
         </div>
 
+        {/* Browse All Button */}
+        <div className="flex justify-center mb-16">
+          <Link href="/blog">
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="group border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+            >
+              Browse all articles
+              <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </Link>
+        </div>
+
         {/* Coaching CTA - Compact dark panel */}
         <div className="mt-12 bg-surface rounded-lg p-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">

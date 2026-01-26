@@ -11,9 +11,9 @@ const MissionStatement = () => {
         <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl" />
 
         <div className="relative z-10">
-          <h3 className="text-xs font-bold tracking-[0.2em] text-primary uppercase mb-4 opacity-80">
+          <h2 className="text-xs font-bold tracking-[0.2em] text-primary uppercase mb-4 opacity-80">
             Mission Statement
-          </h3>
+          </h2>
 
           <p className="text-xl md:text-2xl font-serif italic text-foreground mb-6">
             "Financial freedom begins with financial literacy."
