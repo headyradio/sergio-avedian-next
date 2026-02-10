@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "Successfully subscribed to the newsletter!",
-      data: result.data,
+      data: result,
     });
   } catch (error) {
     console.error("Newsletter subscription error:", error);
