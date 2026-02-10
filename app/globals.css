@@ -523,3 +523,7 @@
     padding: 0;
   }
 }
+/* Hide default Weglot switcher to prioritize our custom one */
+.weglot-container {
+  display: none !important;
+}

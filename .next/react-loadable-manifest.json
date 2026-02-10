@@ -1,71 +1,68 @@
 {
   "node_modules/@sanity/client/dist/index.browser.js -> ./_chunks-es/stegaEncodeSourceMap.js": {
-    "id": 13139,
+    "id": "node_modules/@sanity/client/dist/index.browser.js -> ./_chunks-es/stegaEncodeSourceMap.js",
     "files": [
-      "static/chunks/139.f4f01ae9679faf40.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_client_dist__chunks-es_stegaEncodeSourceMap_js.js"
     ]
   },
   "node_modules/@sanity/client/dist/index.browser.js -> @sanity/eventsource": {
-    "id": 46247,
+    "id": "node_modules/@sanity/client/dist/index.browser.js -> @sanity/eventsource",
     "files": [
-      "static/chunks/247.95e0addaa457f6ba.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_eventsource_browser_js.js"
     ]
   },
   "node_modules/@sanity/next-loader/dist/client-components/live-stream.js -> ../_chunks-es/SanityLiveStream.js": {
-    "id": 35133,
+    "id": "node_modules/@sanity/next-loader/dist/client-components/live-stream.js -> ../_chunks-es/SanityLiveStream.js",
     "files": [
-      "static/chunks/133.15341f85415ff78c.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_next-loader_dist__chunks-es_SanityLiveStream_js.js"
     ]
   },
   "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/PresentationComlink.js": {
-    "id": 11803,
+    "id": "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/PresentationComlink.js",
     "files": [
-      "static/chunks/803.d61d6d6568c95576.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_next-loader_dist__chunks-es_PresentationComlink_js.js"
     ]
   },
   "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/RefreshOnFocus.js": {
-    "id": 21313,
+    "id": "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/RefreshOnFocus.js",
     "files": [
-      "static/chunks/313.ff2cbf11febe1981.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_next-loader_dist__chunks-es_RefreshOnFocus_js.js"
     ]
   },
   "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/RefreshOnMount.js": {
-    "id": 98122,
+    "id": "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/RefreshOnMount.js",
     "files": [
-      "static/chunks/122.5ddad486a44ce0c9.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_next-loader_dist__chunks-es_RefreshOnMount_js.js"
     ]
   },
   "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/RefreshOnReconnect.js": {
-    "id": 10153,
+    "id": "node_modules/@sanity/next-loader/dist/client-components/live.js -> ../_chunks-es/RefreshOnReconnect.js",
     "files": [
-      "static/chunks/153.39a5f557d3b272f8.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_next-loader_dist__chunks-es_RefreshOnReconnect_js.js"
     ]
   },
   "node_modules/@sanity/next-loader/node_modules/@sanity/client/dist/index.browser.js -> ./_chunks-es/stegaEncodeSourceMap.js": {
-    "id": 96138,
+    "id": "node_modules/@sanity/next-loader/node_modules/@sanity/client/dist/index.browser.js -> ./_chunks-es/stegaEncodeSourceMap.js",
     "files": [
-      "static/chunks/138.a91c609bd332d8bd.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_next-loader_node_modules_sanity_client_dist__chunks-es-c3fdbc.js"
     ]
   },
   "node_modules/@sanity/next-loader/node_modules/@sanity/client/dist/index.browser.js -> @sanity/eventsource": {
-    "id": 46247,
+    "id": "node_modules/@sanity/next-loader/node_modules/@sanity/client/dist/index.browser.js -> @sanity/eventsource",
     "files": [
-      "static/chunks/247.95e0addaa457f6ba.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_eventsource_browser_js.js"
     ]
   },
   "node_modules/@sanity/ui/dist/_chunks-es/_visual-editing.mjs -> ./refractor.mjs": {
-    "id": 80083,
+    "id": "node_modules/@sanity/ui/dist/_chunks-es/_visual-editing.mjs -> ./refractor.mjs",
     "files": [
-      "static/chunks/83.eb86ed3c386c5989.js"
+      "static/chunks/_app-pages-browser_node_modules_sanity_ui_dist__chunks-es_refractor_mjs.js"
     ]
   },
   "node_modules/next-sanity/dist/visual-editing/client-component.js -> ../_chunks-es/VisualEditing.js": {
-    "id": 6958,
+    "id": "node_modules/next-sanity/dist/visual-editing/client-component.js -> ../_chunks-es/VisualEditing.js",
     "files": [
-      "static/chunks/06f0e697.10a17f4d9f5dc96a.js",
-      "static/chunks/c0e7568e.4b2b1ac93134aa5e.js",
-      "static/chunks/3204862b.bd455a40387ace7c.js",
-      "static/chunks/843.2179a16236864c0d.js"
+      "static/chunks/_app-pages-browser_node_modules_next-sanity_dist__chunks-es_VisualEditing_js.js"
     ]
   }
 }

@@ -22,20 +22,29 @@ export default function LanguageSwitcher({ className, variant = "default" }: Lan
   useEffect(() => {
     // Initialize Weglot status checking
     const checkWeglot = () => {
-      if (typeof window !== "undefined" && window.Weglot) {
+      // Check if Weglot is defined AND initialized
+      if (typeof window !== "undefined" && window.Weglot && window.Weglot.initialized) {
         setCurrentLang(window.Weglot.getCurrentLang());
-        
-        // Listen for language changes
-        window.Weglot.on("languageChanged", (newLang: string) => {
-          setCurrentLang(newLang);
-        });
-        
-        // Listen for initialization
-        window.Weglot.on("initialized", () => {
-          setCurrentLang(window.Weglot.getCurrentLang());
-        });
+      } else if (typeof window !== "undefined" && window.Weglot) {
+        // Defined but not initialized - wait for event
+        // (This handles the warning: "Weglot must be initialized to use it")
       }
     };
+
+    // Listen for language changes
+    if (typeof window !== "undefined" && window.Weglot) {
+       try {
+         window.Weglot.on("languageChanged", (newLang: string) => {
+           setCurrentLang(newLang);
+         });
+         
+         window.Weglot.on("initialized", () => {
+           setCurrentLang(window.Weglot.getCurrentLang());
+         });
+       } catch (e) {
+         // Ignore initialization errors during hydration
+       }
+    }
 
     // Check immediately and then poll briefly in case script loads async
     checkWeglot();
@@ -51,11 +60,11 @@ export default function LanguageSwitcher({ className, variant = "default" }: Lan
   }, []);
 
   const toggleLanguage = () => {
-    if (typeof window !== "undefined" && window.Weglot) {
+    if (typeof window !== "undefined" && window.Weglot && window.Weglot.initialized) {
       const nextLang = currentLang === "en" ? "es" : "en";
       window.Weglot.switchTo(nextLang);
     } else {
-      console.warn("Weglot not loaded yet");
+      console.warn("Weglot not fully initialized yet");
     }
   };
 
