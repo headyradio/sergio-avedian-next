@@ -29,7 +29,7 @@ interface KitSubscriber {
 async function kitFetch<T>(
   endpoint: string,
   options: RequestInit = {}
-): Promise<KitApiResponse<T>> {
+): Promise<T> {
   const apiKey = process.env.KIT_API_KEY;
   
   if (!apiKey) {
@@ -52,6 +52,8 @@ async function kitFetch<T>(
     );
   }
 
+  // Kit V4 API returns different root keys (e.g. { broadcast: ... }, { subscribers: ... })
+  // depending on the endpoint, so we just return the raw JSON.
   return response.json();
 }
 
@@ -120,7 +122,7 @@ interface KitBroadcastParams {
  * Note: V4 API might use /broadcasts
  */
 export async function createBroadcast(params: KitBroadcastParams) {
-  return kitFetch<{ id: number; subject: string; state: string }>('/broadcasts', {
+  return kitFetch<{ broadcast: { id: number; subject: string; state: string } }>('/broadcasts', {
     method: 'POST',
     body: JSON.stringify(params),
   });

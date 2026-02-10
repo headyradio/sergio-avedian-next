@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
       excerpt,
       mainImage, // Alias assumed handled in query or we map it here
       coverImage, // Fallback
-      body,
+      "body": content,
       publishedAt,
       "authorName": author->name
     }`;
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
 
     // Convert Portable Text Body to HTML
     const bodyHtml = article.body ? toHTML(article.body, { components: portableTextComponents }) : "";
-
+    
     // Assemble Full Email HTML
     const emailTemplate = `
       <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; max-width: 640px; margin: 0 auto; padding: 20px;">
@@ -137,11 +137,11 @@ export async function POST(request: NextRequest) {
       description: `Drafted via Sanity Connect on ${new Date().toLocaleString()}`
     });
 
-    console.log(`Draft created for ${article.title} (Kit ID: ${broadcast.data?.id})`);
+    console.log(`Draft created for ${article.title} (Kit ID: ${broadcast.broadcast?.id})`);
 
     return NextResponse.json({ 
       success: true, 
-      broadcastId: broadcast.data?.id,
+      broadcastId: broadcast.broadcast?.id,
       message: "Draft created successfully with full content" 
     }, {
       headers: corsHeaders
