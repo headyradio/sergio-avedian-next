@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -61,8 +62,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="alternate" hrefLang="en" href="https://sergioavedian.com" />
+        <link rel="alternate" hrefLang="es" href="https://es.sergioavedian.com" />
+      </head>
       <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
         <Providers>{children}</Providers>
+        <Script
+          id="weglot-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+             __html: `
+              Weglot.initialize({
+                api_key: '${process.env.NEXT_PUBLIC_WEGLOT_API_KEY}',
+                hide_switcher: true,
+                auto_switch: false,
+              });
+            `,
+          }}
+        />
+        <Script
+          src="https://cdn.weglot.com/weglot.min.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

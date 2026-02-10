@@ -10,6 +10,7 @@ import SubscribeDropdown from "./SubscribeDropdown";
 import EmailSubscriptionModal from "./EmailSubscriptionModal";
 import SearchModal from "./SearchModal";
 import Image from "next/image";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -88,6 +89,10 @@ const Navigation = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-6">
+            <LanguageSwitcher />
+            {/* Divider */}
+            <div className="h-6 w-px bg-border/40" />
+            
             <Button 
               variant="ghost" 
               size="icon" 
@@ -169,6 +174,11 @@ const Navigation = () => {
                 </a>
               )
             )}
+            {/* Mobile Language Switcher */}
+            <div className="py-2 border-b border-nav-border/50 mb-2">
+              <LanguageSwitcher variant="mobile" />
+            </div>
+
             <div className="flex items-center space-x-3 pt-2">
               <Button 
                 variant="ghost" 

@@ -91,8 +91,22 @@ export async function POST(request: NextRequest) {
     const rawImage = article.mainImage || article.coverImage;
     const heroImageUrl = rawImage ? urlForImage(rawImage).width(800).url() : "";
 
+    // Remove duplicate title from body if present
+    // Often content starts with an H1 that duplicates the metadata title
+    let portableTextBody = article.body || [];
+    if (portableTextBody.length > 0 && article.title) {
+      const firstBlock = portableTextBody[0];
+      if (firstBlock._type === 'block' && ['h1', 'h2'].includes(firstBlock.style)) {
+         const firstBlockText = firstBlock.children?.map((c: any) => c.text).join('').trim();
+         if (firstBlockText && firstBlockText.toLowerCase() === article.title.trim().toLowerCase()) {
+            console.log(`[newsletter-draft] Removing duplicate title from body: "${firstBlockText}"`);
+            portableTextBody = portableTextBody.slice(1);
+         }
+      }
+    }
+
     // Convert Portable Text Body to HTML
-    const bodyHtml = article.body ? toHTML(article.body, { components: portableTextComponents }) : "";
+    const bodyHtml = portableTextBody.length > 0 ? toHTML(portableTextBody, { components: portableTextComponents }) : "";
     
     // Assemble Full Email HTML
     const emailTemplate = `
