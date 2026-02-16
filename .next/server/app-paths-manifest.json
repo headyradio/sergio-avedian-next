@@ -1,6 +1,6 @@
 {
-  "/blog/[slug]/page": "app/blog/[slug]/page.js",
-  "/api/generate-audio/route": "app/api/generate-audio/route.js",
+  "/page": "app/page.js",
   "/blog/page": "app/blog/page.js",
-  "/page": "app/page.js"
+  "/blog/[slug]/page": "app/blog/[slug]/page.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }
