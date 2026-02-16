@@ -1,5 +1,6 @@
 {
   "/blog/[slug]/page": "app/blog/[slug]/page.js",
+  "/api/generate-audio/route": "app/api/generate-audio/route.js",
   "/blog/page": "app/blog/page.js",
   "/page": "app/page.js"
 }

@@ -81,6 +81,8 @@ export default function RootLayout({
                 api_key: '${process.env.NEXT_PUBLIC_WEGLOT_API_KEY}',
                 hide_switcher: true,
                 auto_switch: false,
+                dynamics: [{ value: 'body', property: 'textContent' }],
+                wait_transition: true,
               });
             `,
           }}
