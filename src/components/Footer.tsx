@@ -165,7 +165,7 @@ const Footer = () => {
         <div className="border-t border-border/40 mt-10 pt-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
             <div className="flex items-center gap-1">
-              <span>© 2025 Sergio Avedian. All rights reserved.</span>
+              <span>© 2026 Sergio Avedian Inc. All rights reserved.</span>
             </div>
             <div className="flex items-center gap-8">
               <Link href="/privacy-policy" className="hover:text-text-secondary transition-colors">
