@@ -5,55 +5,52 @@ import { usePathname } from "next/navigation";
 
 /**
  * Watches for Next.js client-side route changes and forces Weglot
- * to re-translate the new DOM content. Without this, navigating
- * via <Link> swaps the page content but Weglot doesn't re-scan.
+ * to re-translate the entire page via addNodes(document.body).
  *
- * Strategy: After each route change, if the current language is not
- * English, we force a full Weglot re-translate by switching briefly
- * to English and back. We also set up a MutationObserver on <main>
- * to catch any late-rendering content.
+ * Key insight: Next.js client-side navigation replaces DOM nodes that
+ * Weglot has already translated, causing them to revert to English.
+ * Calling addNodes(body) tells Weglot to re-scan everything.
  */
 const WeglotRouteHandler = () => {
   const pathname = usePathname();
   const prevPathname = useRef(pathname);
-  const retranslateTimer = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    // Skip the initial mount — only act on actual navigation
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
     if (prevPathname.current === pathname) return;
     prevPathname.current = pathname;
 
-    if (typeof window === "undefined" || !window.Weglot || !window.Weglot.initialized) return;
+    // Clear any pending refresh from a previous navigation
+    if (timerRef.current) clearTimeout(timerRef.current);
 
-    const currentLang = window.Weglot.getCurrentLang();
+    // Wait for React to finish rendering the new route, then re-translate
+    timerRef.current = setTimeout(() => {
+      if (
+        typeof window === "undefined" ||
+        !window.Weglot ||
+        !window.Weglot.initialized
+      )
+        return;
 
-    // If user is viewing in a non-default language, force re-translate
-    if (currentLang && currentLang !== "en") {
-      // Clear any pending retranslation
-      if (retranslateTimer.current) clearTimeout(retranslateTimer.current);
+      const currentLang = window.Weglot.getCurrentLang();
+      if (!currentLang || currentLang === "en") return;
 
-      // Wait for React to finish rendering the new page, then retranslate
-      retranslateTimer.current = setTimeout(() => {
-        if (!window.Weglot || !window.Weglot.initialized) return;
-
-        // Force Weglot to re-scan by switching to English first
-        window.Weglot.switchTo("en");
-        
-        // Then switch back after Weglot has reset
-        setTimeout(() => {
-          if (window.Weglot && window.Weglot.initialized) {
-            window.Weglot.switchTo(currentLang);
-          }
-        }, 300);
-      }, 500); // Give React 500ms to render the new route
-    }
-
-    return () => {
-      if (retranslateTimer.current) clearTimeout(retranslateTimer.current);
-    };
+      // addNodes re-scans the given subtree and translates any new text
+      // We target document.body so the header, footer, AND content are covered
+      if (typeof window.Weglot.addNodes === "function") {
+        window.Weglot.addNodes(document.body);
+      }
+    }, 500);
   }, [pathname]);
 
   return null;
 };
 
 export default WeglotRouteHandler;
+

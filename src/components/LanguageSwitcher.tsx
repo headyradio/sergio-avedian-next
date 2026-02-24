@@ -73,7 +73,7 @@ const LanguageSwitcher = ({ variant = "desktop" }: LanguageSwitcherProps) => {
       aria-label="Switch language"
     >
       <Globe className="h-4 w-4" />
-      <span>{currentLang === "en" ? "ES" : "EN"}</span>
+      <span>{currentLang === "en" ? "Español" : "English"}</span>
     </button>
   );
 };

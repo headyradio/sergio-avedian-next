@@ -3,23 +3,23 @@
 import React from "react";
 
 const MissionStatement = () => {
+
   return (
-    <div className="container mx-auto px-4 mb-12 lg:mb-20">
-      <div className="max-w-4xl mx-auto text-center bg-card/40 border border-primary/10 rounded-2xl p-8 backdrop-blur-sm shadow-sm relative overflow-hidden">
-        {/* Decorative gradient blob */}
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-blue-500/5 rounded-full blur-3xl" />
+    <section className="section-spacing">
+      <div className="editorial-container">
+        <div className="max-w-3xl">
+          {/* Label */}
+          <span className="text-xs font-semibold tracking-[0.25em] text-primary uppercase mb-6 block">
+            Mission
+          </span>
 
-        <div className="relative z-10">
-          <h2 className="text-xs font-bold tracking-[0.2em] text-primary uppercase mb-4 opacity-80">
-            Mission Statement
-          </h2>
-
-          <p className="text-xl md:text-2xl font-serif italic text-foreground mb-6">
+          {/* Quote — serif, large, left-aligned */}
+          <blockquote className="text-2xl md:text-3xl lg:text-4xl font-display italic text-text-primary leading-snug mb-8">
             "Financial freedom begins with financial literacy."
-          </p>
+          </blockquote>
 
-          <div className="space-y-4 text-muted-foreground text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+          {/* Body text — left-aligned, readable width */}
+          <div className="space-y-5 text-text-secondary text-base lg:text-lg leading-relaxed max-w-[65ch]">
             <p>
               My mission is to empower people to take ownership of their
               financial lives by giving them the knowledge, tools, and clarity
@@ -30,14 +30,14 @@ const MissionStatement = () => {
               stress, expand opportunity, and help individuals build lasting
               independence, resilience, and long-term optionality.
             </p>
-            <p className="font-medium text-foreground pt-2 not-italic">
-              Financial literacy isn’t about getting everything right, it’s
+            <p className="font-medium text-text-primary">
+              Financial literacy isn't about getting everything right — it's
               about having clarity, confidence, and control over your future.
             </p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

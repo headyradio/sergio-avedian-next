@@ -32,9 +32,9 @@ const SubscribeDropdown = ({ variant = "cta", size = "sm", className }: Subscrib
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={variant} size={size} className={className}>
+          <Button variant={variant} size={size} className={className} aria-label="Subscribe options">
             Subscribe
-            <ChevronDown className="ml-2 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            <ChevronDown className="ml-2 h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" aria-hidden="true" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent 

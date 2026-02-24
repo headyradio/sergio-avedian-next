@@ -6,7 +6,9 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: false, // Always bypass CDN for fresh data when possible
+  stega: { enabled: false },
+  fetch: { cache: 'no-store' } // Ensure Next.js doesn't aggressively cache the CMS data
 });
 
 // Server-side client with write access
@@ -16,6 +18,8 @@ export const serverClient = createClient({
   apiVersion: '2024-01-01',
   useCdn: false,
   token: process.env.SANITY_API_TOKEN,
+  stega: { enabled: false },
+  fetch: { cache: 'no-store' }
 });
 
 const builder = imageUrlBuilder(client);

@@ -53,12 +53,12 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-surface border-t border-card-border">
-      <div className="editorial-container py-16 lg:py-20">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12 mb-12">
+    <footer className="bg-black border-t border-white/10">
+      <div className="editorial-container py-12 lg:py-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16 mb-16">
           {/* Brand Section */}
           <div className="lg:col-span-1">
-            <div className="mb-4">
+            <div className="mb-6">
               <Image 
                 src="/sergio-avedian-logo.png"
                 alt="Sergio Avedian" 
@@ -67,14 +67,14 @@ const Footer = () => {
                 className="h-12 w-auto object-contain"
               />
             </div>
-            <p className="text-text-secondary mb-6 leading-relaxed">
+            <p className="text-text-secondary mb-8 leading-relaxed max-w-sm">
               Practical, no‑hype guidance and insights from Sergio Avedian — 35+ years on Wall Street — focused on building wealth without a financial advisor.
             </p>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-text-muted hover:text-primary"
+                className="text-text-muted hover:text-primary transition-colors"
                 onClick={() => window.open("https://x.com/sergioaved", "_blank", "noopener noreferrer")}
                 aria-label="Visit Sergio Avedian on X.com"
               >
@@ -85,7 +85,7 @@ const Footer = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-text-muted hover:text-primary"
+                className="text-text-muted hover:text-primary transition-colors"
                 onClick={() => window.open("https://www.youtube.com/@SergioAvedian/", "_blank", "noopener noreferrer")}
                 aria-label="Visit Sergio Avedian on YouTube"
               >
@@ -94,7 +94,7 @@ const Footer = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-text-muted hover:text-primary"
+                className="text-text-muted hover:text-primary transition-colors"
                 onClick={() => window.open("https://www.linkedin.com/in/sergio-avedian-9939291/", "_blank", "noopener noreferrer")}
                 aria-label="Visit Sergio Avedian on LinkedIn"
               >
@@ -103,7 +103,7 @@ const Footer = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="text-text-muted hover:text-primary"
+                className="text-text-muted hover:text-primary transition-colors"
                 asChild
               >
                 <Link href="/contact" aria-label="Contact Sergio Avedian">
@@ -116,10 +116,10 @@ const Footer = () => {
           {/* Footer Links */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h3 className="text-lg font-semibold text-text-primary mb-4">
+              <h3 className="text-base font-semibold text-text-primary mb-5 tracking-wide uppercase text-sm">
                 {section.title}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-4">
                 {section.links.map((link) => (
                   <li key={link.label}>
                     {link.type === "internal" ? (
@@ -155,26 +155,26 @@ const Footer = () => {
         </div>
 
         {/* Investment Disclaimer */}
-        <div className="mt-12 p-4 bg-surface-secondary/50 rounded-lg border border-border/30">
-          <p className="text-xs text-text-secondary/80 leading-relaxed text-center">
+        <div className="mt-16 p-5 bg-white/5 rounded-lg border border-white/10">
+          <p className="text-xs text-text-muted leading-relaxed text-center">
             <strong className="text-text-secondary">DISCLAIMER:</strong> Investments or strategies mentioned on this channel may not be suitable for you and you should make your own independent decisions. You should strongly consider seeking advice from an investment advisor. Past performance is not indicative of future results.
           </p>
         </div>
 
         {/* Bottom Copyright Section */}
-        <div className="border-t border-border/40 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-secondary/80">
+        <div className="border-t border-border/40 mt-10 pt-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-text-muted">
             <div className="flex items-center gap-1">
               <span>© 2025 Sergio Avedian. All rights reserved.</span>
             </div>
-            <div className="flex items-center gap-6">
-              <Link href="/privacy-policy" className="hover:text-primary transition-colors">
+            <div className="flex items-center gap-8">
+              <Link href="/privacy-policy" className="hover:text-text-secondary transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms-of-service" className="hover:text-primary transition-colors">
+              <Link href="/terms-of-service" className="hover:text-text-secondary transition-colors">
                 Terms of Service
               </Link>
-              <Link href="/cookie-policy" className="hover:text-primary transition-colors">
+              <Link href="/cookie-policy" className="hover:text-text-secondary transition-colors">
                 Cookie Policy
               </Link>
             </div>

@@ -11,6 +11,7 @@ import {
 import { Crown, Badge, Video, Users, Clock, Info } from "lucide-react";
 
 const GoldSubscriptionSection = () => {
+
   const benefits = [
     {
       icon: Badge,
@@ -47,64 +48,72 @@ const GoldSubscriptionSection = () => {
 
   return (
     <TooltipProvider>
-      <section className="py-12">
+      <section className="section-spacing section-cream">
         <div className="editorial-container">
-          <Card className="overflow-hidden bg-gradient-to-br from-amber-950/30 to-yellow-900/20 border-amber-800/30">
-            <CardContent className="p-6 lg:p-8">
-              {/* Compact Header Row */}
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-amber-400 to-yellow-500 rounded-lg shrink-0">
-                    <Crown className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl lg:text-2xl font-bold text-text-primary">
-                      Gold Membership
-                    </h2>
-                    <p className="text-sm text-text-secondary">
-                      Exclusive access to Sergio's trading community
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <span className="text-2xl font-bold text-text-primary">
-                      $9.99
-                    </span>
-                    <span className="text-sm text-text-muted">/month</span>
-                  </div>
-                  <Button
-                    onClick={handleJoinMembership}
-                    className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white font-semibold px-6"
-                  >
-                    <Crown className="h-4 w-4 mr-2" />
-                    Join Now
-                  </Button>
-                </div>
-              </div>
-
-              {/* Benefits Grid - Compact */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                {benefits.map((benefit, index) => {
-                  const Icon = benefit.icon;
-                  return (
-                    <div
-                      key={index}
-                      className="flex items-start gap-3 p-3 rounded-lg bg-surface/50 border border-border/30"
-                    >
-                      <Icon className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="text-sm font-medium text-text-primary leading-tight">
-                          {benefit.title}
-                        </h3>
-                      </div>
+          <div>
+            <Card className="overflow-hidden bg-white border-slate-200/60 shadow-lg shadow-black/5">
+              <CardContent className="p-8 lg:p-12">
+                {/* Header Row */}
+                <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8 mb-10">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
+                    <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-primary/10 rounded-lg shrink-0">
+                      <Crown className="h-6 w-6 sm:h-7 sm:w-7 text-primary" aria-hidden="true" />
                     </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+                    <div>
+                      <h2 className="text-2xl lg:text-3xl font-display text-slate-900">
+                        Gold Membership
+                      </h2>
+                      <p className="text-sm text-slate-600 mt-1">
+                        Exclusive access to Sergio's trading community
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 bg-slate-50 sm:bg-transparent p-4 sm:p-0 rounded-xl sm:rounded-none border sm:border-transparent border-slate-100/80">
+                    <div className="text-left sm:text-right flex items-baseline sm:block">
+                      <span className="text-3xl sm:text-4xl font-display font-bold text-slate-900">
+                        $9.99
+                      </span>
+                      <span className="text-sm sm:text-base text-slate-500 ml-1">/month</span>
+                    </div>
+                    <Button
+                      onClick={handleJoinMembership}
+                      className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-primary-foreground font-semibold px-8 py-6 sm:py-3 text-base"
+                      aria-label="Join Sergio Avedian's Gold Membership for $9.99 per month"
+                    >
+                      <Crown className="h-4 w-4 mr-2" aria-hidden="true" />
+                      Join Now
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Benefits Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {benefits.map((benefit, index) => {
+                    const Icon = benefit.icon;
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md hover:bg-white"
+                      >
+                        <div className="p-2 bg-primary/10 rounded-lg shrink-0">
+                          <Icon className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-bold text-slate-900 leading-tight mb-1.5">
+                            {benefit.title}
+                          </h3>
+                          <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                            {benefit.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
     </TooltipProvider>

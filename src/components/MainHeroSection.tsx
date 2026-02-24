@@ -8,102 +8,52 @@ import SubscribeDropdown from "@/components/SubscribeDropdown";
 
 const MainHeroSection = () => {
   return (
-    <section className="relative min-h-[75vh] flex items-center bg-background overflow-hidden">
-      {/* Subtle gradient overlay */}
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{ background: 'var(--gradient-mesh)' }}
-      />
+    <section className="relative px-4 md:px-6 lg:px-8 pt-4 pb-0">
+      {/* Full-width rounded image container */}
+      <div className="relative w-full min-h-[85vh] md:min-h-[88vh] lg:min-h-[90vh] rounded-2xl md:rounded-3xl overflow-hidden">
+        {/* Background Image — positioned so Sergio's face is in the upper third */}
+        <Image
+          src="/sergio-sf.png"
+          alt="Sergio Avedian with Golden Gate Bridge, San Francisco"
+          fill
+          className="object-cover object-[center_25%]"
+          priority
+          sizes="100vw"
+        />
 
-      <div className="editorial-container relative z-10 py-12 lg:py-16">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          
-          {/* Content Column */}
-          <div className="space-y-6">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-surface border border-border">
-              <span className="text-sm font-medium text-text-secondary">
-                35+ Years Wall Street Experience
-              </span>
-            </div>
+        {/* Bottom-heavy gradient — clear at top, strong at bottom for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 via-30% to-transparent to-60%" />
 
-            {/* Headline - Slide deck style: Large, bold, clean */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl leading-[1.1]">
-              Build Wealth
-              <span className="block text-primary mt-2">Without a Financial Advisor</span>
-            </h1>
+        {/* Content — anchored to center-bottom */}
+        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center text-center px-6 sm:px-8 md:px-10 pb-8 md:pb-12 lg:pb-14">
+          {/* Headline */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.5rem] 2xl:text-[4rem] font-display leading-[1.1] md:leading-[1.08] tracking-wide text-white drop-shadow-lg w-full max-w-lg md:max-w-none text-center whitespace-normal md:whitespace-nowrap text-balance md:text-auto mb-2 lg:mb-3">
+            Build Wealth Without a{" "}
+            <span className="block md:inline lg:mt-0 mt-1 md:text-primary text-primary">Financial Advisor</span>
+          </h1>
 
-            {/* Subheadline with divider like slide deck */}
-            <div className="border-l-4 border-primary pl-6">
-              <p className="text-xl text-text-secondary leading-relaxed max-w-lg">
-                Practical, no-hype guidance from Sergio Avedian — 35+ years on Wall Street. 
-                Master proven strategies for long-term wealth building.
-              </p>
-            </div>
+          {/* Subheadline */}
+          <p className="text-white/80 text-xs sm:text-sm md:text-base font-medium tracking-wide drop-shadow-md max-w-2xl">
+            Master proven strategies for long-term wealth building
+          </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <SubscribeDropdown variant="cta" size="lg" className="bg-primary hover:bg-primary-hover text-primary-foreground font-semibold px-8 py-4 rounded-lg shadow-glow" />
-              <Link href="/coaching">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto group border-2 border-text-secondary/30 hover:border-primary text-text-primary hover:text-primary">
-                  Get Coaching
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </div>
-
-            {/* Social Proof Stats */}
-            <div className="flex items-center gap-8 pt-6">
-              <div>
-                <div className="text-3xl font-bold text-primary">10K+</div>
-                <div className="text-sm text-text-muted uppercase tracking-wider">Subscribers</div>
-              </div>
-              <div className="h-12 w-px bg-border" />
-              <div>
-                <div className="text-3xl font-bold text-primary">500+</div>
-                <div className="text-sm text-text-muted uppercase tracking-wider">Videos</div>
-              </div>
-              <div className="h-12 w-px bg-border" />
-              <div>
-                <div className="text-3xl font-bold text-primary">35+</div>
-                <div className="text-sm text-text-muted uppercase tracking-wider">Years</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Image Column */}
-          <div className="relative flex justify-center lg:justify-end">
-            <div className="relative">
-              {/* Subtle shadow behind image */}
-              <div className="absolute -inset-4 bg-primary/10 rounded-lg blur-2xl" />
-              <Image
-                src="/sergio-hero-main.png"
-                alt="Sergio Avedian - Wall Street Veteran"
-                width={520}
-                height={620}
-                className="relative rounded-lg shadow-elegant"
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              
-              {/* X.com Callout Badge */}
-              <a 
-                href="https://x.com/sergioaved" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="absolute -bottom-6 -left-6 z-20 flex items-center gap-3 p-4 rounded-xl bg-surface/90 backdrop-blur-md border border-white/10 shadow-lg hover:scale-105 transition-transform duration-300 group"
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-6 md:mt-8">
+            <SubscribeDropdown
+              variant="cta"
+              size="lg"
+              className="bg-primary hover:bg-primary-hover text-primary-foreground font-semibold px-8 py-3 rounded-lg text-sm shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300"
+            />
+            <Link href="/coaching">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto group bg-white/10 backdrop-blur-sm border border-white/30 text-white hover:bg-white/20 hover:border-white/50 transition-all duration-300 px-8 py-3 rounded-lg text-sm"
               >
-                <div className="bg-black p-2 rounded-lg text-white">
-                  <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-                    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
-                  </svg>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-text-secondary font-medium uppercase tracking-wider">Follow on X</span>
-                  <span className="text-sm font-bold text-text-primary group-hover:text-primary transition-colors">@sergioaved</span>
-                </div>
-              </a>
-            </div>
+                Get Coaching
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

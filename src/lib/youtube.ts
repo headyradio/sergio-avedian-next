@@ -265,12 +265,19 @@ export async function getLiveStreams(limit = 6): Promise<Video[]> {
   // Enhance with duration details
   const enhanced = await enhanceVideosWithDetails(uniqueVideos);
 
-  // Filter out shorts (must be > 60 seconds) and sort by date
+  // Filter out shorts (must be > 60 seconds), filter by allowed titles, and sort by date
   const filtered = enhanced
     .filter((v: any) => {
       const seconds = getDurationSeconds(v._isoDuration);
       // Must be longer than 60 seconds (not a short)
-      return seconds > 60;
+      if (seconds <= 60) return false;
+
+      // Only include specific live stream titles as requested
+      const titleLower = v.title.toLowerCase();
+      const isPowerHour = titleLower.includes('power hour');
+      const isTrading = titleLower.includes('trading with sergio');
+
+      return isPowerHour || isTrading;
     })
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 

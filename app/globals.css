@@ -1,82 +1,79 @@
-/* Fonts loaded via index.html for better performance */
+/* 2026 Professional Design System — Sergio Avedian */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Modern Dark Design System - Sleek & Contemporary */
-
 @layer base {
   :root {
-    /* Deep Charcoal + Electric Blue - Refined Dark Theme */
-    --background: 220 15% 8%;          /* #101418 Near-black charcoal */
-    --foreground: 0 0% 98%;            /* Off-white */
-    
-    --surface: 220 12% 12%;            /* #181C22 Dark card bg */
-    --surface-secondary: 220 10% 15%;  /* Slightly lighter */
-    --surface-tertiary: 220 8% 85%;    /* Light gray panels */
-    
+    /* ── Forest Green Background ── */
+    --background: 145 20% 15%;
+    --foreground: 45 30% 90%;
+
+    /* Surface Tiers — progressively lighter greens */
+    --surface: 145 18% 19%;
+    --surface-secondary: 145 15% 23%;
+    --surface-tertiary: 145 12% 27%;
+
     /* Typography */
-    --text-primary: 0 0% 98%;          /* Near-white */
-    --text-secondary: 220 5% 75%;      /* Soft gray */
-    --text-muted: 220 5% 50%;          /* Dimmed */
-    --text-inverse: 220 15% 8%;        /* Dark text on light */
-    
-    /* Brand Colors - Electric Blue Accent */
-    --brand-primary: 195 100% 50%;     /* #00BFFF Electric Blue */
-    --brand-secondary: 220 100% 65%;   /* Deeper blue */
-    --brand-accent: 195 100% 60%;      /* Lighter cyan-blue */
-    
-    /* Interactive - Blue */
-    --primary: 195 100% 50%;           /* Electric Blue */
-    --primary-hover: 195 100% 60%;
-    --primary-foreground: 220 15% 8%;  /* Dark text on blue */
-    
-    --secondary: 220 12% 15%;
-    --secondary-hover: 220 12% 20%;
-    --secondary-foreground: 0 0% 98%;
-    
-    /* CTA - Blue */
-    --cta-primary: 195 100% 50%;
-    --cta-primary-hover: 195 100% 60%;
-    --cta-foreground: 220 15% 8%;
-    
-    /* Cards */
-    --card: 220 12% 12%;
-    --card-foreground: 0 0% 98%;
-    --card-border: 220 10% 20%;
-    --card-border-hover: 195 50% 40%;
-    
+    --text-primary: 45 30% 92%;
+    --text-secondary: 45 15% 72%;
+    --text-muted: 145 8% 50%;
+    --text-inverse: 145 20% 15%;
+
+    /* Brand — Burnt Orange (energy & action) */
+    --brand-primary: 28 81% 54%;
+    --brand-secondary: 95 37% 44%;
+    --brand-accent: 45 38% 78%;
+
+    /* Primary Interactive — Burnt Orange */
+    --primary: 28 81% 54%;
+    --primary-hover: 28 81% 62%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary — Olive Green */
+    --secondary: 95 37% 44%;
+    --secondary-hover: 95 37% 52%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* CTA — Burnt Orange */
+    --cta-primary: 28 81% 54%;
+    --cta-primary-hover: 28 81% 62%;
+    --cta-foreground: 0 0% 100%;
+
+    /* Cards — Dark Forest surface */
+    --card: 145 18% 19%;
+    --card-foreground: 45 30% 90%;
+    --card-border: 145 12% 26%;
+    --card-border-hover: 95 25% 38%;
+
     /* Navigation */
-    --nav-background: 220 15% 8% / 0.95;
-    --nav-border: 220 10% 18%;
-    --nav-hover: 220 12% 15%;
-    
+    --nav-background: 145 20% 15% / 0.95;
+    --nav-border: 145 12% 22%;
+    --nav-hover: 145 15% 20%;
+
     /* Semantic */
-    --destructive: 0 75% 55%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
-    --success: 150 60% 45%;
-    --warning: 40 95% 55%;
-    
+    --success: 95 50% 45%;
+    --warning: 40 90% 55%;
+
     /* System */
-    --border: 220 10% 18%;
-    --input: 220 12% 14%;
-    --ring: 195 100% 50%;
-    --radius: 10px;
-    
-    /* Gradients */
-    --gradient-hero: linear-gradient(180deg, hsl(220 15% 8%) 0%, hsl(220 12% 6%) 100%);
-    --gradient-mesh: radial-gradient(ellipse at 25% 0%, hsl(195 100% 50% / 0.08), transparent 50%),
-                     radial-gradient(ellipse at 75% 100%, hsl(220 100% 65% / 0.05), transparent 50%);
-    --gradient-card: linear-gradient(145deg, hsl(220 12% 12%), hsl(220 12% 10%));
-    
-    /* Shadows - Blue tinted */
-    --shadow-subtle: 0 2px 8px rgba(0,0,0,0.4);
-    --shadow-medium: 0 4px 16px rgba(0,0,0,0.5);
-    --shadow-large: 0 12px 32px rgba(0,0,0,0.6);
-    --shadow-glow: 0 0 25px hsl(195 100% 50% / 0.25);
-    --shadow-elegant: 0 15px 50px -12px rgba(0,0,0,0.7);
-    
+    --border: 145 12% 26%;
+    --input: 145 15% 21%;
+    --ring: 28 81% 54%;
+    --radius: 8px;
+
+    /* Shadows */
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-elegant: 0 12px 32px -8px rgba(0, 0, 0, 0.45);
+
+    /* Cream Surface (for alternating sections) */
+    --cream: 45 38% 78%;
+    --cream-foreground: 145 25% 15%;
+
     /* Transitions */
     --transition-fast: all 0.15s ease-out;
     --transition-base: all 0.25s ease-out;
@@ -88,337 +85,302 @@
   * {
     @apply border-border;
   }
-  
+
   html {
     scroll-behavior: smooth;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    font-variant-ligatures: common-ligatures;
     -webkit-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans), 'parabolica', sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 400;
     font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: var(--gradient-mesh);
-    -webkit-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-size-adjust: 100%;
   }
-  
-  /* Fixed background only on non-touch devices (avoids iOS Safari bug) */
-  @media (hover: hover) and (pointer: fine) {
-    body {
-      background-attachment: fixed;
-    }
-  }
-  
-  /* iOS Safari stability fixes */
-  @supports (-webkit-touch-callout: none) {
-    .card-premium,
-    .glass-card,
-    article {
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
-  }
-  
-  /* Touch device specific styles */
-  @media (hover: none) and (pointer: coarse) {
-    .editorial-container {
-      touch-action: pan-y;
-    }
-  }
-  
-  /* Modern Typography System - Poppins Headings */
+
+  /* Typography System — Oaks SemiExpanded for headings */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-poppins), 'Poppins', sans-serif;
-    font-weight: 600;
+    font-family: var(--font-display), 'oaks-semiexpanded', sans-serif;
+    font-weight: 700;
     line-height: 1.15;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.01em;
     color: hsl(var(--text-primary));
   }
-  
+
   h1 {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
   }
-  
+
   h2 {
     font-size: 1.75rem;
-    font-weight: 600;
+    font-weight: 700;
   }
-  
+
   h3 {
     font-size: 1.35rem;
+    font-weight: 600;
   }
-  
+
   @media (min-width: 768px) {
-    h1 {
-      font-size: 3.5rem;
-    }
-    h2 {
-      font-size: 2.5rem;
-    }
-    h3 {
-      font-size: 1.75rem;
-    }
+    h1 { font-size: 3.25rem; }
+    h2 { font-size: 2.5rem; }
+    h3 { font-size: 1.75rem; }
   }
-  
-  .font-mono {
-    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Consolas', monospace;
-    font-feature-settings: "liga" 0;
+
+  @media (min-width: 1024px) {
+    h1 { font-size: 4rem; }
+    h2 { font-size: 2.75rem; }
+    h3 { font-size: 1.85rem; }
   }
-  
+
   /* Enhanced Focus Styles */
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px hsl(var(--ring) / 0.2);
   }
-  
-  /* Selection Styles */
+
+  /* Selection */
   ::selection {
-    background-color: hsl(var(--primary) / 0.3);
+    background-color: hsl(var(--primary) / 0.25);
     color: hsl(var(--text-primary));
   }
-  
-  /* Scrollbar Styling */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--surface));
-  }
-  
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: hsl(var(--background)); }
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--border));
-    border-radius: 4px;
+    border-radius: 3px;
   }
-  
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary) / 0.5);
+    background: hsl(var(--text-muted));
   }
 }
 
 @layer components {
-  /* Modern Container System */
+  /* Container — generous padding */
   .editorial-container {
-    @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
+    @apply max-w-7xl mx-auto;
+    padding-left: clamp(1.5rem, 5vw, 5rem);
+    padding-right: clamp(1.5rem, 5vw, 5rem);
   }
-  
-  /* Glass Morphism Cards */
-  .glass-card {
-    background: var(--gradient-glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--card-border));
-    transition: var(--transition-smooth);
+
+  /* Section Spacing — tighter, professional */
+  .section-spacing {
+    padding-top: clamp(3rem, 5vw, 5rem);
+    padding-bottom: clamp(3rem, 5vw, 5rem);
   }
-  
-  .glass-card:hover {
-    border-color: hsl(var(--card-border-hover));
-    box-shadow: var(--shadow-medium), var(--shadow-glow);
-    transform: translateY(-2px);
+
+  /* Cream Section — light alternating backgrounds */
+  .section-cream {
+    background-color: hsl(var(--cream));
+    color: hsl(var(--cream-foreground));
   }
-  
-  /* Modern Card Hover Effects */
+
+  .section-cream h1, .section-cream h2, .section-cream h3,
+  .section-cream h4, .section-cream h5, .section-cream h6 {
+    color: hsl(var(--cream-foreground));
+  }
+
+  .section-cream p, .section-cream span, .section-cream div {
+    color: hsl(var(--cream-foreground));
+  }
+
+  .section-cream .text-text-secondary {
+    color: hsl(145 15% 30%);
+  }
+
+  .section-cream .text-text-muted {
+    color: hsl(145 10% 40%);
+  }
+
+  .section-cream .border-border {
+    border-color: hsl(145 15% 65%);
+  }
+
+  .section-cream .bg-surface {
+    background-color: hsl(45 30% 72%);
+  }
+
+  /* Card — clean, minimal */
   .card-modern {
     @apply transition-all duration-300 ease-out;
-    background: var(--gradient-card);
+    background: hsl(var(--card));
     border: 1px solid hsl(var(--card-border));
+    border-radius: var(--radius);
   }
-  
+
   .card-modern:hover {
-    border-color: hsl(var(--primary) / 0.3);
-    box-shadow: var(--shadow-large);
-    transform: translateY(-4px) scale(1.02);
-  }
-  
-  /* Premium Card Effects */
-  .card-premium {
-    @apply transition-all duration-300 ease-out;
-    background: var(--gradient-glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--primary) / 0.2);
-    box-shadow: var(--shadow-elegant);
-  }
-  
-  .card-premium:hover {
-    border-color: hsl(var(--primary) / 0.4);
-    box-shadow: var(--shadow-large), var(--shadow-glow);
-    transform: translateY(-6px);
-  }
-  
-  /* Interactive Section Animations */
-  .section-animate {
-    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
-  }
-  
-  .section-animate.in-view {
-    @apply opacity-100 translate-y-0;
-  }
-  
-  /* Floating Elements */
-  .float-animation {
-    animation: float 6s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-  
-  /* Parallax Background Effects */
-  .parallax-bg {
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  
-  /* Enhanced CTA Styles */
-  .cta-electric {
-    background: linear-gradient(135deg, hsl(var(--cta-primary)), hsl(var(--primary)));
-    box-shadow: var(--shadow-glow);
-    transition: var(--transition-base);
-  }
-  
-  .cta-electric:hover {
-    box-shadow: var(--shadow-glow), var(--shadow-large);
+    border-color: hsl(var(--card-border-hover));
+    box-shadow: var(--shadow-medium);
     transform: translateY(-2px);
   }
-  
-  /* Floating Navigation */
-  .nav-floating {
-    background: hsl(var(--nav-background));
-    backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--nav-border));
+
+  /* Utility: Noise Texture */
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
   }
-  
-  /* Text Gradient Effects */
-  .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--brand-secondary)));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+
+  /* Premium Card — subtle accent border */
+  .card-premium {
+    @apply transition-all duration-300 ease-out;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--primary) / 0.15);
+    border-radius: var(--radius);
   }
-  
-  /* Animated Underlines */
+
+  .card-premium:hover {
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: var(--shadow-large);
+    transform: translateY(-2px);
+  }
+
+  /* Glass Card — light glassmorphism */
+  .glass-card {
+    background: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--card-border));
+    border-radius: var(--radius);
+    transition: var(--transition-smooth);
+  }
+
+  .glass-card:hover {
+    border-color: hsl(var(--card-border-hover));
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-2px);
+  }
+
+  /* CTA Button — solid, professional */
+  .cta-electric {
+    background: hsl(var(--cta-primary));
+    color: hsl(var(--cta-foreground));
+    font-weight: 600;
+    transition: var(--transition-base);
+  }
+
+  .cta-electric:hover {
+    background: hsl(var(--cta-primary-hover));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  /* Animated Underline Links */
   .link-animated {
     position: relative;
     transition: var(--transition-base);
   }
-  
+
   .link-animated::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 0;
     width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--brand-secondary)));
-    transition: width var(--transition-base);
+    height: 1px;
+    background: hsl(var(--primary));
+    transition: width 0.3s ease-out;
   }
-  
+
   .link-animated:hover::after {
     width: 100%;
   }
-  
-  /* Modern Prose Styling */
-  .prose-modern {
-    line-height: 1.7;
-    color: hsl(var(--text-secondary));
+
+  /* Text Gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--brand-accent)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
-  
+
+  /* Section Animation (scroll reveal) */
+  .section-animate {
+    @apply opacity-0 translate-y-6 transition-all duration-700 ease-out;
+  }
+
+  .section-animate.in-view {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Prose — article body text */
+  .prose-modern {
+    line-height: 1.75;
+    color: hsl(var(--text-secondary));
+    max-width: 68ch;
+  }
+
   .prose-modern h1, .prose-modern h2, .prose-modern h3 {
     color: hsl(var(--text-primary));
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     margin-bottom: 1rem;
   }
-  
+
   .prose-modern p {
     margin-bottom: 1.5rem;
   }
-  
-  /* Loading States */
+
+  /* Loading Shimmer */
   .loading-shimmer {
-    background: linear-gradient(90deg, 
-      hsl(var(--surface)) 0%, 
-      hsl(var(--surface-secondary)) 50%, 
+    background: linear-gradient(90deg,
+      hsl(var(--surface)) 0%,
+      hsl(var(--surface-secondary)) 50%,
       hsl(var(--surface)) 100%);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
-  
+
   @keyframes shimmer {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
   }
-  
-  /* Glow Effects */
-  .glow-primary {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
-  }
-  
-  .glow-accent {
-    box-shadow: 0 0 20px hsl(var(--brand-accent) / 0.3);
-  }
-  
+
   /* Scrollbar Hide */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-  
-  /* Mobile Touch Target Utilities */
-  .touch-target {
-    @apply min-h-[44px] min-w-[44px];
-  }
-  
-  .touch-target-lg {
-    @apply min-h-[48px] min-w-[48px];
-  }
-  
-  /* Mobile-Friendly Button Utilities */
+
+  /* Touch Targets */
+  .touch-target { @apply min-h-[44px] min-w-[44px]; }
+  .touch-target-lg { @apply min-h-[48px] min-w-[48px]; }
+
+  /* Mobile CTA */
   .mobile-cta {
     @apply w-full sm:w-auto min-h-[48px] px-6 sm:px-8 text-base sm:text-lg;
   }
-  
-  /* Responsive Spacing Utilities */
-  .mobile-padding {
-    @apply p-4 sm:p-6 lg:p-8;
-  }
-  
-  .mobile-gap {
-    @apply gap-3 sm:gap-4 lg:gap-6;
+
+  /* Floating Navigation */
+  .nav-floating {
+    background: hsl(var(--nav-background));
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid hsl(var(--nav-border));
   }
 
-  /* Notion-Style Editor Canvas */
+  /* Notion Editor (blog) */
   .notion-editor {
     font-size: 18px;
-    line-height: 1.7;
+    line-height: 1.75;
     color: hsl(var(--foreground));
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-sans), 'parabolica', sans-serif;
   }
 
   .notion-editor h1 {
     font-size: 42px;
     font-weight: 700;
     line-height: 1.2;
-    margin: 40px 0 8px;
+    margin: 48px 0 12px;
     color: hsl(var(--foreground));
   }
 
@@ -426,7 +388,7 @@
     font-size: 32px;
     font-weight: 600;
     line-height: 1.3;
-    margin: 32px 0 8px;
+    margin: 40px 0 10px;
     color: hsl(var(--foreground));
   }
 
@@ -434,12 +396,12 @@
     font-size: 24px;
     font-weight: 600;
     line-height: 1.4;
-    margin: 24px 0 8px;
+    margin: 32px 0 8px;
     color: hsl(var(--foreground));
   }
 
   .notion-editor p {
-    margin: 8px 0;
+    margin: 10px 0;
     color: hsl(var(--foreground));
   }
 
@@ -449,14 +411,12 @@
     padding-left: 28px;
   }
 
-  .notion-editor li {
-    margin: 6px 0;
-  }
+  .notion-editor li { margin: 6px 0; }
 
   .notion-editor blockquote {
     border-left: 3px solid hsl(var(--primary));
     padding-left: 20px;
-    margin: 20px 0;
+    margin: 24px 0;
     font-style: italic;
     color: hsl(var(--text-secondary));
   }
@@ -485,7 +445,6 @@
     padding: 0;
   }
 
-  /* Placeholder styling */
   .notion-editor .is-empty::before,
   .notion-editor .ProseMirror p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);
@@ -496,35 +455,27 @@
     font-size: 18px;
   }
 
-  .notion-editor .ProseMirror-focused .is-empty::before {
-    color: hsl(var(--text-muted));
-  }
+  .notion-editor .ProseMirror { caret-color: hsl(var(--primary)); }
+  .notion-editor { scroll-behavior: smooth; }
 
-  /* Custom cursor styling for better visibility */
-  .notion-editor .ProseMirror {
-    caret-color: hsl(var(--primary));
-  }
-
-  /* Smooth scrolling for the editor */
-  .notion-editor {
-    scroll-behavior: smooth;
-  }
-
-  /* Tippy.js slash command menu styling */
+  /* Tippy.js styling */
   .tippy-box[data-theme~='light-border'] {
-    background-color: hsl(var(--popover));
-    color: hsl(var(--popover-foreground));
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
     border: 1px solid hsl(var(--border));
     border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-large);
   }
 
-  .tippy-box[data-theme~='light-border'] .tippy-content {
-    padding: 0;
-  }
+  .tippy-box[data-theme~='light-border'] .tippy-content { padding: 0; }
+
+  /* Glow (reduced usage — kept for compatibility) */
+  .glow-primary { box-shadow: none; }
+  .glow-accent { box-shadow: none; }
+
 }
 
-/* Hide default Weglot switcher — custom one is used */
+/* Hide Weglot default switcher */
 .weglot-container {
   display: none !important;
 }

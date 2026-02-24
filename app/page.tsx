@@ -22,6 +22,8 @@ export default async function HomePage() {
     getLiveStreams(6),
     getShorts(10)
   ]);
+  
+  console.log("HOMEPAGE POSTS: ", posts?.length, posts?.[0]?.title);
 
   return (
     <div className="min-h-screen bg-background">
