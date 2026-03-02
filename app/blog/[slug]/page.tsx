@@ -138,7 +138,7 @@ export default async function BlogPostPage({ params }: Props) {
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       
-      <main className="pb-20">
+      <main>
         {/* Back Link */}
         <div className="container mx-auto px-4 py-8">
           <Link 
