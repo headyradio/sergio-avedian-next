@@ -139,20 +139,8 @@ export default async function BlogPostPage({ params }: Props) {
       <Navigation />
       
       <main>
-        {/* Back Link */}
-        <div className="container mx-auto px-4 py-8">
-          <Link 
-            href="/blog" 
-            className="inline-flex items-center text-primary hover:text-primary/80 transition-colors font-medium mb-4"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to All Articles
-          </Link>
-        </div>
-
-        {/* Hero Section */}
-        {/* Optimized: Smaller height on mobile to save LCP pixels */}
-        <div className="relative w-full h-[40vh] min-h-[300px] md:h-[60vh] md:min-h-[500px] flex items-center justify-center mb-12">
+        {/* Hero Section — full-bleed, immersive, back button overlaid */}
+        <div className="relative w-full h-[72vh] min-h-[520px] md:h-[70vh] md:min-h-[560px] flex items-center justify-center mb-10 md:mb-12">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             {post.mainImage ? (
@@ -168,22 +156,37 @@ export default async function BlogPostPage({ params }: Props) {
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800" />
             )}
-            {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black/60 z-10" />
+            {/* Base darkening layer */}
+            <div className="absolute inset-0 bg-black/55 z-10" />
+            {/* Vignette: darkens edges, subtly lifts center text off the image */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.55)_100%)] z-10" />
+            {/* Bottom gradient so content below the hero reads cleanly */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
           </div>
 
-          {/* Hero Content */}
+          {/* Back button — frosted glass pill, overlaid top-left */}
+          <div className="absolute top-5 left-4 z-30">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-xs font-semibold tracking-wide hover:bg-black/60 transition-all duration-200"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              All Articles
+            </Link>
+          </div>
+
+          {/* Hero Content — centered */}
           <div className="relative z-20 container mx-auto px-4 text-center max-w-4xl">
             {post.categories && post.categories.length > 0 && (
-              <span className="inline-block px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-primary uppercase bg-primary/10 rounded-full backdrop-blur-sm border border-primary/20">
+              <span className="inline-block px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-primary uppercase bg-primary/20 rounded-full backdrop-blur-sm border border-primary/30">
                 {post.categories[0].title}
               </span>
             )}
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight [text-shadow:0_2px_20px_rgba(0,0,0,0.9),0_1px_4px_rgba(0,0,0,0.8)]">
               {post.title}
             </h1>
             {post.excerpt && (
-              <p className="text-base md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+              <p className="text-base md:text-xl text-gray-100 max-w-2xl mx-auto leading-relaxed [text-shadow:0_1px_12px_rgba(0,0,0,0.9),0_1px_3px_rgba(0,0,0,0.7)]">
                 {post.excerpt}
               </p>
             )}
@@ -206,41 +209,39 @@ export default async function BlogPostPage({ params }: Props) {
             <article className="flex-1 w-full min-w-0 max-w-3xl mx-auto lg:mx-0">
               
               {/* Post Meta Data Bar */}
-              <div className="flex flex-col md:flex-row items-center justify-between py-6 border-b border-border/40 gap-6 mb-8">
-                <div className="flex flex-wrap items-center gap-6 text-sm text-text-secondary">
+              <div className="flex flex-row items-center justify-between py-4 border-b border-border/40 gap-3 mb-8">
+                <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-text-secondary min-w-0">
                   {post.author && (
-                    <Link href={`/author/${post.author.slug || '#'}`} className="flex items-center gap-2 hover:text-primary transition-colors">
+                    <Link href={`/author/${post.author.slug || '#'}`} className="flex items-center gap-2 hover:text-primary transition-colors shrink-0">
                       {post.author.image ? (
-                        <div className="relative w-8 h-8 rounded-full overflow-hidden border border-primary/20">
-                           <Image 
-                              src={urlForImage(post.author.image).width(64).height(64).url()} 
+                        <div className="relative w-7 h-7 rounded-full overflow-hidden border border-primary/20 shrink-0">
+                           <Image
+                              src={urlForImage(post.author.image).width(64).height(64).url()}
                               alt=""
                               fill
-                              className="object-cover" 
+                              className="object-cover"
                            />
                         </div>
                       ) : (
-                         <User className="w-4 h-4 text-primary" />
+                         <User className="w-4 h-4 text-primary shrink-0" />
                       )}
-                      <span className="font-medium">{post.author.name}</span>
+                      <span className="font-medium truncate">{post.author.name}</span>
                     </Link>
                   )}
+                  <span className="text-border/60 hidden sm:inline">·</span>
                   {post.publishedAt && (
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-primary" />
-                      <time dateTime={post.publishedAt}>
-                        {format(new Date(post.publishedAt), "MMMM d, yyyy")}
-                      </time>
-                    </div>
+                    <time dateTime={post.publishedAt} className="hidden sm:block shrink-0">
+                      {format(new Date(post.publishedAt), "MMM d, yyyy")}
+                    </time>
                   )}
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-primary" />
+                  <span className="text-border/60">·</span>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Clock className="w-3.5 h-3.5 text-primary" />
                     <span>{readingTime} min read</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium text-text-secondary uppercase tracking-wider hidden md:block">Share</span>
+                <div className="flex items-center gap-2 shrink-0">
                   <SocialShareButtons title={post.title} slug={post.slug.current} />
                 </div>
               </div>
