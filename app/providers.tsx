@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { useState } from "react";
 import WeglotRouteHandler from "@/components/WeglotRouteHandler";
+import { WeglotLanguageProvider } from "@/components/WeglotLanguageProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -30,10 +31,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         <TooltipProvider>
-          <WeglotRouteHandler />
-          {children}
-          <Toaster />
-          <Sonner />
+          <WeglotLanguageProvider>
+            <WeglotRouteHandler />
+            {children}
+            <Toaster />
+            <Sonner />
+          </WeglotLanguageProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

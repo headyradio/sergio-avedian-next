@@ -6,7 +6,7 @@ export const maxDuration = 120;
 
 export async function POST(request: NextRequest) {
   try {
-    const { text, slug } = await request.json();
+    const { text, slug, lang = 'en' } = await request.json();
 
     if (!text || !slug) {
       return NextResponse.json(
@@ -15,17 +15,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 1. Check cache first
-    const cachedUrl = await getCachedAudioUrl(slug);
+    // 1. Check cache first (language-aware)
+    const cachedUrl = await getCachedAudioUrl(slug, lang);
     if (cachedUrl) {
-      console.log(`Cache HIT for slug: ${slug}`);
+      console.log(`Cache HIT for slug: ${slug} [${lang}]`);
       return NextResponse.json({ audioUrl: cachedUrl, cached: true });
     }
 
-    console.log(`Cache MISS for slug: ${slug}`);
+    console.log(`Cache MISS for slug: ${slug} [${lang}]`);
 
-    // 2. Generate and cache audio
-    const { audioUrl, audioBuffer } = await generateAudioForArticle(slug, text);
+    // 2. Generate and cache audio (translates internally if lang !== 'en')
+    const { audioUrl, audioBuffer } = await generateAudioForArticle(slug, text, lang);
 
     if (audioUrl) {
       return NextResponse.json({ audioUrl, cached: true });

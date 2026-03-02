@@ -45,13 +45,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Not a post, skipping' }, { status: 200 });
     }
 
-    // Check if audio already exists for this slug
-    const cachedUrl = await getCachedAudioUrl(slug);
-    if (cachedUrl) {
-      console.log(`[sanity-audio] Audio already cached for "${slug}": ${cachedUrl}`);
-      return NextResponse.json({ message: 'Audio already cached', audioUrl: cachedUrl }, { status: 200 });
-    }
-
     // Fetch the full post content from Sanity
     console.log(`[sanity-audio] Fetching post content for slug: ${slug}`);
     const post = await client.fetch(postBySlugQuery, { slug });
@@ -61,17 +54,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    // Build the plain text (same format as the client-side player)
+    // Build the plain text (English source — same format as the client-side player)
     const plainText = `${post.title}. By ${post.author?.name || 'Sergio Avedian'}. ${portableTextToPlainText(post.body)}`;
 
-    // Generate and cache audio
-    const { audioUrl } = await generateAudioForArticle(slug, plainText);
+    const results: Record<string, string | null> = {};
 
-    console.log(`[sanity-audio] Audio generated for "${slug}": ${audioUrl}`);
+    // Generate English and Spanish audio, skipping whichever is already cached
+    for (const lang of ['en', 'es']) {
+      const cached = await getCachedAudioUrl(slug, lang);
+      if (cached) {
+        console.log(`[sanity-audio] "${lang}" audio already cached for "${slug}": ${cached}`);
+        results[lang] = cached;
+        continue;
+      }
+
+      console.log(`[sanity-audio] Generating "${lang}" audio for "${slug}"`);
+      const { audioUrl } = await generateAudioForArticle(slug, plainText, lang);
+      results[lang] = audioUrl;
+      console.log(`[sanity-audio] "${lang}" audio generated: ${audioUrl}`);
+    }
+
     return NextResponse.json({
       message: 'Audio generated successfully',
       slug,
-      audioUrl,
+      audioUrls: results,
     });
   } catch (error) {
     console.error('[sanity-audio] Webhook error:', error);
