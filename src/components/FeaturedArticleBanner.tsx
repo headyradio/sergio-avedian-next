@@ -7,12 +7,12 @@ import Image from "next/image";
 const FeaturedArticleBanner = () => {
 
   return (
-    <section className="border-y border-border/50">
+    <section className="bg-black border-y border-white/10">
       <a
         href="https://www.businessinsider.com/retired-wall-street-trader-drives-for-uber-lyft-2025-12"
         target="_blank"
         rel="noopener noreferrer"
-        className="block py-5 px-6 md:px-8 hover:bg-surface/50 transition-colors duration-300"
+        className="block py-5 px-6 md:px-8 hover:bg-white/5 transition-colors duration-300"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-5 md:gap-8 flex-wrap md:flex-nowrap">
           <div className="flex items-center gap-3">
