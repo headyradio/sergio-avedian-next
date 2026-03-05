@@ -21,14 +21,14 @@
     --text-muted: 145 8% 50%;
     --text-inverse: 145 20% 15%;
 
-    /* Brand — Burnt Orange (energy & action) */
-    --brand-primary: 28 81% 54%;
+    /* Brand — Harvest Gold (energy & action) */
+    --brand-primary: 40 100% 43%;
     --brand-secondary: 95 37% 44%;
     --brand-accent: 45 38% 78%;
 
-    /* Primary Interactive — Burnt Orange */
-    --primary: 28 81% 54%;
-    --primary-hover: 28 81% 62%;
+    /* Primary Interactive — Harvest Gold */
+    --primary: 40 100% 43%;
+    --primary-hover: 40 100% 51%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary — Olive Green */
@@ -36,9 +36,9 @@
     --secondary-hover: 95 37% 52%;
     --secondary-foreground: 0 0% 100%;
 
-    /* CTA — Burnt Orange */
-    --cta-primary: 28 81% 54%;
-    --cta-primary-hover: 28 81% 62%;
+    /* CTA — Harvest Gold */
+    --cta-primary: 40 100% 43%;
+    --cta-primary-hover: 40 100% 51%;
     --cta-foreground: 0 0% 100%;
 
     /* Cards — Dark Forest surface */
@@ -61,7 +61,7 @@
     /* System */
     --border: 145 12% 26%;
     --input: 145 15% 21%;
-    --ring: 28 81% 54%;
+    --ring: 40 100% 43%;
     --radius: 8px;
 
     /* Shadows */
