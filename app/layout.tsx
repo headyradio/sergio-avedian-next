@@ -10,8 +10,8 @@ export const metadata: Metadata = {
     default: "Sergio Avedian - Build Wealth Without a Financial Advisor",
     template: "%s | Sergio Avedian",
   },
-  description: "Expert financial guidance for building wealth independently.",
-  keywords: ["wealth building", "financial advisor", "wall street", "investment guidance", "financial independence", "wealth management", "trading", "investing"],
+  description: "Learn how to build wealth without a financial advisor. Practical investing guides for beginners, retirement strategies, and stock market education from a 35-year Wall Street veteran.",
+  keywords: ["how to start investing", "investing for beginners", "first time investor", "build wealth", "stock market basics", "retirement planning", "index funds", "financial independence", "wall street", "wealth building"],
   authors: [{ name: "Sergio Avedian" }],
   openGraph: {
     type: "website",

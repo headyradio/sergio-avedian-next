@@ -124,7 +124,36 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   const readingTime = estimateReadingTime(post.body);
-  
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": post.excerpt || `Read ${post.title} on Sergio Avedian's Blog`,
+    "image": post.mainImage
+      ? urlForImage(post.mainImage).width(1200).height(630).url()
+      : "https://sergioavedian.com/og-image.png",
+    "datePublished": post.publishedAt,
+    "dateModified": post.publishedAt,
+    "author": {
+      "@type": "Person",
+      "name": post.author?.name || "Sergio Avedian",
+      "url": "https://sergioavedian.com/about-sergio"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Sergio Avedian",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://sergioavedian.com/sergio-avedian-logo.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://sergioavedian.com/blog/${post.slug.current}`
+    }
+  };
+
   // Extract Headings for TOC
   const headings = post.body
     ?.filter((block: any) => block._type === 'block' && block.style === 'h2')
@@ -137,7 +166,11 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
-      
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+
       <main>
         {/* Hero Section — full-bleed, immersive, back button overlaid */}
         <div className="relative w-full h-[72vh] min-h-[520px] md:h-[70vh] md:min-h-[560px] flex items-center justify-center mb-10 md:mb-12">
