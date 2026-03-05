@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { Providers } from "./providers";
+import CookieConsentBanner from "@/components/CookieConsentBanner";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export const metadata: Metadata = {
   title: {
@@ -40,6 +42,26 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/kbh0ngu.css" />
+
+        {/* ── Google Consent Mode v2 — must run BEFORE any GA/GTM script ── */}
+        <Script
+          id="ga-consent-default"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                wait_for_update: 500
+              });
+            `,
+          }}
+        />
+
         <Script
           strategy="beforeInteractive"
           src="https://cdn.weglot.com/weglot.min.js"
@@ -80,6 +102,8 @@ export default function RootLayout({
         }
       >
         <Providers>{children}</Providers>
+        <GoogleAnalytics />
+        <CookieConsentBanner />
       </body>
     </html>
   );
