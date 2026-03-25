@@ -239,15 +239,15 @@ export default async function BlogPostPage({ params }: Props) {
             </aside>
 
             {/* Main Content Column */}
-            <article className="flex-1 w-full min-w-0 max-w-3xl mx-auto lg:mx-0">
-              
+            <article className="flex-1 w-full min-w-0 max-w-3xl mx-auto lg:mx-0 article-reading-surface">
+
               {/* Post Meta Data Bar */}
-              <div className="flex flex-row items-center justify-between py-4 border-b border-border/40 gap-3 mb-8">
-                <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm text-text-secondary min-w-0">
+              <div className="article-meta-bar flex flex-row items-center justify-between py-4 border-b gap-3 mb-8">
+                <div className="flex flex-wrap items-center gap-3 text-xs md:text-sm min-w-0">
                   {post.author && (
-                    <Link href={`/author/${post.author.slug || '#'}`} className="flex items-center gap-2 hover:text-primary transition-colors shrink-0">
+                    <Link href={`/author/${post.author.slug || '#'}`} className="flex items-center gap-2 transition-colors shrink-0">
                       {post.author.image ? (
-                        <div className="relative w-7 h-7 rounded-full overflow-hidden border border-primary/20 shrink-0">
+                        <div className="relative w-7 h-7 rounded-full overflow-hidden border border-[#d9d0c3] shrink-0">
                            <Image
                               src={urlForImage(post.author.image).width(64).height(64).url()}
                               alt=""
@@ -256,20 +256,20 @@ export default async function BlogPostPage({ params }: Props) {
                            />
                         </div>
                       ) : (
-                         <User className="w-4 h-4 text-primary shrink-0" />
+                         <User className="w-4 h-4 shrink-0" />
                       )}
                       <span className="font-medium truncate">{post.author.name}</span>
                     </Link>
                   )}
-                  <span className="text-border/60 hidden sm:inline">·</span>
+                  <span className="opacity-40 hidden sm:inline">·</span>
                   {post.publishedAt && (
                     <time dateTime={post.publishedAt} className="hidden sm:block shrink-0">
                       {format(new Date(post.publishedAt), "MMM d, yyyy")}
                     </time>
                   )}
-                  <span className="text-border/60">·</span>
+                  <span className="opacity-40">·</span>
                   <div className="flex items-center gap-1 shrink-0">
-                    <Clock className="w-3.5 h-3.5 text-primary" />
+                    <Clock className="w-3.5 h-3.5" />
                     <span>{readingTime} min read</span>
                   </div>
                 </div>
@@ -280,14 +280,14 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
 
                {/* Audio Player */}
-               <ArticleAudioPlayer 
+               <ArticleAudioPlayer
                   slug={post.slug.current}
                   title={post.title}
                   plainText={`${post.title}. By ${post.author?.name || 'Sergio Avedian'}. ${portableTextToPlainText(post.body)}`}
                />
 
                {/* Mobile TOC */}
-                <div className="lg:hidden mb-8 border border-border/40 rounded-lg p-4 bg-surface/50">
+                <div className="lg:hidden mb-8 border border-[#d9d0c3] rounded-lg p-4 bg-[#f5ede0]/50">
                     <TableOfContents headings={headings} />
                 </div>
 

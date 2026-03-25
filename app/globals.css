@@ -310,9 +310,9 @@
     @apply opacity-100 translate-y-0;
   }
 
-  /* Prose — article body text */
+  /* Prose — article body text (FT-inspired readable layout) */
   .prose-modern {
-    line-height: 1.75;
+    line-height: 1.8;
     color: hsl(var(--text-secondary));
     max-width: 68ch;
   }
@@ -325,6 +325,87 @@
 
   .prose-modern p {
     margin-bottom: 1.5rem;
+  }
+
+  /* Article Reading Surface — warm cream paper for long-form readability */
+  .article-reading-surface {
+    background-color: #FFF8F0;
+    border-radius: 12px;
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .article-reading-surface .prose-modern {
+    color: #33302b;
+    line-height: 1.85;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    letter-spacing: 0.003em;
+  }
+
+  .article-reading-surface .prose-modern p {
+    margin-bottom: 1.65rem;
+  }
+
+  .article-reading-surface .prose-modern h1,
+  .article-reading-surface .prose-modern h2,
+  .article-reading-surface .prose-modern h3,
+  .article-reading-surface .prose-modern h4 {
+    color: #1a1714;
+    font-family: var(--font-display), 'oaks-semiexpanded', sans-serif;
+  }
+
+  .article-reading-surface .prose-modern a {
+    color: #0d7680;
+  }
+
+  .article-reading-surface .prose-modern a:hover {
+    color: #0a5c64;
+  }
+
+  .article-reading-surface .prose-modern blockquote {
+    border-left-color: #c0a97a;
+    color: #4a4540;
+    background-color: #f5ede0;
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .article-reading-surface .prose-modern ul,
+  .article-reading-surface .prose-modern ol {
+    color: #33302b;
+  }
+
+  /* Meta bar inside reading surface */
+  .article-reading-surface .article-meta-bar {
+    border-color: #d9d0c3;
+  }
+
+  .article-reading-surface .article-meta-bar,
+  .article-reading-surface .article-meta-bar a,
+  .article-reading-surface .article-meta-bar span,
+  .article-reading-surface .article-meta-bar time {
+    color: #6b6460;
+  }
+
+  .article-reading-surface .article-meta-bar a:hover {
+    color: #0d7680;
+  }
+
+  /* Audio player on cream surface */
+  .article-reading-surface .bg-surface {
+    background-color: #f0e8da;
+  }
+
+  .article-reading-surface .border-border\/50 {
+    border-color: #d9d0c3;
+  }
+
+  .article-reading-surface .text-text-secondary {
+    color: #6b6460;
+  }
+
+  .article-reading-surface .text-text-primary {
+    color: #1a1714;
   }
 
   /* Loading Shimmer */
