@@ -107,7 +107,7 @@ const CMSBlogSection = ({ posts = [] }: CMSBlogSectionProps) => {
                   <div className="flex items-center justify-between pt-5 mt-auto border-t border-border/40">
                     <div className="flex items-center gap-1 text-xs text-text-muted">
                       <Calendar className="h-3 w-3" />
-                      {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                      {new Date(post.publishedAt || '2026-01-01').toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric'

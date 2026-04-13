@@ -133,8 +133,8 @@ export default async function BlogPostPage({ params }: Props) {
     "image": post.mainImage
       ? urlForImage(post.mainImage).width(1200).height(630).url()
       : "https://sergioavedian.com/og-image.png",
-    "datePublished": post.publishedAt,
-    "dateModified": post.publishedAt,
+    "datePublished": post.publishedAt || '2026-01-01',
+    "dateModified": post.publishedAt || '2026-01-01',
     "author": {
       "@type": "Person",
       "name": post.author?.name || "Sergio Avedian",
@@ -262,11 +262,9 @@ export default async function BlogPostPage({ params }: Props) {
                     </Link>
                   )}
                   <span className="opacity-40 hidden sm:inline">·</span>
-                  {post.publishedAt && (
-                    <time dateTime={post.publishedAt} className="hidden sm:block shrink-0">
-                      {format(new Date(post.publishedAt), "MMM d, yyyy")}
-                    </time>
-                  )}
+                  <time dateTime={post.publishedAt || '2026-01-01'} className="hidden sm:block shrink-0">
+                    {format(new Date(post.publishedAt || '2026-01-01'), "MMM d, yyyy")}
+                  </time>
                   <span className="opacity-40">·</span>
                   <div className="flex items-center gap-1 shrink-0">
                     <Clock className="w-3.5 h-3.5" />
@@ -280,11 +278,13 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
 
                {/* Audio Player */}
+               {post.body && (
                <ArticleAudioPlayer
                   slug={post.slug.current}
                   title={post.title}
                   plainText={`${post.title}. By ${post.author?.name || 'Sergio Avedian'}. ${portableTextToPlainText(post.body)}`}
                />
+               )}
 
                {/* Mobile TOC */}
                 <div className="lg:hidden mb-8 border border-[#d9d0c3] rounded-lg p-4 bg-[#f5ede0]/50">

@@ -15,7 +15,8 @@ export function slugify(text: string): string {
     .replace(/\-\-+/g, '-');  // Replace multiple - with single -
 }
 
-export function portableTextToPlainText(blocks: any[] = []): string {
+export function portableTextToPlainText(blocks: any[] | null | undefined = []): string {
+  if (!blocks || !Array.isArray(blocks)) return '';
   return blocks
     // loop through each block
     .map(block => {
