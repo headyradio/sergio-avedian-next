@@ -8,6 +8,19 @@ import { getCachedAudioUrl, generateAudioForArticle } from '@/lib/audio-generato
 // Allow up to 120 seconds for audio generation on Vercel
 export const maxDuration = 120;
 
+// GROQ query to fetch a post by its Sanity document _id
+const postByIdQuery = `*[_id == $id && _type == "post" && !(_id in path("drafts.**"))][0] {
+  _id,
+  title,
+  slug,
+  excerpt,
+  "body": content,
+  "mainImage": coverImage,
+  publishedAt,
+  "author": author->{name, image, bio, "slug": slug.current},
+  "categories": categories[]->{title, slug}
+}`;
+
 // Verify Sanity webhook signature
 function isValidSignature(body: string, signature: string, secret: string): boolean {
   const hmac = crypto.createHmac('sha256', secret);
@@ -32,47 +45,58 @@ export async function POST(request: NextRequest) {
     const payload = JSON.parse(rawBody);
     console.log('[sanity-audio] Webhook received:', JSON.stringify(payload));
 
-    // Extract slug from the webhook payload
-    const slug = payload.slug?.current || payload.slug;
-    if (!slug) {
-      console.log('[sanity-audio] No slug in payload, skipping');
-      return NextResponse.json({ message: 'No slug found, skipping' }, { status: 200 });
-    }
-
     // Only process "post" documents
     if (payload._type && payload._type !== 'post') {
       console.log(`[sanity-audio] Ignoring document type: ${payload._type}`);
       return NextResponse.json({ message: 'Not a post, skipping' }, { status: 200 });
     }
 
-    // Fetch the full post content from Sanity
-    console.log(`[sanity-audio] Fetching post content for slug: ${slug}`);
-    const post = await client.fetch(postBySlugQuery, { slug });
+    // Try to get slug from payload first, otherwise fetch the document by _id
+    let slug = payload.slug?.current || payload.slug;
+    let post;
 
-    if (!post) {
-      console.error(`[sanity-audio] Post not found for slug: ${slug}`);
+    if (slug) {
+      // Slug available in payload — fetch full post by slug
+      console.log(`[sanity-audio] Fetching post by slug: ${slug}`);
+      post = await client.fetch(postBySlugQuery, { slug });
+    } else if (payload._id) {
+      // Slug NOT in payload (common with default Sanity webhook projections)
+      // Fetch the full document by _id instead
+      console.log(`[sanity-audio] No slug in payload, fetching post by _id: ${payload._id}`);
+      post = await client.fetch(postByIdQuery, { id: payload._id });
+      slug = post?.slug?.current;
+    }
+
+    if (!post || !slug) {
+      console.error(`[sanity-audio] Post not found — slug: ${slug}, _id: ${payload._id}`);
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
     // Build the plain text (English source — same format as the client-side player)
     const plainText = `${post.title}. By ${post.author?.name || 'Sergio Avedian'}. ${portableTextToPlainText(post.body)}`;
 
-    const results: Record<string, string | null> = {};
-
-    // Generate English and Spanish audio, skipping whichever is already cached
-    for (const lang of ['en', 'es']) {
-      const cached = await getCachedAudioUrl(slug, lang);
-      if (cached) {
-        console.log(`[sanity-audio] "${lang}" audio already cached for "${slug}": ${cached}`);
-        results[lang] = cached;
-        continue;
-      }
-
-      console.log(`[sanity-audio] Generating "${lang}" audio for "${slug}"`);
-      const { audioUrl } = await generateAudioForArticle(slug, plainText, lang);
-      results[lang] = audioUrl;
-      console.log(`[sanity-audio] "${lang}" audio generated: ${audioUrl}`);
+    if (!portableTextToPlainText(post.body).trim()) {
+      console.warn(`[sanity-audio] Post "${slug}" has no text content in body — skipping audio generation`);
+      return NextResponse.json({ message: 'Post has no text content', slug }, { status: 200 });
     }
+
+    // Generate English and Spanish audio in parallel, skipping cached
+    const langs = ['en', 'es'] as const;
+    const entries = await Promise.all(
+      langs.map(async (lang) => {
+        const cached = await getCachedAudioUrl(slug, lang);
+        if (cached) {
+          console.log(`[sanity-audio] "${lang}" audio already cached for "${slug}"`);
+          return [lang, cached] as const;
+        }
+        console.log(`[sanity-audio] Generating "${lang}" audio for "${slug}"`);
+        const { audioUrl } = await generateAudioForArticle(slug, plainText, lang);
+        console.log(`[sanity-audio] "${lang}" audio generated: ${audioUrl}`);
+        return [lang, audioUrl] as const;
+      })
+    );
+
+    const results = Object.fromEntries(entries);
 
     return NextResponse.json({
       message: 'Audio generated successfully',

@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import PostBody from "@/components/PostBody";
 import TableOfContents from "@/components/TableOfContents";
 import { portableTextToPlainText } from "@/lib/utils";
+import { getCachedAudioUrl } from "@/lib/audio-generator";
 import dynamic from "next/dynamic";
 
 // Dynamic Imports for Code Splitting
@@ -116,12 +117,19 @@ function estimateReadingTime(body: any[]): number {
 export default async function BlogPostPage({ params }: Props) {
   const [post, suggestedPosts] = await Promise.all([
     getPost(params.slug),
-    client.fetch(suggestedPostsQuery, { currentSlug: params.slug })
+    client.fetch(suggestedPostsQuery, { currentSlug: params.slug }),
   ]);
 
   if (!post) {
     notFound();
   }
+
+  // Resolve pre-generated audio URLs from Vercel Blob CDN.
+  // Audio is generated asynchronously via the Sanity webhook on publish.
+  const [audioUrlEn, audioUrlEs] = await Promise.all([
+    getCachedAudioUrl(post.slug.current, 'en'),
+    getCachedAudioUrl(post.slug.current, 'es'),
+  ]);
 
   const readingTime = estimateReadingTime(post.body);
 
@@ -277,14 +285,11 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
               </div>
 
-               {/* Audio Player */}
-               {post.body && (
+               {/* Audio Player — renders only if pre-generated audio exists */}
                <ArticleAudioPlayer
-                  slug={post.slug.current}
                   title={post.title}
-                  plainText={`${post.title}. By ${post.author?.name || 'Sergio Avedian'}. ${portableTextToPlainText(post.body)}`}
+                  audioUrls={{ en: audioUrlEn, es: audioUrlEs }}
                />
-               )}
 
                {/* Mobile TOC */}
                 <div className="lg:hidden mb-8 border border-[#d9d0c3] rounded-lg p-4 bg-[#f5ede0]/50">

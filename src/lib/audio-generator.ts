@@ -157,20 +157,20 @@ export async function generateAudioForArticle(
   const textBytes = Buffer.byteLength(textToSpeak, 'utf8');
   console.log(`[audio-generator] Generating "${lang}" audio for "${slug}" (${textBytes} bytes)`);
 
-  const audioBuffers: Buffer[] = [];
+  let audioBuffers: Buffer[];
 
   if (textBytes > MAX_BYTES) {
     const chunks = splitTextIntoChunks(textToSpeak, MAX_BYTES);
-    console.log(`[audio-generator] Split into ${chunks.length} chunks`);
+    console.log(`[audio-generator] Split into ${chunks.length} chunks — generating in parallel`);
 
-    for (let i = 0; i < chunks.length; i++) {
-      console.log(`[audio-generator] Chunk ${i + 1}/${chunks.length} (${Buffer.byteLength(chunks[i], 'utf8')} bytes)`);
-      const buf = await generateAudioChunk(chunks[i], apiKey, voice);
-      audioBuffers.push(buf);
-    }
+    audioBuffers = await Promise.all(
+      chunks.map((chunk, i) => {
+        console.log(`[audio-generator] Chunk ${i + 1}/${chunks.length} (${Buffer.byteLength(chunk, 'utf8')} bytes)`);
+        return generateAudioChunk(chunk, apiKey, voice);
+      })
+    );
   } else {
-    const buf = await generateAudioChunk(textToSpeak, apiKey, voice);
-    audioBuffers.push(buf);
+    audioBuffers = [await generateAudioChunk(textToSpeak, apiKey, voice)];
   }
 
   const combinedBuffer = Buffer.concat(audioBuffers);
