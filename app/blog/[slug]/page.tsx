@@ -285,8 +285,9 @@ export default async function BlogPostPage({ params }: Props) {
                 </div>
               </div>
 
-               {/* Audio Player — renders only if pre-generated audio exists */}
+               {/* Audio Player — uses pre-generated audio, falls back to on-demand generation */}
                <ArticleAudioPlayer
+                  slug={post.slug.current}
                   title={post.title}
                   audioUrls={{ en: audioUrlEn, es: audioUrlEs }}
                />

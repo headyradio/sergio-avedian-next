@@ -1,38 +1,84 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { Play, Pause, Headphones } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Play, Pause, Loader2, Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useWeglotLanguage } from '@/components/WeglotLanguageProvider';
 
 interface ArticleAudioPlayerProps {
+  slug: string;
   title: string;
   audioUrls: { en: string | null; es: string | null };
 }
 
-const UI_STRINGS: Record<string, { listen: string; pause: string; nowPlaying: string }> = {
-  en: { listen: 'Listen', pause: 'Pause', nowPlaying: 'Now Playing' },
-  es: { listen: 'Escuchar', pause: 'Pausar', nowPlaying: 'Reproduciendo' },
+const UI_STRINGS: Record<string, { listen: string; loading: string; pause: string; nowPlaying: string }> = {
+  en: { listen: 'Listen', loading: 'Loading…', pause: 'Pause', nowPlaying: 'Now Playing' },
+  es: { listen: 'Escuchar', loading: 'Cargando…', pause: 'Pausar', nowPlaying: 'Reproduciendo' },
 };
 
-export default function ArticleAudioPlayer({ title, audioUrls }: ArticleAudioPlayerProps) {
+export default function ArticleAudioPlayer({ slug, title, audioUrls }: ArticleAudioPlayerProps) {
   const { lang } = useWeglotLanguage();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const ui = UI_STRINGS[lang] ?? UI_STRINGS['en'];
-  const currentUrl = (lang === 'es' ? audioUrls.es : audioUrls.en) ?? audioUrls.en;
+  // Pre-generated CDN URL for the active language (falls back to English audio).
+  const prefetchedUrl = (lang === 'es' ? audioUrls.es : audioUrls.en) ?? audioUrls.en;
+  const [audioUrl, setAudioUrl] = useState<string | null>(prefetchedUrl);
 
-  // Nothing to play — hide the player entirely
-  if (!currentUrl) return null;
-
-  const handleTogglePlay = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
+  // Reset to the correct pre-generated URL when the language changes.
+  useEffect(() => {
+    if (audioRef.current) {
       audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(() => {});
+      audioRef.current.currentTime = 0;
+    }
+    setIsPlaying(false);
+    setIsLoading(false);
+    setAudioUrl(prefetchedUrl);
+  }, [lang, prefetchedUrl]);
+
+  const handleTogglePlay = async () => {
+    // Audio already resolved — just toggle playback.
+    if (audioUrl) {
+      if (!audioRef.current) return;
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(() => {});
+      }
+      return;
+    }
+
+    // No pre-generated audio — generate it on demand (first play).
+    if (isLoading) return;
+    try {
+      setIsLoading(true);
+      const res = await fetch('/api/generate-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, lang }),
+      });
+      if (!res.ok) throw new Error('Failed to generate audio');
+
+      const contentType = res.headers.get('content-type') || '';
+      let src = '';
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        src = data.audioUrl || '';
+      } else {
+        src = URL.createObjectURL(await res.blob());
+      }
+      if (!src) throw new Error('No audio source returned');
+
+      setAudioUrl(src);
+      // Wait for the <audio> src to apply before playing.
+      requestAnimationFrame(() => audioRef.current?.play().catch(() => {}));
+    } catch (err) {
+      console.error('[ArticleAudioPlayer] On-demand audio failed:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -52,6 +98,7 @@ export default function ArticleAudioPlayer({ title, audioUrls }: ArticleAudioPla
       <div className="flex-shrink-0">
         <Button
           onClick={handleTogglePlay}
+          disabled={isLoading}
           variant="outline"
           size="sm"
           className={cn(
@@ -59,7 +106,12 @@ export default function ArticleAudioPlayer({ title, audioUrls }: ArticleAudioPla
             isPlaying ? 'border-primary text-primary' : 'hover:border-primary/50'
           )}
         >
-          {isPlaying ? (
+          {isLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>{ui.loading}</span>
+            </>
+          ) : isPlaying ? (
             <>
               <Pause className="w-4 h-4 fill-current" />
               <span>{ui.pause}</span>
@@ -75,7 +127,7 @@ export default function ArticleAudioPlayer({ title, audioUrls }: ArticleAudioPla
 
       <audio
         ref={audioRef}
-        src={currentUrl}
+        src={audioUrl ?? undefined}
         preload="none"
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
