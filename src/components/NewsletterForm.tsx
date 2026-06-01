@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { CheckCircle2, Mail } from "lucide-react";
 import { useNewsletterSubscription } from "@/hooks/useNewsletterSubscription";
+import { useAntiSpam } from "@/hooks/useAntiSpam";
+import TurnstileWidget from "@/components/TurnstileWidget";
+import HoneypotField from "@/components/HoneypotField";
 
 const NewsletterForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -25,6 +28,7 @@ const NewsletterForm = () => {
   const [consent, setConsent] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { subscribe, isLoading } = useNewsletterSubscription();
+  const antiSpam = useAntiSpam();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -46,14 +50,15 @@ const NewsletterForm = () => {
       return;
     }
 
-    const result = await subscribe(email.trim(), `${firstName.trim()} ${lastName.trim()}`);
-    
+    const result = await subscribe(email.trim(), `${firstName.trim()} ${lastName.trim()}`, antiSpam.buildPayload());
+
     if (result.success) {
       setIsSuccess(true);
       setFirstName("");
       setLastName("");
       setEmail("");
       setConsent(false);
+      antiSpam.reset();
     }
   };
 
@@ -135,12 +140,24 @@ const NewsletterForm = () => {
           </Label>
         </div>
         
+        <HoneypotField value={antiSpam.honeypotValue} onChange={antiSpam.setHoneypotValue} />
+
+        {antiSpam.turnstileEnabled && (
+          <div className="flex justify-center">
+            <TurnstileWidget
+              key={antiSpam.widgetKey}
+              onVerify={antiSpam.handleVerify}
+              onExpire={antiSpam.handleExpire}
+            />
+          </div>
+        )}
+
         <div className="space-y-4">
-          <Button 
-            type="submit" 
-            variant="cta" 
+          <Button
+            type="submit"
+            variant="cta"
             size="lg"
-            disabled={isLoading || !consent}
+            disabled={isLoading || !consent || !antiSpam.verified}
             className="w-full h-14 text-lg"
           >
             {isLoading ? (

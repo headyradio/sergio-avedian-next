@@ -2,21 +2,22 @@
 
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import type { AntiSpamPayload } from "@/hooks/useAntiSpam";
 
 export function useNewsletterSubscription() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const subscribe = async (email: string, firstName?: string) => {
+  const subscribe = async (email: string, firstName?: string, antiSpam?: AntiSpamPayload) => {
     setIsLoading(true);
-    
+
     try {
       const response = await fetch("/api/newsletter", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, first_name: firstName }),
+        body: JSON.stringify({ email, first_name: firstName, ...antiSpam }),
       });
 
       const data = await response.json();

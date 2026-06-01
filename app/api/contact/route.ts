@@ -1,17 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serverClient } from "@/lib/sanity/client";
+import { checkAntiSpam, getClientIp } from "@/lib/anti-spam";
 
 interface ContactFormData {
   name: string;
   email: string;
   subject?: string;
   message: string;
+  turnstileToken?: string;
+  hp_field?: string;
+  elapsedMs?: number;
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
-    const { name, email, subject, message } = body;
+    const { name, email, subject, message, turnstileToken, hp_field, elapsedMs } = body;
+
+    // Anti-spam: Turnstile CAPTCHA + honeypot + timing trap
+    const spam = await checkAntiSpam({ turnstileToken, hp_field, elapsedMs, ip: getClientIp(request) });
+    if (!spam.ok) {
+      if (spam.reason === "turnstile") {
+        return NextResponse.json(
+          { error: "Verification failed. Please try again." },
+          { status: 400 }
+        );
+      }
+      // honeypot/timing → silently drop so bots get a success-looking response
+      console.warn(`[contact] Dropped spam submission (reason: ${spam.reason})`);
+      return NextResponse.json({
+        success: true,
+        message: "Thank you for your message! We'll get back to you soon.",
+      });
+    }
 
     // Validate required fields
     if (!name || !email || !message) {

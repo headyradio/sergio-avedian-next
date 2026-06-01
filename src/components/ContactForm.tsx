@@ -11,6 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send, CheckCircle } from "lucide-react";
+import { useAntiSpam } from "@/hooks/useAntiSpam";
+import TurnstileWidget from "@/components/TurnstileWidget";
+import HoneypotField from "@/components/HoneypotField";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
@@ -31,6 +34,7 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const antiSpam = useAntiSpam();
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -50,7 +54,7 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, ...antiSpam.buildPayload() }),
       });
 
       const result = await response.json();
@@ -61,6 +65,7 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
 
       setIsSuccess(true);
       form.reset();
+      antiSpam.reset();
       onSuccess?.();
       toast({
         title: "Message sent successfully!",
@@ -208,10 +213,22 @@ const ContactForm = ({ defaultSubject, onSuccess }: ContactFormProps = {}) => {
               )}
             />
 
+            <HoneypotField value={antiSpam.honeypotValue} onChange={antiSpam.setHoneypotValue} />
+
+            {antiSpam.turnstileEnabled && (
+              <div className="flex justify-center">
+                <TurnstileWidget
+                  key={antiSpam.widgetKey}
+                  onVerify={antiSpam.handleVerify}
+                  onExpire={antiSpam.handleExpire}
+                />
+              </div>
+            )}
+
             <div className="pt-4">
               <Button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !antiSpam.verified}
                 className="w-full bg-primary hover:bg-primary-hover text-primary-foreground font-medium py-3 h-auto"
               >
                 {isSubmitting ? (

@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Mail } from "lucide-react";
 import { useNewsletterSubscription } from "@/hooks/useNewsletterSubscription";
+import { useAntiSpam } from "@/hooks/useAntiSpam";
+import TurnstileWidget from "@/components/TurnstileWidget";
+import HoneypotField from "@/components/HoneypotField";
 
 interface EmailSubscriptionModalProps {
   open: boolean;
@@ -34,6 +37,7 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const { subscribe, isLoading } = useNewsletterSubscription();
+  const antiSpam = useAntiSpam();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,13 +60,14 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
     }
 
     // Call the subscription function
-    const result = await subscribe(email.trim(), `${firstName.trim()} ${lastName.trim()}`);
-    
+    const result = await subscribe(email.trim(), `${firstName.trim()} ${lastName.trim()}`, antiSpam.buildPayload());
+
     if (result.success) {
       setFirstName("");
       setLastName("");
       setEmail("");
       setConsent(false);
+      antiSpam.reset();
       onOpenChange(false);
     }
   };
@@ -135,11 +140,23 @@ const EmailSubscriptionModal = ({ open, onOpenChange }: EmailSubscriptionModalPr
             </Label>
           </div>
           
+          <HoneypotField value={antiSpam.honeypotValue} onChange={antiSpam.setHoneypotValue} />
+
+          {antiSpam.turnstileEnabled && (
+            <div className="flex justify-center">
+              <TurnstileWidget
+                key={antiSpam.widgetKey}
+                onVerify={antiSpam.handleVerify}
+                onExpire={antiSpam.handleExpire}
+              />
+            </div>
+          )}
+
           <div className="flex flex-col gap-4">
-            <Button 
-              type="submit" 
-              variant="cta" 
-              disabled={isLoading || !consent}
+            <Button
+              type="submit"
+              variant="cta"
+              disabled={isLoading || !consent || !antiSpam.verified}
               className="w-full"
             >
               {isLoading ? "Subscribing..." : "Subscribe Now"}

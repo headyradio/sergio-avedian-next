@@ -1,10 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSubscriber } from "@/lib/kit/client";
+import { checkAntiSpam, getClientIp } from "@/lib/anti-spam";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, first_name } = body;
+    const { email, first_name, turnstileToken, hp_field, elapsedMs } = body;
+
+    // Anti-spam: Turnstile CAPTCHA + honeypot + timing trap
+    const spam = await checkAntiSpam({ turnstileToken, hp_field, elapsedMs, ip: getClientIp(request) });
+    if (!spam.ok) {
+      if (spam.reason === "turnstile") {
+        return NextResponse.json(
+          { error: "Verification failed. Please try again." },
+          { status: 400 }
+        );
+      }
+      // honeypot/timing → silently drop so bots get a success-looking response
+      console.warn(`[newsletter] Dropped spam submission (reason: ${spam.reason})`);
+      return NextResponse.json({
+        success: true,
+        message: "Successfully subscribed to the newsletter!",
+      });
+    }
 
     if (!email) {
       return NextResponse.json(
