@@ -6,7 +6,7 @@ import Navigation from "@/components/Navigation";
 import MainHeroSection from "@/components/MainHeroSection";
 import MissionStatement from "@/components/MissionStatement";
 import FeaturedArticleBanner from "@/components/FeaturedArticleBanner";
-import GoldSubscriptionSection from "@/components/GoldSubscriptionSection";
+import TradingDeskSection from "@/components/TradingDeskSection";
 import VideoSection from "@/components/VideoSection";
 import CMSBlogSection from "@/components/CMSBlogSection";
 import FinalCTASection from "@/components/FinalCTASection";
@@ -31,7 +31,7 @@ export default async function HomePage() {
       <MainHeroSection />
       <MissionStatement />
       <FeaturedArticleBanner />
-      <GoldSubscriptionSection />
+      <TradingDeskSection />
       <CMSBlogSection posts={posts} />
       <VideoSection 
         latestVideos={latestVideos} 
