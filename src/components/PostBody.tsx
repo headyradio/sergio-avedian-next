@@ -3,6 +3,29 @@
 import { slugify } from "@/lib/utils";
 import { PortableText } from '@portabletext/react';
 import { Gallery } from "./Gallery";
+import { OptimizedImage } from "./OptimizedImage";
+import { urlForImage } from "@/lib/sanity/client";
+
+function PostImage({ value }: { value: any }) {
+  if (!value?.asset) return null;
+  return (
+    <figure className="my-8">
+      <div className="relative overflow-hidden rounded-lg bg-surface-secondary">
+        <OptimizedImage
+          src={urlForImage(value).url()}
+          alt={value.alt || ""}
+          className="w-full object-contain"
+          aspectRatio="auto"
+        />
+      </div>
+      {value.caption && (
+        <figcaption className="mt-2 text-sm text-text-secondary italic text-center">
+          {value.caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
 
 const components = {
   block: {
@@ -42,6 +65,7 @@ const components = {
   },
   types: {
     gallery: Gallery,
+    image: PostImage,
   },
 };
 
