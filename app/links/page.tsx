@@ -8,6 +8,7 @@ import {
   BookOpen,
   Mail,
   GraduationCap,
+  Globe,
   ArrowUpRight,
 } from "lucide-react";
 
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
 const WHOP_URL = "https://whop.com/checkout/plan_kPD5F9M8dEH34";
 const DISCORD_URL = "https://discord.gg/s9nJvURcpb";
 const YOUTUBE_URL = "https://www.youtube.com/@SergioAvedian/";
-const X_URL = "https://x.com/sergioaved";
+const X_URL = "https://x.com/TradingDeskHQ";
 const LINKEDIN_URL = "https://www.linkedin.com/in/sergio-avedian-9939291/";
 
 /* ── Brand marks not in lucide ───────────────────────────────────── */
@@ -53,6 +54,13 @@ type LinkRow = {
 };
 
 const links: LinkRow[] = [
+  {
+    label: "Visit sergioavedian.com",
+    sublabel: "Articles, videos & everything in one place",
+    href: "/",
+    external: false,
+    Icon: ({ className }) => <Globe className={className} />,
+  },
   {
     label: "Join the Discord — Free",
     sublabel: "Market talk & community channels",
