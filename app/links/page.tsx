@@ -53,14 +53,15 @@ type LinkRow = {
   Icon: (p: { className?: string }) => JSX.Element;
 };
 
+const websiteLink: LinkRow = {
+  label: "Visit sergioavedian.com",
+  sublabel: "Articles, videos & everything in one place",
+  href: "/",
+  external: false,
+  Icon: ({ className }) => <Globe className={className} />,
+};
+
 const links: LinkRow[] = [
-  {
-    label: "Visit sergioavedian.com",
-    sublabel: "Articles, videos & everything in one place",
-    href: "/",
-    external: false,
-    Icon: ({ className }) => <Globe className={className} />,
-  },
   {
     label: "Join the Discord — Free",
     sublabel: "Market talk & community channels",
@@ -103,6 +104,35 @@ const socials = [
   { label: "YouTube", href: YOUTUBE_URL, Icon: ({ className }: { className?: string }) => <Youtube className={className} /> },
   { label: "LinkedIn", href: LINKEDIN_URL, Icon: ({ className }: { className?: string }) => <Linkedin className={className} /> },
 ];
+
+/* ── Standard link card (shared by the website link + the stack) ─── */
+function LinkCard({ label, sublabel, href, external, Icon }: LinkRow) {
+  const inner = (
+    <div className="flex items-center gap-4">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-card-border bg-surface-secondary text-primary transition-colors duration-300 group-hover:border-primary/40">
+        <Icon className="h-5 w-5" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <span className="block font-semibold text-text-primary">{label}</span>
+        <span className="block truncate text-sm text-text-secondary">{sublabel}</span>
+      </div>
+      <ArrowUpRight
+        className="h-5 w-5 shrink-0 text-text-muted transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary"
+        aria-hidden="true"
+      />
+    </div>
+  );
+  const cls = "group card-modern block w-full p-4 sm:p-5";
+  return external ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className={cls}>
+      {inner}
+    </a>
+  ) : (
+    <Link href={href} aria-label={label} className={cls}>
+      {inner}
+    </Link>
+  );
+}
 
 export default function LinksPage() {
   return (
@@ -175,8 +205,13 @@ export default function LinksPage() {
           ))}
         </div>
 
-        {/* ── Premium — The Trading Desk (the hero link) ───────────── */}
+        {/* Website — first link at the top */}
         <div className="mt-10 w-full">
+          <LinkCard {...websiteLink} />
+        </div>
+
+        {/* ── Premium — The Trading Desk (the hero link) ───────────── */}
+        <div className="mt-3 w-full">
           <a
             href={WHOP_URL}
             target="_blank"
@@ -232,34 +267,9 @@ export default function LinksPage() {
 
         {/* ── Standard links ───────────────────────────────────────── */}
         <div className="mt-3 flex w-full flex-col gap-3">
-          {links.map(({ label, sublabel, href, external, Icon }) => {
-            const inner = (
-              <div className="flex items-center gap-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-card-border bg-surface-secondary text-primary transition-colors duration-300 group-hover:border-primary/40">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <span className="block font-semibold text-text-primary">{label}</span>
-                  <span className="block truncate text-sm text-text-secondary">{sublabel}</span>
-                </div>
-                <ArrowUpRight
-                  className="h-5 w-5 shrink-0 text-text-muted transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary"
-                  aria-hidden="true"
-                />
-              </div>
-            );
-            const cls =
-              "group card-modern block w-full p-4 sm:p-5";
-            return external ? (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className={cls}>
-                {inner}
-              </a>
-            ) : (
-              <Link key={label} href={href} aria-label={label} className={cls}>
-                {inner}
-              </Link>
-            );
-          })}
+          {links.map((row) => (
+            <LinkCard key={row.label} {...row} />
+          ))}
         </div>
 
         {/* Footer */}
